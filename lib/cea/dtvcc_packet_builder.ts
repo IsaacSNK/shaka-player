@@ -3,10 +3,10 @@
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-import * as Cea708ServiceExports from './cea___cea708_service';
-import {Cea708Service} from './cea___cea708_service';
-import * as ErrorExports from './util___error';
-import {Error} from './util___error';
+import * as Cea708ServiceExports from './dev-workspace.shaka-player-fork.lib.cea.cea708_service';
+import {Cea708Service} from './dev-workspace.shaka-player-fork.lib.cea.cea708_service';
+import * as ErrorExports from './dev-workspace.shaka-player-fork.lib.util.error';
+import {Error} from './dev-workspace.shaka-player-fork.lib.util.error';
 
 /**
  * CEA-708 DTVCC Packet Builder.

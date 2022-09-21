@@ -3,33 +3,33 @@
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-import * as assertsExports from './debug___asserts';
-import {asserts} from './debug___asserts';
-import * as logExports from './debug___log';
-import {log} from './debug___log';
-import {IClosedCaptionParser} from './media___closed_caption_parser';
-import * as ContentWorkaroundsExports from './media___content_workarounds';
-import {ContentWorkarounds} from './media___content_workarounds';
-import * as SegmentReferenceExports from './media___segment_reference';
-import {SegmentReference} from './media___segment_reference';
-import {TimeRangesUtils} from './media___time_ranges_utils';
-import {Transmuxer} from './media___transmuxer';
-import * as TextEngineExports from './text___text_engine';
-import {TextEngine} from './text___text_engine';
-import {Destroyer} from './util___destroyer';
-import * as ErrorExports from './util___error';
-import {Error} from './util___error';
-import * as EventManagerExports from './util___event_manager';
-import {EventManager} from './util___event_manager';
-import {Functional} from './util___functional';
-import {IDestroyable} from './util___i_destroyable';
-import * as ManifestParserUtilsExports from './util___manifest_parser_utils';
-import {ManifestParserUtils} from './util___manifest_parser_utils';
-import * as MimeUtilsExports from './util___mime_utils';
-import {MimeUtils} from './util___mime_utils';
-import * as PlatformExports from './util___platform';
-import {Platform} from './util___platform';
-import {PublicPromise} from './util___public_promise';
+import * as assertsExports from './dev-workspace.shaka-player-fork.lib.debug.asserts';
+import {asserts} from './dev-workspace.shaka-player-fork.lib.debug.asserts';
+import * as logExports from './dev-workspace.shaka-player-fork.lib.debug.log';
+import {log} from './dev-workspace.shaka-player-fork.lib.debug.log';
+import {IClosedCaptionParser} from './dev-workspace.shaka-player-fork.lib.media.closed_caption_parser';
+import * as ContentWorkaroundsExports from './dev-workspace.shaka-player-fork.lib.media.content_workarounds';
+import {ContentWorkarounds} from './dev-workspace.shaka-player-fork.lib.media.content_workarounds';
+import * as SegmentReferenceExports from './dev-workspace.shaka-player-fork.lib.media.segment_reference';
+import {SegmentReference} from './dev-workspace.shaka-player-fork.lib.media.segment_reference';
+import {TimeRangesUtils} from './dev-workspace.shaka-player-fork.lib.media.time_ranges_utils';
+import {Transmuxer} from './dev-workspace.shaka-player-fork.lib.media.transmuxer';
+import * as TextEngineExports from './dev-workspace.shaka-player-fork.lib.text.text_engine';
+import {TextEngine} from './dev-workspace.shaka-player-fork.lib.text.text_engine';
+import {Destroyer} from './dev-workspace.shaka-player-fork.lib.util.destroyer';
+import * as ErrorExports from './dev-workspace.shaka-player-fork.lib.util.error';
+import {Error} from './dev-workspace.shaka-player-fork.lib.util.error';
+import * as EventManagerExports from './dev-workspace.shaka-player-fork.lib.util.event_manager';
+import {EventManager} from './dev-workspace.shaka-player-fork.lib.util.event_manager';
+import {Functional} from './dev-workspace.shaka-player-fork.lib.util.functional';
+import {IDestroyable} from './dev-workspace.shaka-player-fork.lib.util.i_destroyable';
+import * as ManifestParserUtilsExports from './dev-workspace.shaka-player-fork.lib.util.manifest_parser_utils';
+import {ManifestParserUtils} from './dev-workspace.shaka-player-fork.lib.util.manifest_parser_utils';
+import * as MimeUtilsExports from './dev-workspace.shaka-player-fork.lib.util.mime_utils';
+import {MimeUtils} from './dev-workspace.shaka-player-fork.lib.util.mime_utils';
+import * as PlatformExports from './dev-workspace.shaka-player-fork.lib.util.platform';
+import {Platform} from './dev-workspace.shaka-player-fork.lib.util.platform';
+import {PublicPromise} from './dev-workspace.shaka-player-fork.lib.util.public_promise';
 
 /**
  * @summary

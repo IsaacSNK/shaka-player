@@ -3,9 +3,9 @@
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-import * as assertsExports from './debug___asserts';
-import {asserts} from './debug___asserts';
-import {ArrayUtils} from './util___array_utils';
+import * as assertsExports from './dev-workspace.shaka-player-fork.lib.debug.asserts';
+import {asserts} from './dev-workspace.shaka-player-fork.lib.debug.asserts';
+import {ArrayUtils} from './dev-workspace.shaka-player-fork.lib.util.array_utils';
 
 /**
  * Creates an InitSegmentReference, which provides the location to an

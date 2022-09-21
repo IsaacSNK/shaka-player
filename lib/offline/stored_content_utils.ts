@@ -3,12 +3,12 @@
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-import * as assertsExports from './debug___asserts';
-import {asserts} from './debug___asserts';
-import {ManifestConverter} from './offline___manifest_converter';
-import {OfflineUri} from './offline___offline_uri';
-import * as StreamUtilsExports from './util___stream_utils';
-import {StreamUtils} from './util___stream_utils';
+import * as assertsExports from './dev-workspace.shaka-player-fork.lib.debug.asserts';
+import {asserts} from './dev-workspace.shaka-player-fork.lib.debug.asserts';
+import {ManifestConverter} from './dev-workspace.shaka-player-fork.lib.offline.manifest_converter';
+import {OfflineUri} from './dev-workspace.shaka-player-fork.lib.offline.offline_uri';
+import * as StreamUtilsExports from './dev-workspace.shaka-player-fork.lib.util.stream_utils';
+import {StreamUtils} from './dev-workspace.shaka-player-fork.lib.util.stream_utils';
 
 /**
  * A utility class used to create |shaka.extern.StoredContent| from different

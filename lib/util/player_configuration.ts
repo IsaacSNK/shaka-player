@@ -3,21 +3,21 @@
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-import * as SimpleAbrManagerExports from './abr___simple_abr_manager';
-import {SimpleAbrManager} from './abr___simple_abr_manager';
-import * as assertsExports from './debug___asserts';
-import {asserts} from './debug___asserts';
-import * as logExports from './debug___log';
-import {log} from './debug___log';
-import * as NetworkingEngineExports from './net___networking_engine';
-import {NetworkingEngine} from './net___networking_engine';
-import {ConfigUtils} from './util___config_utils';
-import * as LanguageUtilsExports from './util___language_utils';
-import {LanguageUtils} from './util___language_utils';
-import * as ManifestParserUtilsExports from './util___manifest_parser_utils';
-import {ManifestParserUtils} from './util___manifest_parser_utils';
-import * as PlatformExports from './util___platform';
-import {Platform} from './util___platform';
+import * as SimpleAbrManagerExports from './dev-workspace.shaka-player-fork.lib.abr.simple_abr_manager';
+import {SimpleAbrManager} from './dev-workspace.shaka-player-fork.lib.abr.simple_abr_manager';
+import * as assertsExports from './dev-workspace.shaka-player-fork.lib.debug.asserts';
+import {asserts} from './dev-workspace.shaka-player-fork.lib.debug.asserts';
+import * as logExports from './dev-workspace.shaka-player-fork.lib.debug.log';
+import {log} from './dev-workspace.shaka-player-fork.lib.debug.log';
+import * as NetworkingEngineExports from './dev-workspace.shaka-player-fork.lib.net.networking_engine';
+import {NetworkingEngine} from './dev-workspace.shaka-player-fork.lib.net.networking_engine';
+import {ConfigUtils} from './dev-workspace.shaka-player-fork.lib.util.config_utils';
+import * as LanguageUtilsExports from './dev-workspace.shaka-player-fork.lib.util.language_utils';
+import {LanguageUtils} from './dev-workspace.shaka-player-fork.lib.util.language_utils';
+import * as ManifestParserUtilsExports from './dev-workspace.shaka-player-fork.lib.util.manifest_parser_utils';
+import {ManifestParserUtils} from './dev-workspace.shaka-player-fork.lib.util.manifest_parser_utils';
+import * as PlatformExports from './dev-workspace.shaka-player-fork.lib.util.platform';
+import {Platform} from './dev-workspace.shaka-player-fork.lib.util.platform';
 
 /**
  * @final

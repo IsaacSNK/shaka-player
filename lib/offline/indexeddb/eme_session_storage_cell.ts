@@ -3,8 +3,8 @@
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-import {DBConnection} from './indexeddb___db_connection';
-import {DBOperation} from './indexeddb___db_operation';
+import {DBConnection} from './dev-workspace.shaka-player-fork.lib.offline.indexeddb.db_connection';
+import {DBOperation} from './dev-workspace.shaka-player-fork.lib.offline.indexeddb.db_operation';
 
 /**
  * The implementation of the EME session storage cell.

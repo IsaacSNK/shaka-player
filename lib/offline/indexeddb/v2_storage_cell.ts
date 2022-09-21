@@ -3,9 +3,9 @@
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-import {BaseStorageCell} from './indexeddb___base_storage_cell';
-import * as PeriodCombinerExports from './util___periods';
-import {PeriodCombiner} from './util___periods';
+import {BaseStorageCell} from './dev-workspace.shaka-player-fork.lib.offline.indexeddb.base_storage_cell';
+import * as PeriodCombinerExports from './dev-workspace.shaka-player-fork.lib.util.periods';
+import {PeriodCombiner} from './dev-workspace.shaka-player-fork.lib.util.periods';
 
 /**
  * The V2StorageCell is for all stores that follow the shaka.externs V2 and V3

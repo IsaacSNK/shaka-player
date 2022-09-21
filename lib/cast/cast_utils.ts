@@ -3,9 +3,9 @@
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-import {TimeRangesUtils} from './media___time_ranges_utils';
-import * as FakeEventExports from './util___fake_event';
-import {FakeEvent} from './util___fake_event';
+import {TimeRangesUtils} from './dev-workspace.shaka-player-fork.lib.media.time_ranges_utils';
+import * as FakeEventExports from './dev-workspace.shaka-player-fork.lib.util.fake_event';
+import {FakeEvent} from './dev-workspace.shaka-player-fork.lib.util.fake_event';
 
 /**
  * @summary A set of cast utility functions and variables shared between sender

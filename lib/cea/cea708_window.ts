@@ -3,13 +3,13 @@
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-import * as CeaUtilsExports from './cea___cea_utils';
-import {CeaUtils, StyledChar} from './cea___cea_utils';
-import * as ICaptionDecoderExports from './cea___i_caption_decoder';
-import {ICaptionDecoder} from './cea___i_caption_decoder';
-import * as CueExports from './text___cue';
-import {Cue} from './text___cue';
-import {Functional} from './util___functional';
+import * as CeaUtilsExports from './dev-workspace.shaka-player-fork.lib.cea.cea_utils';
+import {CeaUtils, StyledChar} from './dev-workspace.shaka-player-fork.lib.cea.cea_utils';
+import * as ICaptionDecoderExports from './dev-workspace.shaka-player-fork.lib.cea.i_caption_decoder';
+import {ICaptionDecoder} from './dev-workspace.shaka-player-fork.lib.cea.i_caption_decoder';
+import * as CueExports from './dev-workspace.shaka-player-fork.lib.text.cue';
+import {Cue} from './dev-workspace.shaka-player-fork.lib.text.cue';
+import {Functional} from './dev-workspace.shaka-player-fork.lib.util.functional';
 
 /**
  * CEA-708 Window. Each CEA-708 service owns 8 of these.

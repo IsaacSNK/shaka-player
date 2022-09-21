@@ -3,18 +3,18 @@
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-import * as ICeaParserExports from './cea___i_cea_parser';
-import {ICeaParser} from './cea___i_cea_parser';
-import {SeiProcessor} from './cea___sei_processor';
-import * as assertsExports from './debug___asserts';
-import {asserts} from './debug___asserts';
-import * as DataViewReaderExports from './util___data_view_reader';
-import {DataViewReader} from './util___data_view_reader';
-import * as ErrorExports from './util___error';
-import {Error} from './util___error';
-import {Mp4BoxParsers, ParsedTRUNSample} from './util___mp4_box_parsers';
-import * as Mp4ParserExports from './util___mp4_parser';
-import {Mp4Parser} from './util___mp4_parser';
+import * as ICeaParserExports from './dev-workspace.shaka-player-fork.lib.cea.i_cea_parser';
+import {ICeaParser} from './dev-workspace.shaka-player-fork.lib.cea.i_cea_parser';
+import {SeiProcessor} from './dev-workspace.shaka-player-fork.lib.cea.sei_processor';
+import * as assertsExports from './dev-workspace.shaka-player-fork.lib.debug.asserts';
+import {asserts} from './dev-workspace.shaka-player-fork.lib.debug.asserts';
+import * as DataViewReaderExports from './dev-workspace.shaka-player-fork.lib.util.data_view_reader';
+import {DataViewReader} from './dev-workspace.shaka-player-fork.lib.util.data_view_reader';
+import * as ErrorExports from './dev-workspace.shaka-player-fork.lib.util.error';
+import {Error} from './dev-workspace.shaka-player-fork.lib.util.error';
+import {Mp4BoxParsers, ParsedTRUNSample} from './dev-workspace.shaka-player-fork.lib.util.mp4_box_parsers';
+import * as Mp4ParserExports from './dev-workspace.shaka-player-fork.lib.util.mp4_parser';
+import {Mp4Parser} from './dev-workspace.shaka-player-fork.lib.util.mp4_parser';
 
 /**
  * MPEG4 stream parser used for extracting 708 closed captions data.

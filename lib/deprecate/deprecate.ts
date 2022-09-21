@@ -3,12 +3,12 @@
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-import * as assertsExports from './debug___asserts';
-import {asserts} from './debug___asserts';
-import * as logExports from './debug___log';
-import {log} from './debug___log';
-import {Enforcer} from './deprecate___enforcer';
-import {Version} from './deprecate___version';
+import * as assertsExports from './dev-workspace.shaka-player-fork.lib.debug.asserts';
+import {asserts} from './dev-workspace.shaka-player-fork.lib.debug.asserts';
+import * as logExports from './dev-workspace.shaka-player-fork.lib.debug.log';
+import {log} from './dev-workspace.shaka-player-fork.lib.debug.log';
+import {Enforcer} from './dev-workspace.shaka-player-fork.lib.deprecate.enforcer';
+import {Version} from './dev-workspace.shaka-player-fork.lib.deprecate.version';
 
 /**
  * |shaka.Deprecate| is the front-end of the deprecation system, allowing for

@@ -3,18 +3,18 @@
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-import * as assertsExports from './debug___asserts';
-import {asserts} from './debug___asserts';
-import * as logExports from './debug___log';
-import {log} from './debug___log';
-import * as ManifestParserExports from './media___manifest_parser';
-import {ManifestParser} from './media___manifest_parser';
-import {ManifestConverter} from './offline___manifest_converter';
-import {OfflineUri} from './offline___offline_uri';
-import * as StorageMuxerExports from './offline___storage_muxer';
-import {StorageMuxer} from './offline___storage_muxer';
-import * as ErrorExports from './util___error';
-import {Error} from './util___error';
+import * as assertsExports from './dev-workspace.shaka-player-fork.lib.debug.asserts';
+import {asserts} from './dev-workspace.shaka-player-fork.lib.debug.asserts';
+import * as logExports from './dev-workspace.shaka-player-fork.lib.debug.log';
+import {log} from './dev-workspace.shaka-player-fork.lib.debug.log';
+import * as ManifestParserExports from './dev-workspace.shaka-player-fork.lib.media.manifest_parser';
+import {ManifestParser} from './dev-workspace.shaka-player-fork.lib.media.manifest_parser';
+import {ManifestConverter} from './dev-workspace.shaka-player-fork.lib.offline.manifest_converter';
+import {OfflineUri} from './dev-workspace.shaka-player-fork.lib.offline.offline_uri';
+import * as StorageMuxerExports from './dev-workspace.shaka-player-fork.lib.offline.storage_muxer';
+import {StorageMuxer} from './dev-workspace.shaka-player-fork.lib.offline.storage_muxer';
+import * as ErrorExports from './dev-workspace.shaka-player-fork.lib.util.error';
+import {Error} from './dev-workspace.shaka-player-fork.lib.util.error';
 
 /**
  * @summary Creates a new offline manifest parser.

@@ -3,24 +3,24 @@
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-import * as assertsExports from './debug___asserts';
-import {asserts} from './debug___asserts';
-import * as logExports from './debug___log';
-import {log} from './debug___log';
-import * as GapJumpingControllerExports from './media___gap_jumping_controller';
-import {GapJumpingController} from './media___gap_jumping_controller';
-import {PresentationTimeline} from './media___presentation_timeline';
-import * as StallDetectorExports from './media___stall_detector';
-import {MediaElementImplementation, StallDetector} from './media___stall_detector';
-import {TimeRangesUtils} from './media___time_ranges_utils';
-import * as VideoWrapperExports from './media___video_wrapper';
-import {VideoWrapper} from './media___video_wrapper';
-import * as EventManagerExports from './util___event_manager';
-import {EventManager} from './util___event_manager';
-import {IReleasable} from './util___i_releasable';
-import * as MediaReadyStateExports from './util___media_ready_state_utils';
-import {MediaReadyState} from './util___media_ready_state_utils';
-import {Timer} from './util___timer';
+import * as assertsExports from './dev-workspace.shaka-player-fork.lib.debug.asserts';
+import {asserts} from './dev-workspace.shaka-player-fork.lib.debug.asserts';
+import * as logExports from './dev-workspace.shaka-player-fork.lib.debug.log';
+import {log} from './dev-workspace.shaka-player-fork.lib.debug.log';
+import * as GapJumpingControllerExports from './dev-workspace.shaka-player-fork.lib.media.gap_jumping_controller';
+import {GapJumpingController} from './dev-workspace.shaka-player-fork.lib.media.gap_jumping_controller';
+import {PresentationTimeline} from './dev-workspace.shaka-player-fork.lib.media.presentation_timeline';
+import * as StallDetectorExports from './dev-workspace.shaka-player-fork.lib.media.stall_detector';
+import {MediaElementImplementation, StallDetector} from './dev-workspace.shaka-player-fork.lib.media.stall_detector';
+import {TimeRangesUtils} from './dev-workspace.shaka-player-fork.lib.media.time_ranges_utils';
+import * as VideoWrapperExports from './dev-workspace.shaka-player-fork.lib.media.video_wrapper';
+import {VideoWrapper} from './dev-workspace.shaka-player-fork.lib.media.video_wrapper';
+import * as EventManagerExports from './dev-workspace.shaka-player-fork.lib.util.event_manager';
+import {EventManager} from './dev-workspace.shaka-player-fork.lib.util.event_manager';
+import {IReleasable} from './dev-workspace.shaka-player-fork.lib.util.i_releasable';
+import * as MediaReadyStateExports from './dev-workspace.shaka-player-fork.lib.util.media_ready_state_utils';
+import {MediaReadyState} from './dev-workspace.shaka-player-fork.lib.util.media_ready_state_utils';
+import {Timer} from './dev-workspace.shaka-player-fork.lib.util.timer';
 
 /**
  * Creates a Playhead, which manages the video's current time.

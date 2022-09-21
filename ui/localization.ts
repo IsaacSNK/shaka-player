@@ -3,13 +3,13 @@
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-import * as FakeEventExports from './util___fake_event';
-import {FakeEvent} from './util___fake_event';
-import * as FakeEventTargetExports from './util___fake_event_target';
-import {FakeEventTarget} from './util___fake_event_target';
-import {Iterables} from './util___iterables';
-import * as LanguageUtilsExports from './util___language_utils';
-import {LanguageUtils} from './util___language_utils';
+import * as FakeEventExports from './dev-workspace.shaka-player-fork.lib.util.fake_event';
+import {FakeEvent} from './dev-workspace.shaka-player-fork.lib.util.fake_event';
+import * as FakeEventTargetExports from './dev-workspace.shaka-player-fork.lib.util.fake_event_target';
+import {FakeEventTarget} from './dev-workspace.shaka-player-fork.lib.util.fake_event_target';
+import {Iterables} from './dev-workspace.shaka-player-fork.lib.util.iterables';
+import * as LanguageUtilsExports from './dev-workspace.shaka-player-fork.lib.util.language_utils';
+import {LanguageUtils} from './dev-workspace.shaka-player-fork.lib.util.language_utils';
 
 
 // TODO: link to the design and usage documentation here

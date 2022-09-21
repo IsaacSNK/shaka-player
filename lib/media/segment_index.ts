@@ -3,12 +3,12 @@
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-import * as assertsExports from './debug___asserts';
-import {asserts} from './debug___asserts';
-import * as SegmentReferenceExports from './media___segment_reference';
-import {SegmentReference} from './media___segment_reference';
-import {IReleasable} from './util___i_releasable';
-import {Timer} from './util___timer';
+import * as assertsExports from './dev-workspace.shaka-player-fork.lib.debug.asserts';
+import {asserts} from './dev-workspace.shaka-player-fork.lib.debug.asserts';
+import * as SegmentReferenceExports from './dev-workspace.shaka-player-fork.lib.media.segment_reference';
+import {SegmentReference} from './dev-workspace.shaka-player-fork.lib.media.segment_reference';
+import {IReleasable} from './dev-workspace.shaka-player-fork.lib.util.i_releasable';
+import {Timer} from './dev-workspace.shaka-player-fork.lib.util.timer';
 
 /**
  * SegmentIndex.

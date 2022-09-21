@@ -3,12 +3,12 @@
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-import * as assertsExports from './debug___asserts';
-import {asserts} from './debug___asserts';
-import * as logExports from './debug___log';
-import {log} from './debug___log';
-import * as StringUtilsExports from './util___string_utils';
-import {StringUtils} from './util___string_utils';
+import * as assertsExports from './dev-workspace.shaka-player-fork.lib.debug.asserts';
+import {asserts} from './dev-workspace.shaka-player-fork.lib.debug.asserts';
+import * as logExports from './dev-workspace.shaka-player-fork.lib.debug.log';
+import {log} from './dev-workspace.shaka-player-fork.lib.debug.log';
+import * as StringUtilsExports from './dev-workspace.shaka-player-fork.lib.util.string_utils';
+import {StringUtils} from './dev-workspace.shaka-player-fork.lib.util.string_utils';
 
 /**
  * @summary A set of XML utility functions.

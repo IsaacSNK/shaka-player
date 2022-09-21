@@ -3,8 +3,8 @@
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-import * as NetworkingEngineExports from './net___networking_engine';
-import {NetworkingEngine} from './net___networking_engine';
+import * as NetworkingEngineExports from './dev-workspace.shaka-player-fork.lib.net.networking_engine';
+import {NetworkingEngine} from './dev-workspace.shaka-player-fork.lib.net.networking_engine';
 
 /**
  * A collection of shared utilities that bridge the gap between our networking

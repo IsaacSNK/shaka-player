@@ -8,12 +8,12 @@
  * @fileoverview
  * @suppress {missingRequire} TODO(b/152540451): this shouldn't be needed
  */
-import {ClientSideAd} from './ads___client_side_ad';
-import * as assertsExports from './debug___asserts';
-import {asserts} from './debug___asserts';
-import {EventManager} from './util___event_manager';
-import {FakeEvent} from './util___fake_event';
-import {IReleasable} from './util___i_releasable';
+import {ClientSideAd} from './dev-workspace.shaka-player-fork.lib.ads.client_side_ad';
+import * as assertsExports from './dev-workspace.shaka-player-fork.lib.debug.asserts';
+import {asserts} from './dev-workspace.shaka-player-fork.lib.debug.asserts';
+import {EventManager} from './dev-workspace.shaka-player-fork.lib.util.event_manager';
+import {FakeEvent} from './dev-workspace.shaka-player-fork.lib.util.fake_event';
+import {IReleasable} from './dev-workspace.shaka-player-fork.lib.util.i_releasable';
 
 /**
  * A class responsible for client-side ad interactions.

@@ -3,8 +3,8 @@
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-import * as polyfillExports from './polyfill___all';
-import {polyfill} from './polyfill___all';
+import * as polyfillExports from './dev-workspace.shaka-player-fork.lib.polyfill.all';
+import {polyfill} from './dev-workspace.shaka-player-fork.lib.polyfill.all';
 
 /**
  * @summary A polyfill to unify fullscreen APIs across browsers.

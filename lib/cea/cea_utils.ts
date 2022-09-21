@@ -3,10 +3,10 @@
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-import * as ICaptionDecoderExports from './cea___i_caption_decoder';
-import {ICaptionDecoder} from './cea___i_caption_decoder';
-import * as CueExports from './text___cue';
-import {Cue} from './text___cue';
+import * as ICaptionDecoderExports from './dev-workspace.shaka-player-fork.lib.cea.i_caption_decoder';
+import {ICaptionDecoder} from './dev-workspace.shaka-player-fork.lib.cea.i_caption_decoder';
+import * as CueExports from './dev-workspace.shaka-player-fork.lib.text.cue';
+import {Cue} from './dev-workspace.shaka-player-fork.lib.text.cue';
 
 export class CeaUtils {
   /**

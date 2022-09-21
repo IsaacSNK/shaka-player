@@ -3,7 +3,7 @@
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-import {Timer} from './util___timer';
+import {Timer} from './dev-workspace.shaka-player-fork.lib.util.timer';
 
 /**
  * A wrapper for platform-specific functions.

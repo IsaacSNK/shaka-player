@@ -3,8 +3,8 @@
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-import {DBOperation} from './indexeddb___db_operation';
-import {ArrayUtils} from './util___array_utils';
+import {DBOperation} from './dev-workspace.shaka-player-fork.lib.offline.indexeddb.db_operation';
+import {ArrayUtils} from './dev-workspace.shaka-player-fork.lib.util.array_utils';
 
 /**
  * DBConnection is used to manage an IndexedDB connection. It can create new

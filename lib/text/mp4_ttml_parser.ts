@@ -3,14 +3,14 @@
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-import * as TextEngineExports from './text___text_engine';
-import {TextEngine} from './text___text_engine';
-import * as TtmlTextParserExports from './text___ttml_text_parser';
-import {TtmlTextParser} from './text___ttml_text_parser';
-import * as ErrorExports from './util___error';
-import {Error} from './util___error';
-import * as Mp4ParserExports from './util___mp4_parser';
-import {Mp4Parser} from './util___mp4_parser';
+import * as TextEngineExports from './dev-workspace.shaka-player-fork.lib.text.text_engine';
+import {TextEngine} from './dev-workspace.shaka-player-fork.lib.text.text_engine';
+import * as TtmlTextParserExports from './dev-workspace.shaka-player-fork.lib.text.ttml_text_parser';
+import {TtmlTextParser} from './dev-workspace.shaka-player-fork.lib.text.ttml_text_parser';
+import * as ErrorExports from './dev-workspace.shaka-player-fork.lib.util.error';
+import {Error} from './dev-workspace.shaka-player-fork.lib.util.error';
+import * as Mp4ParserExports from './dev-workspace.shaka-player-fork.lib.util.mp4_parser';
+import {Mp4Parser} from './dev-workspace.shaka-player-fork.lib.util.mp4_parser';
 
 /**
  * @export

@@ -3,11 +3,11 @@
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-import * as Cea708WindowExports from './cea___cea708_window';
-import {Cea708Window} from './cea___cea708_window';
-import {DtvccPacket} from './cea___dtvcc_packet_builder';
-import * as ICaptionDecoderExports from './cea___i_caption_decoder';
-import {ICaptionDecoder} from './cea___i_caption_decoder';
+import * as Cea708WindowExports from './dev-workspace.shaka-player-fork.lib.cea.cea708_window';
+import {Cea708Window} from './dev-workspace.shaka-player-fork.lib.cea.cea708_window';
+import {DtvccPacket} from './dev-workspace.shaka-player-fork.lib.cea.dtvcc_packet_builder';
+import * as ICaptionDecoderExports from './dev-workspace.shaka-player-fork.lib.cea.i_caption_decoder';
+import {ICaptionDecoder} from './dev-workspace.shaka-player-fork.lib.cea.i_caption_decoder';
 
 /**
  * CEA-708 closed captions service as defined by CEA-708-E. A decoder can own up

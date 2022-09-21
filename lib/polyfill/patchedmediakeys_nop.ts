@@ -3,12 +3,12 @@
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-import * as assertsExports from './debug___asserts';
-import {asserts} from './debug___asserts';
-import * as logExports from './debug___log';
-import {log} from './debug___log';
-import * as polyfillExports from './polyfill___all';
-import {polyfill} from './polyfill___all';
+import * as assertsExports from './dev-workspace.shaka-player-fork.lib.debug.asserts';
+import {asserts} from './dev-workspace.shaka-player-fork.lib.debug.asserts';
+import * as logExports from './dev-workspace.shaka-player-fork.lib.debug.log';
+import {log} from './dev-workspace.shaka-player-fork.lib.debug.log';
+import * as polyfillExports from './dev-workspace.shaka-player-fork.lib.polyfill.all';
+import {polyfill} from './dev-workspace.shaka-player-fork.lib.polyfill.all';
 
 /**
  * @summary A polyfill to stub out

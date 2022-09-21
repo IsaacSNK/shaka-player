@@ -3,27 +3,27 @@
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-import * as assertsExports from './debug___asserts';
-import {asserts} from './debug___asserts';
-import * as logExports from './debug___log';
-import {log} from './debug___log';
-import * as CueExports from './text___cue';
-import {Cue} from './text___cue';
-import * as TextEngineExports from './text___text_engine';
-import {TextEngine} from './text___text_engine';
-import * as VttTextParserExports from './text___vtt_text_parser';
-import {VttTextParser} from './text___vtt_text_parser';
-import * as DataViewReaderExports from './util___data_view_reader';
-import {DataViewReader} from './util___data_view_reader';
-import * as ErrorExports from './util___error';
-import {Error} from './util___error';
-import {Functional} from './util___functional';
-import {Mp4BoxParsers, ParsedTRUNSample} from './util___mp4_box_parsers';
-import * as Mp4ParserExports from './util___mp4_parser';
-import {Mp4Parser} from './util___mp4_parser';
-import * as StringUtilsExports from './util___string_utils';
-import {StringUtils} from './util___string_utils';
-import {TextParser} from './util___text_parser';
+import * as assertsExports from './dev-workspace.shaka-player-fork.lib.debug.asserts';
+import {asserts} from './dev-workspace.shaka-player-fork.lib.debug.asserts';
+import * as logExports from './dev-workspace.shaka-player-fork.lib.debug.log';
+import {log} from './dev-workspace.shaka-player-fork.lib.debug.log';
+import * as CueExports from './dev-workspace.shaka-player-fork.lib.text.cue';
+import {Cue} from './dev-workspace.shaka-player-fork.lib.text.cue';
+import * as TextEngineExports from './dev-workspace.shaka-player-fork.lib.text.text_engine';
+import {TextEngine} from './dev-workspace.shaka-player-fork.lib.text.text_engine';
+import * as VttTextParserExports from './dev-workspace.shaka-player-fork.lib.text.vtt_text_parser';
+import {VttTextParser} from './dev-workspace.shaka-player-fork.lib.text.vtt_text_parser';
+import * as DataViewReaderExports from './dev-workspace.shaka-player-fork.lib.util.data_view_reader';
+import {DataViewReader} from './dev-workspace.shaka-player-fork.lib.util.data_view_reader';
+import * as ErrorExports from './dev-workspace.shaka-player-fork.lib.util.error';
+import {Error} from './dev-workspace.shaka-player-fork.lib.util.error';
+import {Functional} from './dev-workspace.shaka-player-fork.lib.util.functional';
+import {Mp4BoxParsers, ParsedTRUNSample} from './dev-workspace.shaka-player-fork.lib.util.mp4_box_parsers';
+import * as Mp4ParserExports from './dev-workspace.shaka-player-fork.lib.util.mp4_parser';
+import {Mp4Parser} from './dev-workspace.shaka-player-fork.lib.util.mp4_parser';
+import * as StringUtilsExports from './dev-workspace.shaka-player-fork.lib.util.string_utils';
+import {StringUtils} from './dev-workspace.shaka-player-fork.lib.util.string_utils';
+import {TextParser} from './dev-workspace.shaka-player-fork.lib.util.text_parser';
 
 /**
  * @export

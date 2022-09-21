@@ -3,16 +3,16 @@
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-import * as assertsExports from './debug___asserts';
-import {asserts} from './debug___asserts';
-import * as logExports from './debug___log';
-import {log} from './debug___log';
-import * as CueExports from './text___cue';
-import {Cue} from './text___cue';
-import * as TextEngineExports from './text___text_engine';
-import {TextEngine} from './text___text_engine';
-import * as StringUtilsExports from './util___string_utils';
-import {StringUtils} from './util___string_utils';
+import * as assertsExports from './dev-workspace.shaka-player-fork.lib.debug.asserts';
+import {asserts} from './dev-workspace.shaka-player-fork.lib.debug.asserts';
+import * as logExports from './dev-workspace.shaka-player-fork.lib.debug.log';
+import {log} from './dev-workspace.shaka-player-fork.lib.debug.log';
+import * as CueExports from './dev-workspace.shaka-player-fork.lib.text.cue';
+import {Cue} from './dev-workspace.shaka-player-fork.lib.text.cue';
+import * as TextEngineExports from './dev-workspace.shaka-player-fork.lib.text.text_engine';
+import {TextEngine} from './dev-workspace.shaka-player-fork.lib.text.text_engine';
+import * as StringUtilsExports from './dev-workspace.shaka-player-fork.lib.util.string_utils';
+import {StringUtils} from './dev-workspace.shaka-player-fork.lib.util.string_utils';
 
 /**
  * Documentation: http://moodub.free.fr/video/ass-specs.doc

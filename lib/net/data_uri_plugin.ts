@@ -3,16 +3,16 @@
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-import * as logExports from './debug___log';
-import {log} from './debug___log';
-import * as NetworkingEngineExports from './net___networking_engine';
-import {NetworkingEngine} from './net___networking_engine';
-import {AbortableOperation} from './util___abortable_operation';
-import * as ErrorExports from './util___error';
-import {Error} from './util___error';
-import * as StringUtilsExports from './util___string_utils';
-import {StringUtils} from './util___string_utils';
-import {Uint8ArrayUtils} from './util___uint8array_utils';
+import * as logExports from './dev-workspace.shaka-player-fork.lib.debug.log';
+import {log} from './dev-workspace.shaka-player-fork.lib.debug.log';
+import * as NetworkingEngineExports from './dev-workspace.shaka-player-fork.lib.net.networking_engine';
+import {NetworkingEngine} from './dev-workspace.shaka-player-fork.lib.net.networking_engine';
+import {AbortableOperation} from './dev-workspace.shaka-player-fork.lib.util.abortable_operation';
+import * as ErrorExports from './dev-workspace.shaka-player-fork.lib.util.error';
+import {Error} from './dev-workspace.shaka-player-fork.lib.util.error';
+import * as StringUtilsExports from './dev-workspace.shaka-player-fork.lib.util.string_utils';
+import {StringUtils} from './dev-workspace.shaka-player-fork.lib.util.string_utils';
+import {Uint8ArrayUtils} from './dev-workspace.shaka-player-fork.lib.util.uint8array_utils';
 
 /**
  * @summary A networking plugin to handle data URIs.

@@ -3,9 +3,9 @@
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-import {Tag} from './hls___hls_classes';
-import * as ManifestParserUtilsExports from './util___manifest_parser_utils';
-import {ManifestParserUtils} from './util___manifest_parser_utils';
+import {Tag} from './dev-workspace.shaka-player-fork.lib.hls.hls_classes';
+import * as ManifestParserUtilsExports from './dev-workspace.shaka-player-fork.lib.util.manifest_parser_utils';
+import {ManifestParserUtils} from './dev-workspace.shaka-player-fork.lib.util.manifest_parser_utils';
 
 export class Utils {
   static filterTagsByName(tags: Tag[], name: string): Tag[] {

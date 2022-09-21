@@ -4,9 +4,9 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 goog.require('goog.Uri');
-import {Error} from './util___error';
-import * as ErrorExports from './util___error';
-import {Functional} from './util___functional';
+import {Error} from './dev-workspace.shaka-player-fork.lib.util.error';
+import * as ErrorExports from './dev-workspace.shaka-player-fork.lib.util.error';
+import {Functional} from './dev-workspace.shaka-player-fork.lib.util.functional';
 
 /**
  * @summary Utility functions for manifest parsing.

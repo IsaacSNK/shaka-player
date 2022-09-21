@@ -3,13 +3,13 @@
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-import * as logExports from './debug___log';
-import {log} from './debug___log';
-import {AdaptationSet} from './media___adaptation_set';
-import * as LanguageUtilsExports from './util___language_utils';
-import {LanguageUtils} from './util___language_utils';
-import * as StreamUtilsExports from './util___stream_utils';
-import {StreamUtils} from './util___stream_utils';
+import * as logExports from './dev-workspace.shaka-player-fork.lib.debug.log';
+import {log} from './dev-workspace.shaka-player-fork.lib.debug.log';
+import {AdaptationSet} from './dev-workspace.shaka-player-fork.lib.media.adaptation_set';
+import * as LanguageUtilsExports from './dev-workspace.shaka-player-fork.lib.util.language_utils';
+import {LanguageUtils} from './dev-workspace.shaka-player-fork.lib.util.language_utils';
+import * as StreamUtilsExports from './dev-workspace.shaka-player-fork.lib.util.stream_utils';
+import {StreamUtils} from './dev-workspace.shaka-player-fork.lib.util.stream_utils';
 
 /**
  * An adaptation set criteria is a unit of logic that can take a set of

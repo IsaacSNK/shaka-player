@@ -3,8 +3,8 @@
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-import {ArrayUtils} from './util___array_utils';
-import {IDestroyable} from './util___i_destroyable';
+import {ArrayUtils} from './dev-workspace.shaka-player-fork.lib.util.array_utils';
+import {IDestroyable} from './dev-workspace.shaka-player-fork.lib.util.i_destroyable';
 
 /**
  * A utility for cleaning up AbortableOperations, to help simplify common

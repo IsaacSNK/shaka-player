@@ -3,18 +3,18 @@
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-import * as logExports from './debug___log';
-import {log} from './debug___log';
-import {PresentationTimeline} from './media___presentation_timeline';
-import * as StallDetectorExports from './media___stall_detector';
-import {StallDetector} from './media___stall_detector';
-import {TimeRangesUtils} from './media___time_ranges_utils';
-import * as EventManagerExports from './util___event_manager';
-import {EventManager} from './util___event_manager';
-import * as FakeEventExports from './util___fake_event';
-import {FakeEvent} from './util___fake_event';
-import {IReleasable} from './util___i_releasable';
-import {Timer} from './util___timer';
+import * as logExports from './dev-workspace.shaka-player-fork.lib.debug.log';
+import {log} from './dev-workspace.shaka-player-fork.lib.debug.log';
+import {PresentationTimeline} from './dev-workspace.shaka-player-fork.lib.media.presentation_timeline';
+import * as StallDetectorExports from './dev-workspace.shaka-player-fork.lib.media.stall_detector';
+import {StallDetector} from './dev-workspace.shaka-player-fork.lib.media.stall_detector';
+import {TimeRangesUtils} from './dev-workspace.shaka-player-fork.lib.media.time_ranges_utils';
+import * as EventManagerExports from './dev-workspace.shaka-player-fork.lib.util.event_manager';
+import {EventManager} from './dev-workspace.shaka-player-fork.lib.util.event_manager';
+import * as FakeEventExports from './dev-workspace.shaka-player-fork.lib.util.fake_event';
+import {FakeEvent} from './dev-workspace.shaka-player-fork.lib.util.fake_event';
+import {IReleasable} from './dev-workspace.shaka-player-fork.lib.util.i_releasable';
+import {Timer} from './dev-workspace.shaka-player-fork.lib.util.timer';
 
 /**
  * GapJumpingController handles jumping gaps that appear within the content.

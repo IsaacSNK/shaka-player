@@ -3,23 +3,23 @@
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-import {CastProxy} from './cast___cast_proxy';
-import {Controls} from './ui___controls';
-import {Element} from './ui___element';
-import * as Enums from './ui___enums';
+import {CastProxy} from './dev-workspace.shaka-player-fork.lib.cast.cast_proxy';
+import {Controls} from './dev-workspace.shaka-player-fork.ui.controls';
+import {Element} from './dev-workspace.shaka-player-fork.ui.element';
+import * as Enums from './dev-workspace.shaka-player-fork.ui.enums';
 goog.require('shaka.ui.Locales');
-import {Localization} from './ui___localization';
-import * as LocalizationExports from './ui___localization';
-import {OverflowMenu} from './ui___overflow_menu';
-import * as OverflowMenuExports from './ui___overflow_menu';
-import {Utils} from './ui___ui_utils';
-import {Dom} from './util___dom_utils';
-import {Error} from './util___error';
-import * as ErrorExports from './util___error';
-import {FakeEvent} from './util___fake_event';
-import * as FakeEventExports from './util___fake_event';
-import {CastProxy} from './cast___cast_proxy';
-import {Controls} from './ui___controls';
+import {Localization} from './dev-workspace.shaka-player-fork.ui.localization';
+import * as LocalizationExports from './dev-workspace.shaka-player-fork.ui.localization';
+import {OverflowMenu} from './dev-workspace.shaka-player-fork.ui.overflow_menu';
+import * as OverflowMenuExports from './dev-workspace.shaka-player-fork.ui.overflow_menu';
+import {Utils} from './dev-workspace.shaka-player-fork.ui.ui_utils';
+import {Dom} from './dev-workspace.shaka-player-fork.lib.util.dom_utils';
+import {Error} from './dev-workspace.shaka-player-fork.lib.util.error';
+import * as ErrorExports from './dev-workspace.shaka-player-fork.lib.util.error';
+import {FakeEvent} from './dev-workspace.shaka-player-fork.lib.util.fake_event';
+import * as FakeEventExports from './dev-workspace.shaka-player-fork.lib.util.fake_event';
+import {CastProxy} from './dev-workspace.shaka-player-fork.lib.cast.cast_proxy';
+import {Controls} from './dev-workspace.shaka-player-fork.ui.controls';
 
 /**
  * @final

@@ -3,24 +3,24 @@
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-import * as assertsExports from './debug___asserts';
-import {asserts} from './debug___asserts';
-import * as logExports from './debug___log';
-import {log} from './debug___log';
-import * as DrmEngineExports from './media___drm_engine';
-import {DrmEngine} from './media___drm_engine';
-import * as TextEngineExports from './text___text_engine';
-import {TextEngine} from './text___text_engine';
-import {Functional} from './util___functional';
-import * as LanguageUtilsExports from './util___language_utils';
-import {LanguageUtils} from './util___language_utils';
-import * as ManifestParserUtilsExports from './util___manifest_parser_utils';
-import {ManifestParserUtils} from './util___manifest_parser_utils';
-import * as MimeUtilsExports from './util___mime_utils';
-import {MimeUtils} from './util___mime_utils';
-import {MultiMap} from './util___multi_map';
-import * as PlatformExports from './util___platform';
-import {Platform} from './util___platform';
+import * as assertsExports from './dev-workspace.shaka-player-fork.lib.debug.asserts';
+import {asserts} from './dev-workspace.shaka-player-fork.lib.debug.asserts';
+import * as logExports from './dev-workspace.shaka-player-fork.lib.debug.log';
+import {log} from './dev-workspace.shaka-player-fork.lib.debug.log';
+import * as DrmEngineExports from './dev-workspace.shaka-player-fork.lib.media.drm_engine';
+import {DrmEngine} from './dev-workspace.shaka-player-fork.lib.media.drm_engine';
+import * as TextEngineExports from './dev-workspace.shaka-player-fork.lib.text.text_engine';
+import {TextEngine} from './dev-workspace.shaka-player-fork.lib.text.text_engine';
+import {Functional} from './dev-workspace.shaka-player-fork.lib.util.functional';
+import * as LanguageUtilsExports from './dev-workspace.shaka-player-fork.lib.util.language_utils';
+import {LanguageUtils} from './dev-workspace.shaka-player-fork.lib.util.language_utils';
+import * as ManifestParserUtilsExports from './dev-workspace.shaka-player-fork.lib.util.manifest_parser_utils';
+import {ManifestParserUtils} from './dev-workspace.shaka-player-fork.lib.util.manifest_parser_utils';
+import * as MimeUtilsExports from './dev-workspace.shaka-player-fork.lib.util.mime_utils';
+import {MimeUtils} from './dev-workspace.shaka-player-fork.lib.util.mime_utils';
+import {MultiMap} from './dev-workspace.shaka-player-fork.lib.util.multi_map';
+import * as PlatformExports from './dev-workspace.shaka-player-fork.lib.util.platform';
+import {Platform} from './dev-workspace.shaka-player-fork.lib.util.platform';
 
 /**
  * @summary A set of utility functions for dealing with Streams and Manifests.

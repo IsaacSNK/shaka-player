@@ -3,14 +3,14 @@
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-import * as Cea608MemoryExports from './cea___cea608_memory';
-import {Cea608Memory} from './cea___cea608_memory';
-import * as CeaUtilsExports from './cea___cea_utils';
-import {CeaUtils} from './cea___cea_utils';
-import * as ICaptionDecoderExports from './cea___i_caption_decoder';
-import {ICaptionDecoder} from './cea___i_caption_decoder';
-import * as logExports from './debug___log';
-import {log} from './debug___log';
+import * as Cea608MemoryExports from './dev-workspace.shaka-player-fork.lib.cea.cea608_memory';
+import {Cea608Memory} from './dev-workspace.shaka-player-fork.lib.cea.cea608_memory';
+import * as CeaUtilsExports from './dev-workspace.shaka-player-fork.lib.cea.cea_utils';
+import {CeaUtils} from './dev-workspace.shaka-player-fork.lib.cea.cea_utils';
+import * as ICaptionDecoderExports from './dev-workspace.shaka-player-fork.lib.cea.i_caption_decoder';
+import {ICaptionDecoder} from './dev-workspace.shaka-player-fork.lib.cea.i_caption_decoder';
+import * as logExports from './dev-workspace.shaka-player-fork.lib.debug.log';
+import {log} from './dev-workspace.shaka-player-fork.lib.debug.log';
 
 /**
  * 608 closed captions channel.

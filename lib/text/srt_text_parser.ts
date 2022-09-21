@@ -3,15 +3,15 @@
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-import * as assertsExports from './debug___asserts';
-import {asserts} from './debug___asserts';
-import * as TextEngineExports from './text___text_engine';
-import {TextEngine} from './text___text_engine';
-import * as VttTextParserExports from './text___vtt_text_parser';
-import {VttTextParser} from './text___vtt_text_parser';
-import {BufferUtils} from './util___buffer_utils';
-import * as StringUtilsExports from './util___string_utils';
-import {StringUtils} from './util___string_utils';
+import * as assertsExports from './dev-workspace.shaka-player-fork.lib.debug.asserts';
+import {asserts} from './dev-workspace.shaka-player-fork.lib.debug.asserts';
+import * as TextEngineExports from './dev-workspace.shaka-player-fork.lib.text.text_engine';
+import {TextEngine} from './dev-workspace.shaka-player-fork.lib.text.text_engine';
+import * as VttTextParserExports from './dev-workspace.shaka-player-fork.lib.text.vtt_text_parser';
+import {VttTextParser} from './dev-workspace.shaka-player-fork.lib.text.vtt_text_parser';
+import {BufferUtils} from './dev-workspace.shaka-player-fork.lib.util.buffer_utils';
+import * as StringUtilsExports from './dev-workspace.shaka-player-fork.lib.util.string_utils';
+import {StringUtils} from './dev-workspace.shaka-player-fork.lib.util.string_utils';
 
 /**
  * @export

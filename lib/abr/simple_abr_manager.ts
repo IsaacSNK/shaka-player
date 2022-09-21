@@ -3,14 +3,14 @@
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-import {EwmaBandwidthEstimator} from './abr___ewma_bandwidth_estimator';
-import * as assertsExports from './debug___asserts';
-import {asserts} from './debug___asserts';
-import * as logExports from './debug___log';
-import {log} from './debug___log';
-import * as StreamUtilsExports from './util___stream_utils';
-import {StreamUtils} from './util___stream_utils';
-import {Timer} from './util___timer';
+import {EwmaBandwidthEstimator} from './dev-workspace.shaka-player-fork.lib.abr.ewma_bandwidth_estimator';
+import * as assertsExports from './dev-workspace.shaka-player-fork.lib.debug.asserts';
+import {asserts} from './dev-workspace.shaka-player-fork.lib.debug.asserts';
+import * as logExports from './dev-workspace.shaka-player-fork.lib.debug.log';
+import {log} from './dev-workspace.shaka-player-fork.lib.debug.log';
+import * as StreamUtilsExports from './dev-workspace.shaka-player-fork.lib.util.stream_utils';
+import {StreamUtils} from './dev-workspace.shaka-player-fork.lib.util.stream_utils';
+import {Timer} from './dev-workspace.shaka-player-fork.lib.util.timer';
 
 /**
  * @summary

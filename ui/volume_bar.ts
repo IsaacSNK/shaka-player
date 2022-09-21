@@ -3,16 +3,16 @@
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-import * as AdManagerExports from './ads___ad_manager';
-import {AdManager} from './ads___ad_manager';
-import * as assertsExports from './debug___asserts';
-import {asserts} from './debug___asserts';
-import {Controls} from './ui___controls';
+import * as AdManagerExports from './dev-workspace.shaka-player-fork.lib.ads.ad_manager';
+import {AdManager} from './dev-workspace.shaka-player-fork.lib.ads.ad_manager';
+import * as assertsExports from './dev-workspace.shaka-player-fork.lib.debug.asserts';
+import {asserts} from './dev-workspace.shaka-player-fork.lib.debug.asserts';
+import {Controls} from './dev-workspace.shaka-player-fork.ui.controls';
 
 goog.require('shaka.ui.Locales');
-import {Localization} from './ui___localization';
-import * as LocalizationExports from './ui___localization';
-import {RangeElement} from './ui___range_element';
+import {Localization} from './dev-workspace.shaka-player-fork.ui.localization';
+import * as LocalizationExports from './dev-workspace.shaka-player-fork.ui.localization';
+import {RangeElement} from './dev-workspace.shaka-player-fork.ui.range_element';
 
 /**
  * @final

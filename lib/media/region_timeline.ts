@@ -3,12 +3,12 @@
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-import * as FakeEventExports from './util___fake_event';
-import {FakeEvent} from './util___fake_event';
-import * as FakeEventTargetExports from './util___fake_event_target';
-import {FakeEventTarget} from './util___fake_event_target';
-import {IReleasable} from './util___i_releasable';
-import {Timer} from './util___timer';
+import * as FakeEventExports from './dev-workspace.shaka-player-fork.lib.util.fake_event';
+import {FakeEvent} from './dev-workspace.shaka-player-fork.lib.util.fake_event';
+import * as FakeEventTargetExports from './dev-workspace.shaka-player-fork.lib.util.fake_event_target';
+import {FakeEventTarget} from './dev-workspace.shaka-player-fork.lib.util.fake_event_target';
+import {IReleasable} from './dev-workspace.shaka-player-fork.lib.util.i_releasable';
+import {Timer} from './dev-workspace.shaka-player-fork.lib.util.timer';
 
 /**
  * The region timeline is a set of unique timeline region info entries. When

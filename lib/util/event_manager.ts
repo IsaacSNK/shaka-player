@@ -3,10 +3,10 @@
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-import * as assertsExports from './debug___asserts';
-import {asserts} from './debug___asserts';
-import {IReleasable} from './util___i_releasable';
-import {MultiMap} from './util___multi_map';
+import * as assertsExports from './dev-workspace.shaka-player-fork.lib.debug.asserts';
+import {asserts} from './dev-workspace.shaka-player-fork.lib.debug.asserts';
+import {IReleasable} from './dev-workspace.shaka-player-fork.lib.util.i_releasable';
+import {MultiMap} from './dev-workspace.shaka-player-fork.lib.util.multi_map';
 
 /**
  * @summary

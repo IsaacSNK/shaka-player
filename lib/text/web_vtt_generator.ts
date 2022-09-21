@@ -3,8 +3,8 @@
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-import * as CueExports from './text___cue';
-import {Cue} from './text___cue';
+import * as CueExports from './dev-workspace.shaka-player-fork.lib.text.cue';
+import {Cue} from './dev-workspace.shaka-player-fork.lib.text.cue';
 
 /**
  * @summary Manage the conversion to WebVTT.

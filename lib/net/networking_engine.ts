@@ -4,21 +4,21 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 goog.require('goog.Uri');
-import {asserts} from './debug___asserts';
-import * as assertsExports from './debug___asserts';
-import {Backoff} from './net___backoff';
-import {AbortableOperation} from './util___abortable_operation';
-import {BufferUtils} from './util___buffer_utils';
-import {Error} from './util___error';
-import * as ErrorExports from './util___error';
-import {FakeEvent} from './util___fake_event';
-import * as FakeEventExports from './util___fake_event';
-import {FakeEventTarget} from './util___fake_event_target';
-import * as FakeEventTargetExports from './util___fake_event_target';
-import {IDestroyable} from './util___i_destroyable';
-import {ObjectUtils} from './util___object_utils';
-import {OperationManager} from './util___operation_manager';
-import {Timer} from './util___timer';
+import {asserts} from './dev-workspace.shaka-player-fork.lib.debug.asserts';
+import * as assertsExports from './dev-workspace.shaka-player-fork.lib.debug.asserts';
+import {Backoff} from './dev-workspace.shaka-player-fork.lib.net.backoff';
+import {AbortableOperation} from './dev-workspace.shaka-player-fork.lib.util.abortable_operation';
+import {BufferUtils} from './dev-workspace.shaka-player-fork.lib.util.buffer_utils';
+import {Error} from './dev-workspace.shaka-player-fork.lib.util.error';
+import * as ErrorExports from './dev-workspace.shaka-player-fork.lib.util.error';
+import {FakeEvent} from './dev-workspace.shaka-player-fork.lib.util.fake_event';
+import * as FakeEventExports from './dev-workspace.shaka-player-fork.lib.util.fake_event';
+import {FakeEventTarget} from './dev-workspace.shaka-player-fork.lib.util.fake_event_target';
+import * as FakeEventTargetExports from './dev-workspace.shaka-player-fork.lib.util.fake_event_target';
+import {IDestroyable} from './dev-workspace.shaka-player-fork.lib.util.i_destroyable';
+import {ObjectUtils} from './dev-workspace.shaka-player-fork.lib.util.object_utils';
+import {OperationManager} from './dev-workspace.shaka-player-fork.lib.util.operation_manager';
+import {Timer} from './dev-workspace.shaka-player-fork.lib.util.timer';
 
 /**
  * @event shaka.net.NetworkingEngine.RetryEvent

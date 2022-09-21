@@ -3,12 +3,12 @@
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-import * as polyfillExports from './polyfill___all';
-import {polyfill} from './polyfill___all';
-import * as FakeEventExports from './util___fake_event';
-import {FakeEvent} from './util___fake_event';
-import * as FakeEventTargetExports from './util___fake_event_target';
-import {FakeEventTarget} from './util___fake_event_target';
+import * as polyfillExports from './dev-workspace.shaka-player-fork.lib.polyfill.all';
+import {polyfill} from './dev-workspace.shaka-player-fork.lib.polyfill.all';
+import * as FakeEventExports from './dev-workspace.shaka-player-fork.lib.util.fake_event';
+import {FakeEvent} from './dev-workspace.shaka-player-fork.lib.util.fake_event';
+import * as FakeEventTargetExports from './dev-workspace.shaka-player-fork.lib.util.fake_event_target';
+import {FakeEventTarget} from './dev-workspace.shaka-player-fork.lib.util.fake_event_target';
 
 /**
  * @summary A polyfill for systems that do not implement screen.orientation.

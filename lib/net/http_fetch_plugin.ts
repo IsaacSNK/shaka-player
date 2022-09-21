@@ -3,18 +3,18 @@
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-import * as assertsExports from './debug___asserts';
-import {asserts} from './debug___asserts';
-import * as logExports from './debug___log';
-import {log} from './debug___log';
-import {HttpPluginUtils} from './net___http_plugin_utils';
-import * as NetworkingEngineExports from './net___networking_engine';
-import {NetworkingEngine} from './net___networking_engine';
-import {AbortableOperation} from './util___abortable_operation';
-import * as ErrorExports from './util___error';
-import {Error} from './util___error';
-import {MapUtils} from './util___map_utils';
-import {Timer} from './util___timer';
+import * as assertsExports from './dev-workspace.shaka-player-fork.lib.debug.asserts';
+import {asserts} from './dev-workspace.shaka-player-fork.lib.debug.asserts';
+import * as logExports from './dev-workspace.shaka-player-fork.lib.debug.log';
+import {log} from './dev-workspace.shaka-player-fork.lib.debug.log';
+import {HttpPluginUtils} from './dev-workspace.shaka-player-fork.lib.net.http_plugin_utils';
+import * as NetworkingEngineExports from './dev-workspace.shaka-player-fork.lib.net.networking_engine';
+import {NetworkingEngine} from './dev-workspace.shaka-player-fork.lib.net.networking_engine';
+import {AbortableOperation} from './dev-workspace.shaka-player-fork.lib.util.abortable_operation';
+import * as ErrorExports from './dev-workspace.shaka-player-fork.lib.util.error';
+import {Error} from './dev-workspace.shaka-player-fork.lib.util.error';
+import {MapUtils} from './dev-workspace.shaka-player-fork.lib.util.map_utils';
+import {Timer} from './dev-workspace.shaka-player-fork.lib.util.timer';
 
 /**
  * @summary A networking plugin to handle http and https URIs via the Fetch API.

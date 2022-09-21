@@ -3,17 +3,17 @@
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-import {Controls} from './ui___controls';
-import * as Enums from './ui___enums';
+import {Controls} from './dev-workspace.shaka-player-fork.ui.controls';
+import * as Enums from './dev-workspace.shaka-player-fork.ui.enums';
 goog.require('shaka.ui.Locales');
-import {Localization} from './ui___localization';
-import * as LocalizationExports from './ui___localization';
-import {OverflowMenu} from './ui___overflow_menu';
-import * as OverflowMenuExports from './ui___overflow_menu';
-import {SettingsMenu} from './ui___settings_menu';
-import {Utils} from './ui___ui_utils';
-import {Dom} from './util___dom_utils';
-import {Controls} from './ui___controls';
+import {Localization} from './dev-workspace.shaka-player-fork.ui.localization';
+import * as LocalizationExports from './dev-workspace.shaka-player-fork.ui.localization';
+import {OverflowMenu} from './dev-workspace.shaka-player-fork.ui.overflow_menu';
+import * as OverflowMenuExports from './dev-workspace.shaka-player-fork.ui.overflow_menu';
+import {SettingsMenu} from './dev-workspace.shaka-player-fork.ui.settings_menu';
+import {Utils} from './dev-workspace.shaka-player-fork.ui.ui_utils';
+import {Dom} from './dev-workspace.shaka-player-fork.lib.util.dom_utils';
+import {Controls} from './dev-workspace.shaka-player-fork.ui.controls';
 
 /**
  * @final

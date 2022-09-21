@@ -3,7 +3,7 @@
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-import {Ewma} from './abr___ewma';
+import {Ewma} from './dev-workspace.shaka-player-fork.lib.abr.ewma';
 
 /**
  * @summary

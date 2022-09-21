@@ -3,9 +3,9 @@
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-import {BufferUtils} from './util___buffer_utils';
-import * as StringUtilsExports from './util___string_utils';
-import {StringUtils} from './util___string_utils';
+import {BufferUtils} from './dev-workspace.shaka-player-fork.lib.util.buffer_utils';
+import * as StringUtilsExports from './dev-workspace.shaka-player-fork.lib.util.string_utils';
+import {StringUtils} from './dev-workspace.shaka-player-fork.lib.util.string_utils';
 
 
 // TODO: revisit this when Closure Compiler supports partially-exported classes.

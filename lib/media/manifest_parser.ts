@@ -4,14 +4,14 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 goog.require('goog.Uri');
-import {log} from './debug___log';
-import * as logExports from './debug___log';
-import {NetworkingEngine} from './net___networking_engine';
-import * as NetworkingEngineExports from './net___networking_engine';
-import {Error} from './util___error';
-import * as ErrorExports from './util___error';
-import {Platform} from './util___platform';
-import * as PlatformExports from './util___platform';
+import {log} from './dev-workspace.shaka-player-fork.lib.debug.log';
+import * as logExports from './dev-workspace.shaka-player-fork.lib.debug.log';
+import {NetworkingEngine} from './dev-workspace.shaka-player-fork.lib.net.networking_engine';
+import * as NetworkingEngineExports from './dev-workspace.shaka-player-fork.lib.net.networking_engine';
+import {Error} from './dev-workspace.shaka-player-fork.lib.util.error';
+import * as ErrorExports from './dev-workspace.shaka-player-fork.lib.util.error';
+import {Platform} from './dev-workspace.shaka-player-fork.lib.util.platform';
+import * as PlatformExports from './dev-workspace.shaka-player-fork.lib.util.platform';
 
 // TODO: revisit this when Closure Compiler supports partially-exported classes.
 /**

@@ -3,22 +3,22 @@
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-import * as assertsExports from './debug___asserts';
-import {asserts} from './debug___asserts';
-import * as logExports from './debug___log';
-import {log} from './debug___log';
-import * as PlayerExports from './lib___player';
-import {Player} from './lib___player';
-import * as polyfillExports from './polyfill___all';
-import {polyfill} from './polyfill___all';
-import {Controls} from './ui___controls';
-import {ConfigUtils} from './util___config_utils';
-import {Dom} from './util___dom_utils';
-import * as FakeEventExports from './util___fake_event';
-import {FakeEvent} from './util___fake_event';
-import {IDestroyable} from './util___i_destroyable';
-import * as PlatformExports from './util___platform';
-import {Platform} from './util___platform';
+import * as assertsExports from './dev-workspace.shaka-player-fork.lib.debug.asserts';
+import {asserts} from './dev-workspace.shaka-player-fork.lib.debug.asserts';
+import * as logExports from './dev-workspace.shaka-player-fork.lib.debug.log';
+import {log} from './dev-workspace.shaka-player-fork.lib.debug.log';
+import * as PlayerExports from './dev-workspace.shaka-player-fork.lib.player';
+import {Player} from './dev-workspace.shaka-player-fork.lib.player';
+import * as polyfillExports from './dev-workspace.shaka-player-fork.lib.polyfill.all';
+import {polyfill} from './dev-workspace.shaka-player-fork.lib.polyfill.all';
+import {ConfigUtils} from './dev-workspace.shaka-player-fork.lib.util.config_utils';
+import {Dom} from './dev-workspace.shaka-player-fork.lib.util.dom_utils';
+import * as FakeEventExports from './dev-workspace.shaka-player-fork.lib.util.fake_event';
+import {FakeEvent} from './dev-workspace.shaka-player-fork.lib.util.fake_event';
+import {IDestroyable} from './dev-workspace.shaka-player-fork.lib.util.i_destroyable';
+import * as PlatformExports from './dev-workspace.shaka-player-fork.lib.util.platform';
+import {Platform} from './dev-workspace.shaka-player-fork.lib.util.platform';
+import {Controls} from './dev-workspace.shaka-player-fork.ui.controls';
 
 /**
  * @export

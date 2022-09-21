@@ -3,26 +3,26 @@
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-import * as CastUtilsExports from './cast___cast_utils';
-import {CastUtils} from './cast___cast_utils';
-import * as assertsExports from './debug___asserts';
-import {asserts} from './debug___asserts';
-import * as logExports from './debug___log';
-import {log} from './debug___log';
-import * as PlayerExports from './lib___player';
-import {Player} from './lib___player';
-import * as ErrorExports from './util___error';
-import {Error} from './util___error';
-import * as EventManagerExports from './util___event_manager';
-import {EventManager} from './util___event_manager';
-import * as FakeEventExports from './util___fake_event';
-import {FakeEvent} from './util___fake_event';
-import * as FakeEventTargetExports from './util___fake_event_target';
-import {FakeEventTarget} from './util___fake_event_target';
-import {IDestroyable} from './util___i_destroyable';
-import * as PlatformExports from './util___platform';
-import {Platform} from './util___platform';
-import {Timer} from './util___timer';
+import * as CastUtilsExports from './dev-workspace.shaka-player-fork.lib.cast.cast_utils';
+import {CastUtils} from './dev-workspace.shaka-player-fork.lib.cast.cast_utils';
+import * as assertsExports from './dev-workspace.shaka-player-fork.lib.debug.asserts';
+import {asserts} from './dev-workspace.shaka-player-fork.lib.debug.asserts';
+import * as logExports from './dev-workspace.shaka-player-fork.lib.debug.log';
+import {log} from './dev-workspace.shaka-player-fork.lib.debug.log';
+import * as PlayerExports from './dev-workspace.shaka-player-fork.lib.player';
+import {Player} from './dev-workspace.shaka-player-fork.lib.player';
+import * as ErrorExports from './dev-workspace.shaka-player-fork.lib.util.error';
+import {Error} from './dev-workspace.shaka-player-fork.lib.util.error';
+import * as EventManagerExports from './dev-workspace.shaka-player-fork.lib.util.event_manager';
+import {EventManager} from './dev-workspace.shaka-player-fork.lib.util.event_manager';
+import * as FakeEventExports from './dev-workspace.shaka-player-fork.lib.util.fake_event';
+import {FakeEvent} from './dev-workspace.shaka-player-fork.lib.util.fake_event';
+import * as FakeEventTargetExports from './dev-workspace.shaka-player-fork.lib.util.fake_event_target';
+import {FakeEventTarget} from './dev-workspace.shaka-player-fork.lib.util.fake_event_target';
+import {IDestroyable} from './dev-workspace.shaka-player-fork.lib.util.i_destroyable';
+import * as PlatformExports from './dev-workspace.shaka-player-fork.lib.util.platform';
+import {Platform} from './dev-workspace.shaka-player-fork.lib.util.platform';
+import {Timer} from './dev-workspace.shaka-player-fork.lib.util.timer';
 
 /**
  * A receiver to communicate between the Chromecast-hosted player and the

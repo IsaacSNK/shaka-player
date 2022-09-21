@@ -3,18 +3,18 @@
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-import * as ICaptionDecoderExports from './cea___i_caption_decoder';
-import {ICaptionDecoder} from './cea___i_caption_decoder';
-import * as assertsExports from './debug___asserts';
-import {asserts} from './debug___asserts';
-import * as logExports from './debug___log';
-import {log} from './debug___log';
-import * as CueExports from './text___cue';
-import {Cue} from './text___cue';
-import {BufferUtils} from './util___buffer_utils';
-import {IDestroyable} from './util___i_destroyable';
-import * as MimeUtilsExports from './util___mime_utils';
-import {MimeUtils} from './util___mime_utils';
+import * as ICaptionDecoderExports from './dev-workspace.shaka-player-fork.lib.cea.i_caption_decoder';
+import {ICaptionDecoder} from './dev-workspace.shaka-player-fork.lib.cea.i_caption_decoder';
+import * as assertsExports from './dev-workspace.shaka-player-fork.lib.debug.asserts';
+import {asserts} from './dev-workspace.shaka-player-fork.lib.debug.asserts';
+import * as logExports from './dev-workspace.shaka-player-fork.lib.debug.log';
+import {log} from './dev-workspace.shaka-player-fork.lib.debug.log';
+import * as CueExports from './dev-workspace.shaka-player-fork.lib.text.cue';
+import {Cue} from './dev-workspace.shaka-player-fork.lib.text.cue';
+import {BufferUtils} from './dev-workspace.shaka-player-fork.lib.util.buffer_utils';
+import {IDestroyable} from './dev-workspace.shaka-player-fork.lib.util.i_destroyable';
+import * as MimeUtilsExports from './dev-workspace.shaka-player-fork.lib.util.mime_utils';
+import {MimeUtils} from './dev-workspace.shaka-player-fork.lib.util.mime_utils';
 
 
 // TODO: revisit this when Closure Compiler supports partially-exported classes.

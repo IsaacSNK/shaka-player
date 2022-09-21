@@ -3,21 +3,21 @@
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-import * as DashParserExports from './dash___dash_parser';
-import {DashParser} from './dash___dash_parser';
-import * as assertsExports from './debug___asserts';
-import {asserts} from './debug___asserts';
-import * as logExports from './debug___log';
-import {log} from './debug___log';
-import * as NetworkingEngineExports from './net___networking_engine';
-import {NetworkingEngine} from './net___networking_engine';
-import {AbortableOperation} from './util___abortable_operation';
-import * as ErrorExports from './util___error';
-import {Error} from './util___error';
-import {Functional} from './util___functional';
-import * as ManifestParserUtilsExports from './util___manifest_parser_utils';
-import {ManifestParserUtils} from './util___manifest_parser_utils';
-import {XmlUtils} from './util___xml_utils';
+import * as DashParserExports from './dev-workspace.shaka-player-fork.lib.dash.dash_parser';
+import {DashParser} from './dev-workspace.shaka-player-fork.lib.dash.dash_parser';
+import * as assertsExports from './dev-workspace.shaka-player-fork.lib.debug.asserts';
+import {asserts} from './dev-workspace.shaka-player-fork.lib.debug.asserts';
+import * as logExports from './dev-workspace.shaka-player-fork.lib.debug.log';
+import {log} from './dev-workspace.shaka-player-fork.lib.debug.log';
+import * as NetworkingEngineExports from './dev-workspace.shaka-player-fork.lib.net.networking_engine';
+import {NetworkingEngine} from './dev-workspace.shaka-player-fork.lib.net.networking_engine';
+import {AbortableOperation} from './dev-workspace.shaka-player-fork.lib.util.abortable_operation';
+import * as ErrorExports from './dev-workspace.shaka-player-fork.lib.util.error';
+import {Error} from './dev-workspace.shaka-player-fork.lib.util.error';
+import {Functional} from './dev-workspace.shaka-player-fork.lib.util.functional';
+import * as ManifestParserUtilsExports from './dev-workspace.shaka-player-fork.lib.util.manifest_parser_utils';
+import {ManifestParserUtils} from './dev-workspace.shaka-player-fork.lib.util.manifest_parser_utils';
+import {XmlUtils} from './dev-workspace.shaka-player-fork.lib.util.xml_utils';
 
 /**
  * @summary MPD processing utility functions.

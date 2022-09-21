@@ -8,33 +8,33 @@
  * @fileoverview
  * @suppress {missingRequire} TODO(b/152540451): this shouldn't be needed
  */
-import * as assertsExports from './debug___asserts';
-import {asserts} from './debug___asserts';
-import * as logExports from './debug___log';
-import {log} from './debug___log';
-import * as MediaSourceEngineExports from './media___media_source_engine';
-import {MediaSourceEngine} from './media___media_source_engine';
-import {SegmentIterator} from './media___segment_index';
-import * as SegmentReferenceExports from './media___segment_reference';
-import {InitSegmentReference, SegmentReference} from './media___segment_reference';
-import {Backoff} from './net___backoff';
-import * as NetworkingEngineExports from './net___networking_engine';
-import {NetworkingEngine} from './net___networking_engine';
-import {SegmentInfo} from './util___cmcd_manager';
-import {DelayedTick} from './util___delayed_tick';
-import {Destroyer} from './util___destroyer';
-import * as ErrorExports from './util___error';
-import {Error} from './util___error';
-import * as FakeEventExports from './util___fake_event';
-import {FakeEvent} from './util___fake_event';
-import {IDestroyable} from './util___i_destroyable';
-import * as ManifestParserUtilsExports from './util___manifest_parser_utils';
-import {ManifestParserUtils} from './util___manifest_parser_utils';
-import * as MimeUtilsExports from './util___mime_utils';
-import {MimeUtils} from './util___mime_utils';
-import * as Mp4ParserExports from './util___mp4_parser';
-import {Mp4Parser} from './util___mp4_parser';
-import {Networking} from './util___networking';
+import * as assertsExports from './dev-workspace.shaka-player-fork.lib.debug.asserts';
+import {asserts} from './dev-workspace.shaka-player-fork.lib.debug.asserts';
+import * as logExports from './dev-workspace.shaka-player-fork.lib.debug.log';
+import {log} from './dev-workspace.shaka-player-fork.lib.debug.log';
+import * as MediaSourceEngineExports from './dev-workspace.shaka-player-fork.lib.media.media_source_engine';
+import {MediaSourceEngine} from './dev-workspace.shaka-player-fork.lib.media.media_source_engine';
+import {SegmentIterator} from './dev-workspace.shaka-player-fork.lib.media.segment_index';
+import * as SegmentReferenceExports from './dev-workspace.shaka-player-fork.lib.media.segment_reference';
+import {InitSegmentReference, SegmentReference} from './dev-workspace.shaka-player-fork.lib.media.segment_reference';
+import {Backoff} from './dev-workspace.shaka-player-fork.lib.net.backoff';
+import * as NetworkingEngineExports from './dev-workspace.shaka-player-fork.lib.net.networking_engine';
+import {NetworkingEngine} from './dev-workspace.shaka-player-fork.lib.net.networking_engine';
+import {SegmentInfo} from './dev-workspace.shaka-player-fork.lib.util.cmcd_manager';
+import {DelayedTick} from './dev-workspace.shaka-player-fork.lib.util.delayed_tick';
+import {Destroyer} from './dev-workspace.shaka-player-fork.lib.util.destroyer';
+import * as ErrorExports from './dev-workspace.shaka-player-fork.lib.util.error';
+import {Error} from './dev-workspace.shaka-player-fork.lib.util.error';
+import * as FakeEventExports from './dev-workspace.shaka-player-fork.lib.util.fake_event';
+import {FakeEvent} from './dev-workspace.shaka-player-fork.lib.util.fake_event';
+import {IDestroyable} from './dev-workspace.shaka-player-fork.lib.util.i_destroyable';
+import * as ManifestParserUtilsExports from './dev-workspace.shaka-player-fork.lib.util.manifest_parser_utils';
+import {ManifestParserUtils} from './dev-workspace.shaka-player-fork.lib.util.manifest_parser_utils';
+import * as MimeUtilsExports from './dev-workspace.shaka-player-fork.lib.util.mime_utils';
+import {MimeUtils} from './dev-workspace.shaka-player-fork.lib.util.mime_utils';
+import * as Mp4ParserExports from './dev-workspace.shaka-player-fork.lib.util.mp4_parser';
+import {Mp4Parser} from './dev-workspace.shaka-player-fork.lib.util.mp4_parser';
+import {Networking} from './dev-workspace.shaka-player-fork.lib.util.networking';
 
 /**
  * @summary Creates a Streaming Engine.

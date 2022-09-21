@@ -3,19 +3,19 @@
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-import * as AdManagerExports from './ads___ad_manager';
-import {AdManager} from './ads___ad_manager';
-import * as assertsExports from './debug___asserts';
-import {asserts} from './debug___asserts';
-import {Element} from './ui___element';
+import * as AdManagerExports from './dev-workspace.shaka-player-fork.lib.ads.ad_manager';
+import {AdManager} from './dev-workspace.shaka-player-fork.lib.ads.ad_manager';
+import * as assertsExports from './dev-workspace.shaka-player-fork.lib.debug.asserts';
+import {asserts} from './dev-workspace.shaka-player-fork.lib.debug.asserts';
+import {Element} from './dev-workspace.shaka-player-fork.ui.element';
 
 goog.require('shaka.ui.Locales');
-import {Localization} from './ui___localization';
-import * as LocalizationExports from './ui___localization';
-import {Utils} from './ui___ui_utils';
-import {Dom} from './util___dom_utils';
-import {Timer} from './util___timer';
-import {Controls} from './ui___controls';
+import {Localization} from './dev-workspace.shaka-player-fork.ui.localization';
+import * as LocalizationExports from './dev-workspace.shaka-player-fork.ui.localization';
+import {Utils} from './dev-workspace.shaka-player-fork.ui.ui_utils';
+import {Dom} from './dev-workspace.shaka-player-fork.lib.util.dom_utils';
+import {Timer} from './dev-workspace.shaka-player-fork.lib.util.timer';
+import {Controls} from './dev-workspace.shaka-player-fork.ui.controls';
 
 /**
  * @final

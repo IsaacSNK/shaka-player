@@ -3,7 +3,7 @@
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-import {ArrayUtils} from './util___array_utils';
+import {ArrayUtils} from './dev-workspace.shaka-player-fork.lib.util.array_utils';
 
 /**
  * @export

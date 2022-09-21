@@ -3,9 +3,9 @@
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-import * as SegmentReferenceExports from './media___segment_reference';
-import {InitSegmentReference, SegmentReference} from './media___segment_reference';
-import {Networking} from './util___networking';
+import * as SegmentReferenceExports from './dev-workspace.shaka-player-fork.lib.media.segment_reference';
+import {InitSegmentReference, SegmentReference} from './dev-workspace.shaka-player-fork.lib.media.segment_reference';
+import {Networking} from './dev-workspace.shaka-player-fork.lib.util.networking';
 
 /**
  * An object that represents a single segment, that the storage system will soon

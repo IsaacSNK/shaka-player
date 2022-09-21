@@ -3,20 +3,20 @@
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-import * as assertsExports from './debug___asserts';
-import {asserts} from './debug___asserts';
-import * as logExports from './debug___log';
-import {log} from './debug___log';
-import {BufferUtils} from './util___buffer_utils';
-import * as ErrorExports from './util___error';
-import {Error} from './util___error';
-import * as ManifestParserUtilsExports from './util___manifest_parser_utils';
-import {ManifestParserUtils} from './util___manifest_parser_utils';
-import {Pssh} from './util___pssh';
-import * as StringUtilsExports from './util___string_utils';
-import {StringUtils} from './util___string_utils';
-import {Uint8ArrayUtils} from './util___uint8array_utils';
-import {XmlUtils} from './util___xml_utils';
+import * as assertsExports from './dev-workspace.shaka-player-fork.lib.debug.asserts';
+import {asserts} from './dev-workspace.shaka-player-fork.lib.debug.asserts';
+import * as logExports from './dev-workspace.shaka-player-fork.lib.debug.log';
+import {log} from './dev-workspace.shaka-player-fork.lib.debug.log';
+import {BufferUtils} from './dev-workspace.shaka-player-fork.lib.util.buffer_utils';
+import * as ErrorExports from './dev-workspace.shaka-player-fork.lib.util.error';
+import {Error} from './dev-workspace.shaka-player-fork.lib.util.error';
+import * as ManifestParserUtilsExports from './dev-workspace.shaka-player-fork.lib.util.manifest_parser_utils';
+import {ManifestParserUtils} from './dev-workspace.shaka-player-fork.lib.util.manifest_parser_utils';
+import {Pssh} from './dev-workspace.shaka-player-fork.lib.util.pssh';
+import * as StringUtilsExports from './dev-workspace.shaka-player-fork.lib.util.string_utils';
+import {StringUtils} from './dev-workspace.shaka-player-fork.lib.util.string_utils';
+import {Uint8ArrayUtils} from './dev-workspace.shaka-player-fork.lib.util.uint8array_utils';
+import {XmlUtils} from './dev-workspace.shaka-player-fork.lib.util.xml_utils';
 
 /**
  * @summary A set of functions for parsing and interpreting ContentProtection

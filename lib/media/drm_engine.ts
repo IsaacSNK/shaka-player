@@ -3,36 +3,36 @@
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-import * as assertsExports from './debug___asserts';
-import {asserts} from './debug___asserts';
-import * as logExports from './debug___log';
-import {log} from './debug___log';
-import {Transmuxer} from './media___transmuxer';
-import * as NetworkingEngineExports from './net___networking_engine';
-import {NetworkingEngine} from './net___networking_engine';
-import {BufferUtils} from './util___buffer_utils';
-import {Destroyer} from './util___destroyer';
-import * as ErrorExports from './util___error';
-import {Error} from './util___error';
-import * as EventManagerExports from './util___event_manager';
-import {EventManager} from './util___event_manager';
-import * as FakeEventExports from './util___fake_event';
-import {FakeEvent} from './util___fake_event';
-import {IDestroyable} from './util___i_destroyable';
-import {Iterables} from './util___iterables';
-import {Lazy} from './util___lazy';
-import {MapUtils} from './util___map_utils';
-import * as MimeUtilsExports from './util___mime_utils';
-import {MimeUtils} from './util___mime_utils';
-import * as PlatformExports from './util___platform';
-import {Platform} from './util___platform';
-import {PublicPromise} from './util___public_promise';
-import * as StreamUtilsExports from './util___stream_utils';
-import {StreamUtils} from './util___stream_utils';
-import * as StringUtilsExports from './util___string_utils';
-import {StringUtils} from './util___string_utils';
-import {Timer} from './util___timer';
-import {Uint8ArrayUtils} from './util___uint8array_utils';
+import * as assertsExports from './dev-workspace.shaka-player-fork.lib.debug.asserts';
+import {asserts} from './dev-workspace.shaka-player-fork.lib.debug.asserts';
+import * as logExports from './dev-workspace.shaka-player-fork.lib.debug.log';
+import {log} from './dev-workspace.shaka-player-fork.lib.debug.log';
+import {Transmuxer} from './dev-workspace.shaka-player-fork.lib.media.transmuxer';
+import * as NetworkingEngineExports from './dev-workspace.shaka-player-fork.lib.net.networking_engine';
+import {NetworkingEngine} from './dev-workspace.shaka-player-fork.lib.net.networking_engine';
+import {BufferUtils} from './dev-workspace.shaka-player-fork.lib.util.buffer_utils';
+import {Destroyer} from './dev-workspace.shaka-player-fork.lib.util.destroyer';
+import * as ErrorExports from './dev-workspace.shaka-player-fork.lib.util.error';
+import {Error} from './dev-workspace.shaka-player-fork.lib.util.error';
+import * as EventManagerExports from './dev-workspace.shaka-player-fork.lib.util.event_manager';
+import {EventManager} from './dev-workspace.shaka-player-fork.lib.util.event_manager';
+import * as FakeEventExports from './dev-workspace.shaka-player-fork.lib.util.fake_event';
+import {FakeEvent} from './dev-workspace.shaka-player-fork.lib.util.fake_event';
+import {IDestroyable} from './dev-workspace.shaka-player-fork.lib.util.i_destroyable';
+import {Iterables} from './dev-workspace.shaka-player-fork.lib.util.iterables';
+import {Lazy} from './dev-workspace.shaka-player-fork.lib.util.lazy';
+import {MapUtils} from './dev-workspace.shaka-player-fork.lib.util.map_utils';
+import * as MimeUtilsExports from './dev-workspace.shaka-player-fork.lib.util.mime_utils';
+import {MimeUtils} from './dev-workspace.shaka-player-fork.lib.util.mime_utils';
+import * as PlatformExports from './dev-workspace.shaka-player-fork.lib.util.platform';
+import {Platform} from './dev-workspace.shaka-player-fork.lib.util.platform';
+import {PublicPromise} from './dev-workspace.shaka-player-fork.lib.util.public_promise';
+import * as StreamUtilsExports from './dev-workspace.shaka-player-fork.lib.util.stream_utils';
+import {StreamUtils} from './dev-workspace.shaka-player-fork.lib.util.stream_utils';
+import * as StringUtilsExports from './dev-workspace.shaka-player-fork.lib.util.string_utils';
+import {StringUtils} from './dev-workspace.shaka-player-fork.lib.util.string_utils';
+import {Timer} from './dev-workspace.shaka-player-fork.lib.util.timer';
+import {Uint8ArrayUtils} from './dev-workspace.shaka-player-fork.lib.util.uint8array_utils';
 
 export class DrmEngine implements IDestroyable {
   private playerInterface_: PlayerInterface|null;

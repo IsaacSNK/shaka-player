@@ -3,9 +3,9 @@
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-import * as ErrorExports from './util___error';
-import {Error} from './util___error';
-import {PublicPromise} from './util___public_promise';
+import * as ErrorExports from './dev-workspace.shaka-player-fork.lib.util.error';
+import {Error} from './dev-workspace.shaka-player-fork.lib.util.error';
+import {PublicPromise} from './dev-workspace.shaka-player-fork.lib.util.public_promise';
 
 /**
  * A utility to wrap abortable operations.  Note that these are not cancelable.

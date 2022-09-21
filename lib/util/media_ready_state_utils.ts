@@ -3,9 +3,9 @@
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-import * as EventManagerExports from './util___event_manager';
-import {EventManager} from './util___event_manager';
-import {Lazy} from './util___lazy';
+import * as EventManagerExports from './dev-workspace.shaka-player-fork.lib.util.event_manager';
+import {EventManager} from './dev-workspace.shaka-player-fork.lib.util.event_manager';
+import {Lazy} from './dev-workspace.shaka-player-fork.lib.util.lazy';
 
 export class MediaReadyState {
   static waitForReadyState(

@@ -3,15 +3,15 @@
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-import {IPlayheadObserver} from './media___playhead_observer';
-import * as RegionTimelineExports from './media___region_timeline';
-import {RegionTimeline} from './media___region_timeline';
-import * as EventManagerExports from './util___event_manager';
-import {EventManager} from './util___event_manager';
-import * as FakeEventExports from './util___fake_event';
-import {FakeEvent} from './util___fake_event';
-import * as FakeEventTargetExports from './util___fake_event_target';
-import {FakeEventTarget} from './util___fake_event_target';
+import {IPlayheadObserver} from './dev-workspace.shaka-player-fork.lib.media.playhead_observer';
+import * as RegionTimelineExports from './dev-workspace.shaka-player-fork.lib.media.region_timeline';
+import {RegionTimeline} from './dev-workspace.shaka-player-fork.lib.media.region_timeline';
+import * as EventManagerExports from './dev-workspace.shaka-player-fork.lib.util.event_manager';
+import {EventManager} from './dev-workspace.shaka-player-fork.lib.util.event_manager';
+import * as FakeEventExports from './dev-workspace.shaka-player-fork.lib.util.fake_event';
+import {FakeEvent} from './dev-workspace.shaka-player-fork.lib.util.fake_event';
+import * as FakeEventTargetExports from './dev-workspace.shaka-player-fork.lib.util.fake_event_target';
+import {FakeEventTarget} from './dev-workspace.shaka-player-fork.lib.util.fake_event_target';
 
 /**
  * The region observer watches a region timeline and playhead, and fires events

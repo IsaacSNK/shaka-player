@@ -3,10 +3,10 @@
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-import {Controls} from './ui___controls';
-import * as Enums from './ui___enums';
+import {Controls} from './dev-workspace.shaka-player-fork.ui.controls';
+import * as Enums from './dev-workspace.shaka-player-fork.ui.enums';
 goog.require('shaka.ui.Locales');
-import {PlayButton} from './ui___play_button';
+import {PlayButton} from './dev-workspace.shaka-player-fork.ui.play_button';
 
 /**
  * @final
