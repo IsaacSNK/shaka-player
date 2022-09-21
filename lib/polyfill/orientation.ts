@@ -2,53 +2,51 @@
  * Shaka Player
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
- */ 
-import{FakeEvent}from './fake_event';
-import*as FakeEventExports from './fake_event';
-import{FakeEventTarget}from './fake_event_target';
-import*as FakeEventTargetExports from './fake_event_target';
-goog.require('shaka.polyfill');
- 
+ */
+import * as polyfillExports from './polyfill___all';
+import {polyfill} from './polyfill___all';
+import * as FakeEventExports from './util___fake_event';
+import {FakeEvent} from './util___fake_event';
+import * as FakeEventTargetExports from './util___fake_event_target';
+import {FakeEventTarget} from './util___fake_event_target';
+
 /**
  * @summary A polyfill for systems that do not implement screen.orientation.
  * For now, this only handles systems that implement the deprecated
  * window.orientation feature... e.g. iPad.
  * @export
- */ 
+ */
 export class Orientation {
-   
   /**
-     * Install the polyfill if needed.
-     * @export
-     */ 
+   * Install the polyfill if needed.
+   * @export
+   */
   static install() {
     if (screen.orientation) {
-       
-      // Not needed. 
+      // Not needed.
       return;
     }
-     
+
     // There is no way to check to see if the 'orientationchange' event exists
     // on window, which could theoretically lead to this making a
     // screen.orientation object that doesn't actually work.
     // However, it looks like all platforms that support the deprecated
-    // window.orientation feature also support that event. 
+    // window.orientation feature also support that event.
     if (window.orientation != undefined) {
       Orientation.installBasedOnWindowMethods_();
     }
   }
-   
+
   /**
-     * Makes a polyfill for orientation, based on window methods.
-     * Note that some of the features this is based on are deprecated, so this
-     * will not necessarily work on all platforms.
-     */ 
+   * Makes a polyfill for orientation, based on window methods.
+   * Note that some of the features this is based on are deprecated, so this
+   * will not necessarily work on all platforms.
+   */
   private static installBasedOnWindowMethods_() {
     const orientation = new FakeOrientation();
     screen.orientation = (orientation as ScreenOrientation);
-    const setValues =  
-    () => {
-      switch(window.orientation) {
+    const setValues = () => {
+      switch (window.orientation) {
         case -90:
           orientation.type = 'landscape-secondary';
           orientation.angle = 270;
@@ -68,32 +66,29 @@ export class Orientation {
       }
     };
     setValues();
-    window.addEventListener('orientationchange',  
-    () => {
+    window.addEventListener('orientationchange', () => {
       setValues();
       orientation.dispatchChangeEvent();
     });
   }
 }
- 
-export 
-class FakeOrientation extends FakeEventTarget {
+
+export class FakeOrientation extends FakeEventTarget {
   type: string = '';
   angle: number = 0;
-   
+
   constructor() {
     super();
   }
-   
-  /** Dispatch a 'change' event. */ 
+
+  /** Dispatch a 'change' event. */
   dispatchChangeEvent() {
     const event = new FakeEvent('change');
     this.dispatchEvent(event);
   }
-   
+
   lock(orientation: string): Promise {
-    const lockOrientation =  
-    (orientation: string): boolean => {
+    const lockOrientation = (orientation: string): boolean => {
       if (screen.lockOrientation) {
         return screen.lockOrientation(orientation);
       }
@@ -106,18 +101,18 @@ class FakeOrientation extends FakeEventTarget {
       return false;
     };
     let success = false;
-     
+
     // The set of input strings for screen.orientation.lock and for
-    // screen.lockOrientation are almost, but not entirely, the same. 
-    switch(orientation) {
+    // screen.lockOrientation are almost, but not entirely, the same.
+    switch (orientation) {
       case 'natural':
         success = lockOrientation('default');
         break;
       case 'any':
-         
+
         // It's not quite clear what locking the screen orientation to 'any'
         // is supposed to mean... presumably, that's equivalent to not being
-        // locked? 
+        // locked?
         success = true;
         this.unlock();
         break;
@@ -125,30 +120,30 @@ class FakeOrientation extends FakeEventTarget {
         success = lockOrientation(orientation);
         break;
     }
-     
+
     // According to the docs, there "may be a delay" between the
     // lockOrientation method being called and the screen actually being
     // locked.  Unfortunately, without any idea as to how long that delay is,
-    // and with no events to listen for, we cannot account for it here. 
+    // and with no events to listen for, we cannot account for it here.
     if (success) {
       return Promise.resolve();
     }
-     
+
     // Either locking was not available, or the process failed... either way,
     // reject this with a mock error.
     // This should be a DOMException, but there is not a public constructor for
-    // that.  So we make this look-alike instead. 
-    const unsupportedKeySystemError = new Error('screen.orientation.lock() is not available on this device');
+    // that.  So we make this look-alike instead.
+    const unsupportedKeySystemError =
+        new Error('screen.orientation.lock() is not available on this device');
     unsupportedKeySystemError.name = 'NotSupportedError';
     unsupportedKeySystemError['code'] = DOMException.NOT_SUPPORTED_ERR;
     return Promise.reject(unsupportedKeySystemError);
   }
-   
-  /** Unlock the screen orientation. */ 
+
+  /** Unlock the screen orientation. */
   unlock() {
-     
     // screen.unlockOrientation has a return value, but
-    // screen.orientation.unlock does not. So ignore the return value. 
+    // screen.orientation.unlock does not. So ignore the return value.
     if (screen.unlockOrientation) {
       screen.unlockOrientation();
     } else {
@@ -162,4 +157,4 @@ class FakeOrientation extends FakeEventTarget {
     }
   }
 }
-shaka.polyfill.register(Orientation.install);
+polyfill.register(Orientation.install);

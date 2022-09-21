@@ -2,30 +2,31 @@
  * Shaka Player
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
- */ 
-import{AdManager}from './ad_manager';
-import*as AdManagerExports from './ad_manager';
-import{Controls}from './controls';
-import{Element}from './element';
-import*as Enums from './enums';
+ */
+import * as AdManagerExports from './ads___ad_manager';
+import {AdManager} from './ads___ad_manager';
+import {Controls} from './ui___controls';
+import {Element} from './ui___element';
+import * as Enums from './ui___enums';
+
 goog.require('shaka.ui.Locales');
-import{Localization}from './localization';
-import*as LocalizationExports from './localization';
-import{Dom}from './dom_utils';
- 
+import {Localization} from './ui___localization';
+import * as LocalizationExports from './ui___localization';
+import {Dom} from './util___dom_utils';
+
 /**
  * @final
  * @export
- */ 
+ */
 export class MuteButton extends Element {
   private button_: HTMLButtonElement;
-   
+
   // The base class also listens for this event and sets this.ad
   // to null. This is a safeguard in case of a race condition as
   // the label and icon code depends on this.ad being correctly
-  // updated at the time it runs. 
+  // updated at the time it runs.
   ad: any;
-   
+
   constructor(parent: HTMLElement, controls: Controls) {
     super(parent, controls);
     this.button_ = Dom.createButton();
@@ -35,45 +36,42 @@ export class MuteButton extends Element {
     this.parent.appendChild(this.button_);
     this.updateAriaLabel_();
     this.updateIcon_();
-    this.eventManager.listen(this.localization, LocalizationExports.LOCALE_UPDATED,  
-    () => {
-      this.updateAriaLabel_();
-    });
-    this.eventManager.listen(this.localization, LocalizationExports.LOCALE_CHANGED,  
-    () => {
-      this.updateAriaLabel_();
-    });
-    this.eventManager.listen(this.button_, 'click',  
-    () => {
+    this.eventManager.listen(
+        this.localization, LocalizationExports.LOCALE_UPDATED, () => {
+          this.updateAriaLabel_();
+        });
+    this.eventManager.listen(
+        this.localization, LocalizationExports.LOCALE_CHANGED, () => {
+          this.updateAriaLabel_();
+        });
+    this.eventManager.listen(this.button_, 'click', () => {
       if (this.ad && this.ad.isLinear()) {
         this.ad.setMuted(!this.ad.isMuted());
       } else {
         this.video.muted = !this.video.muted;
       }
     });
-    this.eventManager.listen(this.video, 'volumechange',  
-    () => {
+    this.eventManager.listen(this.video, 'volumechange', () => {
       this.updateAriaLabel_();
       this.updateIcon_();
     });
-    this.eventManager.listen(this.adManager, AdManagerExports.AD_VOLUME_CHANGED,  
-    () => {
+    this.eventManager.listen(
+        this.adManager, AdManagerExports.AD_VOLUME_CHANGED, () => {
+          this.updateAriaLabel_();
+          this.updateIcon_();
+        });
+    this.eventManager.listen(this.adManager, AdManagerExports.AD_MUTED, () => {
       this.updateAriaLabel_();
       this.updateIcon_();
     });
-    this.eventManager.listen(this.adManager, AdManagerExports.AD_MUTED,  
-    () => {
-      this.updateAriaLabel_();
-      this.updateIcon_();
-    });
-    this.eventManager.listen(this.adManager, AdManagerExports.AD_STOPPED,  
-    () => {
-      this.ad = null;
-      this.updateAriaLabel_();
-      this.updateIcon_();
-    });
+    this.eventManager.listen(
+        this.adManager, AdManagerExports.AD_STOPPED, () => {
+          this.ad = null;
+          this.updateAriaLabel_();
+          this.updateIcon_();
+        });
   }
-   
+
   private updateAriaLabel_() {
     const LocIds = shaka.ui.Locales.Ids;
     let label;
@@ -84,7 +82,7 @@ export class MuteButton extends Element {
     }
     this.button_.ariaLabel = this.localization.resolve(label);
   }
-   
+
   private updateIcon_() {
     const Icons = Enums.MaterialDesignIcons;
     let icon;
@@ -96,13 +94,13 @@ export class MuteButton extends Element {
     this.button_.textContent = icon;
   }
 }
- 
+
 /**
  * @final
- */ 
-export class Factory implements shaka.extern.IUIElement.Factory {
-   
-  /** @override */ 
+ */
+export class Factory implements shaka.
+extern.IUIElement.Factory {
+  /** @override */
   create(rootElement, controls) {
     return new MuteButton(rootElement, controls);
   }

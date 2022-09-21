@@ -2,62 +2,63 @@
  * Shaka Player
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
- */ 
-import{AdManager}from './ad_manager';
-import*as AdManagerExports from './ad_manager';
-import{EventManager}from './event_manager';
-import*as EventManagerExports from './event_manager';
-goog.requireType('shaka.Player');
-import{Controls}from './controls';
-import{Localization}from './localization';
-import*as LocalizationExports from './localization';
- 
+ */
+import * as AdManagerExports from './ads___ad_manager';
+import {AdManager} from './ads___ad_manager';
+import * as PlayerExports from './lib___player';
+import {Player} from './lib___player';
+import {Controls} from './ui___controls';
+import * as LocalizationExports from './ui___localization';
+import {Localization} from './ui___localization';
+import * as EventManagerExports from './util___event_manager';
+import {EventManager} from './util___event_manager';
+
 /**
  * @abstract
  * @export
- */ 
-export class Element implements shaka.extern.IUIElement {
-   
+ */
+export class Element implements shaka.
+extern.IUIElement {
   /**
-       * @exportInterface
-       */ 
+   * @exportInterface
+   */
   protected parent: HTMLElement;
-   
+
   /**
-       * @exportInterface
-       */ 
+   * @exportInterface
+   */
   protected controls: Controls;
-   
+
   /**
-       * @exportInterface
-       */ 
+   * @exportInterface
+   */
   protected eventManager: EventManager;
-   
+
   /**
-       * @exportInterface
-       */ 
+   * @exportInterface
+   */
   protected localization: Localization;
-   
+
   /**
-       * @exportInterface
-       */ 
-  protected player: shaka.Player;
-   
+   * @exportInterface
+   */
+  protected player: Player;
+
   /**
-       * @exportInterface
-       */ 
+   * @exportInterface
+   */
   protected video: HTMLMediaElement;
-   
+
   /**
-       * @exportInterface
-       */ 
+   * @exportInterface
+   */
   protected adManager: shaka.extern.IAdManager;
-   
+
   /**
-       * @exportInterface
-       */ 
-  protected ad: shaka.extern.IAd | null;
-   
+   * @exportInterface
+   */
+  protected ad: shaka.extern.IAd|null;
+
   constructor(parent: HTMLElement, controls: Controls) {
     this.parent = parent;
     this.controls = controls;
@@ -68,21 +69,19 @@ export class Element implements shaka.extern.IUIElement {
     this.adManager = this.player.getAdManager();
     this.ad = controls.getAd();
     const AD_STARTED = AdManagerExports.AD_STARTED;
-    this.eventManager.listen(this.adManager, AD_STARTED,  
-    (e) => {
+    this.eventManager.listen(this.adManager, AD_STARTED, (e) => {
       this.ad = (e as Object)['ad'];
     });
     const AD_STOPPED = AdManagerExports.AD_STOPPED;
-    this.eventManager.listen(this.adManager, AD_STOPPED,  
-    () => {
+    this.eventManager.listen(this.adManager, AD_STOPPED, () => {
       this.ad = null;
     });
   }
-   
+
   /**
-     * @override
-     * @export
-     */ 
+   * @override
+   * @export
+   */
   release() {
     this.eventManager.release();
     this.parent = null;

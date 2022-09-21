@@ -2,66 +2,66 @@
  * Shaka Player
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
- */ 
-import{asserts}from './asserts';
-import*as assertsExports from './asserts';
-import{BufferUtils}from './buffer_utils';
-import{Error}from './error';
-import*as ErrorExports from './error';
-import{StringUtils}from './string_utils';
-import*as StringUtilsExports from './string_utils';
- 
+ */
+import * as assertsExports from './debug___asserts';
+import {asserts} from './debug___asserts';
+import {BufferUtils} from './util___buffer_utils';
+import * as ErrorExports from './util___error';
+import {Error} from './util___error';
+import * as StringUtilsExports from './util___string_utils';
+import {StringUtils} from './util___string_utils';
+
 /**
-  * @summary DataViewReader abstracts a DataView object.
-  * @export
-  */ 
+ * @summary DataViewReader abstracts a DataView object.
+ * @export
+ */
 export class DataViewReader {
   private dataView_: DataView;
   private littleEndian_: boolean;
   private position_: number = 0;
-   
+
   /**
-     * @param endianness The endianness.
-     */ 
+   * @param endianness The endianness.
+   */
   constructor(data: BufferSource, endianness: Endianness) {
     this.dataView_ = BufferUtils.toDataView(data);
     this.littleEndian_ = endianness == Endianness.LITTLE_ENDIAN;
   }
-   
-  /** @return The underlying DataView instance. */ 
+
+  /** @return The underlying DataView instance. */
   getDataView(): DataView {
     return this.dataView_;
   }
-   
+
   /**
-     * @return True if the reader has more data, false otherwise.
-     * @export
-     */ 
+   * @return True if the reader has more data, false otherwise.
+   * @export
+   */
   hasMoreData(): boolean {
     return this.position_ < this.dataView_.byteLength;
   }
-   
+
   /**
-     * Gets the current byte position.
-     * @export
-     */ 
+   * Gets the current byte position.
+   * @export
+   */
   getPosition(): number {
     return this.position_;
   }
-   
+
   /**
-     * Gets the byte length of the DataView.
-     * @export
-     */ 
+   * Gets the byte length of the DataView.
+   * @export
+   */
   getLength(): number {
     return this.dataView_.byteLength;
   }
-   
+
   /**
-     * Reads an unsigned 8 bit integer, and advances the reader.
-     * @return The integer.
-     * @export
-     */ 
+   * Reads an unsigned 8 bit integer, and advances the reader.
+   * @return The integer.
+   * @export
+   */
   readUint8(): number {
     try {
       const value = this.dataView_.getUint8(this.position_);
@@ -71,42 +71,44 @@ export class DataViewReader {
       throw this.outOfBounds_();
     }
   }
-   
+
   /**
-     * Reads an unsigned 16 bit integer, and advances the reader.
-     * @return The integer.
-     * @export
-     */ 
+   * Reads an unsigned 16 bit integer, and advances the reader.
+   * @return The integer.
+   * @export
+   */
   readUint16(): number {
     try {
-      const value = this.dataView_.getUint16(this.position_, this.littleEndian_);
+      const value =
+          this.dataView_.getUint16(this.position_, this.littleEndian_);
       this.position_ += 2;
       return value;
     } catch (exception) {
       throw this.outOfBounds_();
     }
   }
-   
+
   /**
-     * Reads an unsigned 32 bit integer, and advances the reader.
-     * @return The integer.
-     * @export
-     */ 
+   * Reads an unsigned 32 bit integer, and advances the reader.
+   * @return The integer.
+   * @export
+   */
   readUint32(): number {
     try {
-      const value = this.dataView_.getUint32(this.position_, this.littleEndian_);
+      const value =
+          this.dataView_.getUint32(this.position_, this.littleEndian_);
       this.position_ += 4;
       return value;
     } catch (exception) {
       throw this.outOfBounds_();
     }
   }
-   
+
   /**
-     * Reads a signed 32 bit integer, and advances the reader.
-     * @return The integer.
-     * @export
-     */ 
+   * Reads a signed 32 bit integer, and advances the reader.
+   * @return The integer.
+   * @export
+   */
   readInt32(): number {
     try {
       const value = this.dataView_.getInt32(this.position_, this.littleEndian_);
@@ -116,12 +118,12 @@ export class DataViewReader {
       throw this.outOfBounds_();
     }
   }
-   
+
   /**
-     * Reads an unsigned 64 bit integer, and advances the reader.
-     * @return The integer.
-     * @export
-     */ 
+   * Reads an unsigned 64 bit integer, and advances the reader.
+   * @return The integer.
+   * @export
+   */
   readUint64(): number {
     let low: number;
     let high: number;
@@ -137,21 +139,23 @@ export class DataViewReader {
       throw this.outOfBounds_();
     }
     if (high > 2097151) {
-      throw new Error(ErrorExports.Severity.CRITICAL, ErrorExports.Category.MEDIA, ErrorExports.Code.JS_INTEGER_OVERFLOW);
+      throw new Error(
+          ErrorExports.Severity.CRITICAL, ErrorExports.Category.MEDIA,
+          ErrorExports.Code.JS_INTEGER_OVERFLOW);
     }
     this.position_ += 8;
-     
+
     // NOTE: This is subtle, but in JavaScript you can't shift left by 32
     // and get the full range of 53-bit values possible.
-    // You must multiply by 2^32. 
+    // You must multiply by 2^32.
     return high * Math.pow(2, 32) + low;
   }
-   
+
   /**
-     * Reads the specified number of raw bytes.
-     * @param bytes The number of bytes to read.
-     * @export
-     */ 
+   * Reads the specified number of raw bytes.
+   * @param bytes The number of bytes to read.
+   * @export
+   */
   readBytes(bytes: number): Uint8Array {
     asserts.assert(bytes >= 0, 'Bad call to DataViewReader.readBytes');
     if (this.position_ + bytes > this.dataView_.byteLength) {
@@ -161,12 +165,12 @@ export class DataViewReader {
     this.position_ += bytes;
     return value;
   }
-   
+
   /**
-     * Skips the specified number of bytes.
-     * @param bytes The number of bytes to skip.
-     * @export
-     */ 
+   * Skips the specified number of bytes.
+   * @param bytes The number of bytes to skip.
+   * @export
+   */
   skip(bytes: number) {
     asserts.assert(bytes >= 0, 'Bad call to DataViewReader.skip');
     if (this.position_ + bytes > this.dataView_.byteLength) {
@@ -174,12 +178,12 @@ export class DataViewReader {
     }
     this.position_ += bytes;
   }
-   
+
   /**
-     * Rewinds the specified number of bytes.
-     * @param bytes The number of bytes to rewind.
-     * @export
-     */ 
+   * Rewinds the specified number of bytes.
+   * @param bytes The number of bytes to rewind.
+   * @export
+   */
   rewind(bytes: number) {
     asserts.assert(bytes >= 0, 'Bad call to DataViewReader.rewind');
     if (this.position_ < bytes) {
@@ -187,12 +191,12 @@ export class DataViewReader {
     }
     this.position_ -= bytes;
   }
-   
+
   /**
-     * Seeks to a specified position.
-     * @param position The desired byte position within the DataView.
-     * @export
-     */ 
+   * Seeks to a specified position.
+   * @param position The desired byte position within the DataView.
+   * @export
+   */
   seek(position: number) {
     asserts.assert(position >= 0, 'Bad call to DataViewReader.seek');
     if (position < 0 || position > this.dataView_.byteLength) {
@@ -200,12 +204,12 @@ export class DataViewReader {
     }
     this.position_ = position;
   }
-   
+
   /**
-     * Keeps reading until it reaches a byte that equals to zero.  The text is
-     * assumed to be UTF-8.
-     * @export
-     */ 
+   * Keeps reading until it reaches a byte that equals to zero.  The text is
+   * assumed to be UTF-8.
+   * @export
+   */
   readTerminatedString(): string {
     const start = this.position_;
     while (this.hasMoreData()) {
@@ -215,22 +219,25 @@ export class DataViewReader {
       }
       this.position_ += 1;
     }
-    const ret = BufferUtils.toUint8(this.dataView_, start, this.position_ - start);
-     
-    // Skip string termination. 
+    const ret =
+        BufferUtils.toUint8(this.dataView_, start, this.position_ - start);
+
+    // Skip string termination.
     this.position_ += 1;
     return StringUtils.fromUTF8(ret);
   }
-   
+
   private outOfBounds_(): Error {
-    return new Error(ErrorExports.Severity.CRITICAL, ErrorExports.Category.MEDIA, ErrorExports.Code.BUFFER_READ_OUT_OF_BOUNDS);
+    return new Error(
+        ErrorExports.Severity.CRITICAL, ErrorExports.Category.MEDIA,
+        ErrorExports.Code.BUFFER_READ_OUT_OF_BOUNDS);
   }
 }
- 
+
 /**
  * Endianness.
  * @export
- */ 
+ */
 export enum Endianness {
   BIG_ENDIAN,
   LITTLE_ENDIAN

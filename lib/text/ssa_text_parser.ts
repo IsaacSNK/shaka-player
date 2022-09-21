@@ -2,56 +2,54 @@
  * Shaka Player
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
- */ 
-import{asserts}from './asserts';
-import*as assertsExports from './asserts';
-import{log}from './log';
-import*as logExports from './log';
-import{Cue}from './cue';
-import*as CueExports from './cue';
-import{TextEngine}from './text_engine';
-import*as TextEngineExports from './text_engine';
-import{StringUtils}from './string_utils';
-import*as StringUtilsExports from './string_utils';
- 
+ */
+import * as assertsExports from './debug___asserts';
+import {asserts} from './debug___asserts';
+import * as logExports from './debug___log';
+import {log} from './debug___log';
+import * as CueExports from './text___cue';
+import {Cue} from './text___cue';
+import * as TextEngineExports from './text___text_engine';
+import {TextEngine} from './text___text_engine';
+import * as StringUtilsExports from './util___string_utils';
+import {StringUtils} from './util___string_utils';
+
 /**
  * Documentation: http://moodub.free.fr/video/ass-specs.doc
  * https://en.wikipedia.org/wiki/SubStation_Alpha
  * @export
- */ 
-export class SsaTextParser implements shaka.extern.TextParser {
-   
+ */
+export class SsaTextParser implements shaka.
+extern.TextParser {
   /**
-     * @override
-     * @export
-     */ 
+   * @override
+   * @export
+   */
   parseInit(data) {
     asserts.assert(false, 'SSA does not have init segments');
   }
-   
+
   /**
-     * @override
-     * @export
-     */ 
-  setSequenceMode(sequenceMode) {
-  }
-   
+   * @override
+   * @export
+   */
+  setSequenceMode(sequenceMode) {}
+
   // Unused.
   /**
-     * @override
-     * @export
-     */ 
+   * @override
+   * @export
+   */
   parseMedia(data, time) {
     const StringUtils = StringUtils;
     const SsaTextParser = SsaTextParser;
-     
-    // Get the input as a string. 
+
+    // Get the input as a string.
     const str = StringUtils.fromUTF8(data);
-    const section = {styles:'', events:''};
+    const section = {styles: '', events: ''};
     const parts = str.split(/\r?\n\s*\r?\n/);
     for (const part of parts) {
-       
-      // SSA content 
+      // SSA content
       const match = SsaTextParser.ssaContent_.exec(part);
       if (match) {
         const tag = match[1];
@@ -67,17 +65,16 @@ export class SsaTextParser implements shaka.extern.TextParser {
       }
       log.warning('SsaTextParser parser encountered an unknown part.', part);
     }
-     
-    // Process styles 
+
+    // Process styles
     const styles = [];
-     
-    // Used to be able to iterate over the style parameters. 
+
+    // Used to be able to iterate over the style parameters.
     let styleColumns = null;
     const styleLines = section.styles.split(/\r?\n/);
     for (const line of styleLines) {
       if (/^\s*;/.test(line)) {
-         
-        // Skip comment 
+        // Skip comment
         continue;
       }
       const lineParts = SsaTextParser.lineParts_.exec(line);
@@ -99,17 +96,16 @@ export class SsaTextParser implements shaka.extern.TextParser {
         }
       }
     }
-     
-    // Process cues 
+
+    // Process cues
     const cues: shaka.extern.Cue[] = [];
-     
-    // Used to be able to iterate over the event parameters. 
+
+    // Used to be able to iterate over the event parameters.
     let eventColumns = null;
     const eventLines = section.events.split(/\r?\n/);
     for (const line of eventLines) {
       if (/^\s*;/.test(line)) {
-         
-        // Skip comment 
+        // Skip comment
         continue;
       }
       const lineParts = SsaTextParser.lineParts_.exec(line);
@@ -128,18 +124,22 @@ export class SsaTextParser implements shaka.extern.TextParser {
           }
           const startTime = SsaTextParser.parseTime_(data['Start']);
           const endTime = SsaTextParser.parseTime_(data['End']);
-           
+
           // Note: Normally, you should take the "Text" field, but if it
-          // has a comma, it fails. 
-          const payload = values.slice(eventColumns.length - 1).join(',').replace(/\\N/g,  
-          // '\n' for new line 
-          '\n').replace(/\{[^}]+\}/g,  
-          // {\pos(400,570)} 
-          '');
+          // has a comma, it fails.
+          const payload = values.slice(eventColumns.length - 1)
+                              .join(',')
+                              .replace(
+                                  /\\N/g,
+                                  // '\n' for new line
+                                  '\n')
+                              .replace(
+                                  /\{[^}]+\}/g,
+                                  // {\pos(400,570)}
+                                  '');
           const cue = new Cue(startTime, endTime, payload);
           const styleName = data['Style'];
-          const styleData = styles.find( 
-          (s) => s['Name'] == styleName);
+          const styleData = styles.find((s) => s['Name'] == styleName);
           if (styleData) {
             SsaTextParser.addStyle_(cue, styleData);
           }
@@ -150,11 +150,11 @@ export class SsaTextParser implements shaka.extern.TextParser {
     }
     return cues;
   }
-   
+
   /**
-     * Adds applicable style properties to a cue.
-     *
-     */ 
+   * Adds applicable style properties to a cue.
+   *
+   */
   private static addStyle_(cue: shaka.extern.Cue, style: Object) {
     const Cue = Cue;
     const SsaTextParser = SsaTextParser;
@@ -199,7 +199,7 @@ export class SsaTextParser implements shaka.extern.TextParser {
     const alignment = style['Alignment'];
     if (alignment) {
       const alignmentInt = parseInt(alignment, 10);
-      switch(alignmentInt) {
+      switch (alignmentInt) {
         case 1:
           cue.displayAlign = Cue.displayAlign.AFTER;
           cue.textAlign = Cue.textAlign.START;
@@ -243,22 +243,21 @@ export class SsaTextParser implements shaka.extern.TextParser {
       cue.opacity = parseFloat(opacity);
     }
   }
-   
+
   /**
-     * Parses a SSA color .
-     *
-     */ 
-  private static parseSsaColor_(colorString: string): string | null {
-     
+   * Parses a SSA color .
+   *
+   */
+  private static parseSsaColor_(colorString: string): string|null {
     // The SSA V4+ color can be represented in hex (&HAABBGGRR) or in decimal
     // format (byte order AABBGGRR) and in both cases the alpha channel's
     // value needs to be inverted as in case of SSA the 0xFF alpha value means
-    // transparent and 0x00 means opaque 
+    // transparent and 0x00 means opaque
     const abgr: number = parseInt(colorString.replace('&H', ''), 16);
     if (abgr >= 0) {
       const a = abgr >> 24 & 255 ^ 255;
-       
-      // Flip alpha. 
+
+      // Flip alpha.
       const alpha = a / 255;
       const b = abgr >> 16 & 255;
       const g = abgr >> 8 & 255;
@@ -267,11 +266,11 @@ export class SsaTextParser implements shaka.extern.TextParser {
     }
     return null;
   }
-   
+
   /**
-     * Parses a SSA time from the given parser.
-     *
-     */ 
+   * Parses a SSA time from the given parser.
+   *
+   */
   private static parseTime_(string: string): number {
     const SsaTextParser = SsaTextParser;
     const match = SsaTextParser.timeFormat_.exec(string);
@@ -281,25 +280,25 @@ export class SsaTextParser implements shaka.extern.TextParser {
     return hours * 3600 + minutes * 60 + seconds;
   }
 }
- 
+
 /**
  * @example [V4 Styles]\nFormat: Name\nStyle: DefaultVCD
- */ 
+ */
 export const ssaContent_: RegExp = /^\s*\[([^\]]+)\]\r?\n([\s\S]*)/;
- 
+
 /**
  * @example Style: DefaultVCD,...
- */ 
+ */
 export const lineParts_: RegExp = /^\s*([^:]+):\s*(.*)/;
- 
+
 /**
  * @example Style: DefaultVCD,...
- */ 
+ */
 export const valuesFormat_: RegExp = /\s*,\s*/;
- 
+
 /**
  * @example 0:00:01.1 or 0:00:01.18 or 0:00:01.180
- */ 
-export const timeFormat_: RegExp = /^(\d+:)?(\d{1,2}):(\d{1,2}(?:[.]\d{1,3})?)?$/;
-TextEngine.registerParser('text/x-ssa',  
-() => new SsaTextParser());
+ */
+export const timeFormat_: RegExp =
+    /^(\d+:)?(\d{1,2}):(\d{1,2}(?:[.]\d{1,3})?)?$/;
+TextEngine.registerParser('text/x-ssa', () => new SsaTextParser());

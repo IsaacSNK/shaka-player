@@ -2,8 +2,8 @@
  * Shaka Player
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
- */ 
- 
+ */
+
 /**
  * The OfflineUri class contains all the components that make up the offline
  * uri. The components are:
@@ -13,48 +13,49 @@
  *               holds the data.
  *    CELL: The name of the cell that holds the data.
  *    KEY: The key that the data is stored under in the cell.
- */ 
+ */
 export class OfflineUri {
   private type_: string;
   private mechanism_: string;
   private cell_: string;
   private key_: number;
   private asString_: string;
-   
+
   constructor(type: string, mechanism: string, cell: string, key: number) {
     this.type_ = type;
     this.mechanism_ = mechanism;
     this.cell_ = cell;
     this.key_ = key;
-    this.asString_ = ['offline:', type, '/', mechanism, '/', cell, '/', key].join('');
+    this.asString_ =
+        ['offline:', type, '/', mechanism, '/', cell, '/', key].join('');
   }
-   
+
   isManifest(): boolean {
     return this.type_ == 'manifest';
   }
-   
+
   isSegment(): boolean {
     return this.type_ == 'segment';
   }
-   
+
   mechanism(): string {
     return this.mechanism_;
   }
-   
+
   cell(): string {
     return this.cell_;
   }
-   
+
   key(): number {
     return this.key_;
   }
-   
-  /** @override */ 
+
+  /** @override */
   toString() {
     return this.asString_;
   }
-   
-  static parse(uri: string): OfflineUri | null {
+
+  static parse(uri: string): OfflineUri|null {
     const parts = /^offline:([a-z]+)\/([^/]+)\/([^/]+)\/([0-9]+)$/.exec(uri);
     if (parts == null) {
       return null;
@@ -77,11 +78,11 @@ export class OfflineUri {
     }
     return new OfflineUri(type, mechanism, cell, key);
   }
-   
+
   static manifest(mechanism: string, cell: string, key: number): OfflineUri {
     return new OfflineUri('manifest', mechanism, cell, key);
   }
-   
+
   static segment(mechanism: string, cell: string, key: number): OfflineUri {
     return new OfflineUri('segment', mechanism, cell, key);
   }

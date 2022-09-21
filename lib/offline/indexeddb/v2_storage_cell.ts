@@ -2,11 +2,11 @@
  * Shaka Player
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
- */ 
-import{BaseStorageCell}from './base_storage_cell';
-import{PeriodCombiner}from './periods';
-import*as PeriodCombinerExports from './periods';
- 
+ */
+import {BaseStorageCell} from './indexeddb___base_storage_cell';
+import * as PeriodCombinerExports from './util___periods';
+import {PeriodCombiner} from './util___periods';
+
 /**
  * The V2StorageCell is for all stores that follow the shaka.externs V2 and V3
  * offline types.  V2 was introduced in Shaka Player v2.3.0 and quickly
@@ -21,52 +21,108 @@ import*as PeriodCombinerExports from './periods';
  * The manifest and segment stores didn't change in database V4, but a separate
  * table for session IDs was added.  So this cell also covers DB V4.
  *
- */ 
-export class V2StorageCell extends BaseStorageCell implements shaka.extern.StorageCell {
-   
+ */
+export class V2StorageCell extends BaseStorageCell implements shaka.
+extern.StorageCell {
   /**
-     * @override
-     */ 
-  async convertManifest(old: shaka.extern.ManifestDBV2): Promise<shaka.extern.ManifestDB> {
+   * @override
+   */
+  async convertManifest(old: shaka.extern.ManifestDBV2):
+      Promise<shaka.extern.ManifestDB> {
     const streamsPerPeriod = [];
     for (let i = 0; i < old.periods.length; ++i) {
-       
-      // The last period ends at the end of the presentation. 
-      const periodEnd = i == old.periods.length - 1 ? old.duration : old.periods[i + 1].startTime;
+      // The last period ends at the end of the presentation.
+      const periodEnd = i == old.periods.length - 1 ?
+          old.duration :
+          old.periods[i + 1].startTime;
       const duration = periodEnd - old.periods[i].startTime;
       const streams = this.convertPeriod_(old.periods[i], duration);
       streamsPerPeriod.push(streams);
     }
     const streams = await PeriodCombiner.combineDbStreams(streamsPerPeriod);
-    return {appMetadata:old.appMetadata, creationTime:0, drmInfo:old.drmInfo, duration:old.duration,  
-    // JSON serialization turns Infinity into null, so turn it back now. 
-    expiration:old.expiration == null ? Infinity : old.expiration, originalManifestUri:old.originalManifestUri, sessionIds:old.sessionIds, size:old.size, streams, sequenceMode:false};
+    return {
+      appMetadata: old.appMetadata,
+      creationTime: 0,
+      drmInfo: old.drmInfo,
+      duration: old.duration,
+      // JSON serialization turns Infinity into null, so turn it back now.
+      expiration: old.expiration == null ? Infinity : old.expiration,
+      originalManifestUri: old.originalManifestUri,
+      sessionIds: old.sessionIds,
+      size: old.size,
+      streams,
+      sequenceMode: false
+    };
   }
-   
-  private convertPeriod_(period: shaka.extern.PeriodDBV2, periodDuration: number): shaka.extern.StreamDB[] {
+
+  private convertPeriod_(
+      period: shaka.extern.PeriodDBV2,
+      periodDuration: number): shaka.extern.StreamDB[] {
     const streams = [];
     for (const stream of period.streams) {
-       
       // The v4 version of the database as written by v2.5.0 - v2.5.9 might have
       // been corrupted slightly.  A bug caused the stream metadata from all
       // periods to be written to each period.  This was corrected in v2.5.10.
       // To fix this, we can identify the extra streams by their lack of
-      // variantIds and skip them. 
+      // variantIds and skip them.
       if (stream.variantIds.length == 0) {
         continue;
       }
-      streams.push(this.convertStream_(stream, period.startTime, period.startTime + periodDuration));
+      streams.push(this.convertStream_(
+          stream, period.startTime, period.startTime + periodDuration));
     }
     return streams;
   }
-   
-  private convertStream_(old: shaka.extern.StreamDBV2, periodStart: number, periodEnd: number): shaka.extern.StreamDB {
-    return {id:old.id, originalId:old.originalId, primary:old.primary, type:old.contentType, mimeType:old.mimeType, codecs:old.codecs, frameRate:old.frameRate, pixelAspectRatio:old.pixelAspectRatio, hdr:undefined, kind:old.kind, language:old.language, label:old.label, width:old.width, height:old.height, encrypted:old.encrypted, keyIds:new Set([old.keyId]), segments:old.segments.map( 
-    (segment) => this.convertSegment_(segment, old.initSegmentKey, periodStart, periodEnd, old.presentationTimeOffset)), variantIds:old.variantIds, roles:[], forced:false, audioSamplingRate:null, channelsCount:null, spatialAudio:false, closedCaptions:null, tilesLayout:undefined};
+
+  private convertStream_(
+      old: shaka.extern.StreamDBV2, periodStart: number,
+      periodEnd: number): shaka.extern.StreamDB {
+    return {
+      id: old.id,
+      originalId: old.originalId,
+      primary: old.primary,
+      type: old.contentType,
+      mimeType: old.mimeType,
+      codecs: old.codecs,
+      frameRate: old.frameRate,
+      pixelAspectRatio: old.pixelAspectRatio,
+      hdr: undefined,
+      kind: old.kind,
+      language: old.language,
+      label: old.label,
+      width: old.width,
+      height: old.height,
+      encrypted: old.encrypted,
+      keyIds: new Set([old.keyId]),
+      segments: old.segments.map(
+          (segment) => this.convertSegment_(
+              segment, old.initSegmentKey, periodStart, periodEnd,
+              old.presentationTimeOffset)),
+      variantIds: old.variantIds,
+      roles: [],
+      forced: false,
+      audioSamplingRate: null,
+      channelsCount: null,
+      spatialAudio: false,
+      closedCaptions: null,
+      tilesLayout: undefined
+    };
   }
-   
-  private convertSegment_(old: shaka.extern.SegmentDBV2, initSegmentKey: number | null, periodStart: number, periodEnd: number, presentationTimeOffset: number): shaka.extern.SegmentDB {
+
+  private convertSegment_(
+      old: shaka.extern.SegmentDBV2, initSegmentKey: number|null,
+      periodStart: number, periodEnd: number,
+      presentationTimeOffset: number): shaka.extern.SegmentDB {
     const timestampOffset = periodStart - presentationTimeOffset;
-    return {startTime:periodStart + old.startTime, endTime:periodStart + old.endTime, initSegmentKey, appendWindowStart:periodStart, appendWindowEnd:periodEnd, timestampOffset, dataKey:old.dataKey, tilesLayout:''};
+    return {
+      startTime: periodStart + old.startTime,
+      endTime: periodStart + old.endTime,
+      initSegmentKey,
+      appendWindowStart: periodStart,
+      appendWindowEnd: periodEnd,
+      timestampOffset,
+      dataKey: old.dataKey,
+      tilesLayout: ''
+    };
   }
 }

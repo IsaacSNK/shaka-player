@@ -2,16 +2,16 @@
  * Shaka Player
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
- */ 
-import{asserts}from './asserts';
-import*as assertsExports from './asserts';
-import{EwmaBandwidthEstimator}from './ewma_bandwidth_estimator';
-import{log}from './log';
-import*as logExports from './log';
-import{StreamUtils}from './stream_utils';
-import*as StreamUtilsExports from './stream_utils';
-import{Timer}from './timer';
- 
+ */
+import {EwmaBandwidthEstimator} from './abr___ewma_bandwidth_estimator';
+import * as assertsExports from './debug___asserts';
+import {asserts} from './debug___asserts';
+import * as logExports from './debug___log';
+import {log} from './debug___log';
+import * as StreamUtilsExports from './util___stream_utils';
+import {StreamUtils} from './util___stream_utils';
+import {Timer} from './util___timer';
+
 /**
  * @summary
  * <p>
@@ -31,39 +31,39 @@ import{Timer}from './timer';
  * </p>
  *
  * @export
- */ 
-export class SimpleAbrManager implements shaka.extern.AbrManager {
-  private switch_: shaka.extern.AbrManager.SwitchCallback | null = null;
+ */
+export class SimpleAbrManager implements shaka.
+extern.AbrManager {
+  private switch_: shaka.extern.AbrManager.SwitchCallback|null = null;
   private enabled_: boolean = false;
   private bandwidthEstimator_: EwmaBandwidthEstimator;
-   
+
   /**
-       * A filtered list of Variants to choose from.
-       */ 
+   * A filtered list of Variants to choose from.
+   */
   private variants_: shaka.extern.Variant[] = [];
   private playbackRate_: number = 1;
   private startupComplete_: boolean = false;
-   
+
   /**
-       * The last wall-clock time, in milliseconds, when streams were chosen.
-       *
-       */ 
-  private lastTimeChosenMs_: number | null = null;
-  private config_: shaka.extern.AbrConfiguration | null = null;
+   * The last wall-clock time, in milliseconds, when streams were chosen.
+   *
+   */
+  private lastTimeChosenMs_: number|null = null;
+  private config_: shaka.extern.AbrConfiguration|null = null;
   private mediaElement_: HTMLMediaElement = null;
   private resizeObserver_: ResizeObserver = null;
   private resizeObserverTimer_: Timer;
-   
+
   constructor() {
     this.bandwidthEstimator_ = new EwmaBandwidthEstimator();
-     
+
     // Some browsers implement the Network Information API, which allows
     // retrieving information about a user's network connection. We listen
     // to the change event to be able to make quick changes in case the type
-    // of connectivity changes. 
+    // of connectivity changes.
     if (navigator.connection) {
-      navigator.connection.addEventListener('change',  
-      () => {
+      navigator.connection.addEventListener('change', () => {
         if (this.config_.useNetworkInformation && this.enabled_) {
           this.bandwidthEstimator_ = new EwmaBandwidthEstimator();
           if (this.config_) {
@@ -76,8 +76,7 @@ export class SimpleAbrManager implements shaka.extern.AbrManager {
         }
       });
     }
-    this.resizeObserverTimer_ = new Timer( 
-    () => {
+    this.resizeObserverTimer_ = new Timer(() => {
       if (this.config_.restrictToElementSize) {
         const chosenVariant = this.chooseVariant();
         if (chosenVariant) {
@@ -86,11 +85,11 @@ export class SimpleAbrManager implements shaka.extern.AbrManager {
       }
     });
   }
-   
+
   /**
-     * @override
-     * @export
-     */ 
+   * @override
+   * @export
+   */
   stop() {
     this.switch_ = null;
     this.enabled_ = false;
@@ -104,61 +103,67 @@ export class SimpleAbrManager implements shaka.extern.AbrManager {
     }
     this.resizeObserverTimer_.stop();
   }
-   
+
   // Don't reset |startupComplete_|: if we've left the startup interval, we
   // can start using bandwidth estimates right away after init() is called.
   /**
-     * @override
-     * @export
-     */ 
+   * @override
+   * @export
+   */
   init(switchCallback) {
     this.switch_ = switchCallback;
   }
-   
+
   /**
-     * @override
-     * @export
-     */ 
+   * @override
+   * @export
+   */
   chooseVariant() {
     const SimpleAbrManager = SimpleAbrManager;
     let maxHeight = Infinity;
     let maxWidth = Infinity;
     if (this.resizeObserver_ && this.config_.restrictToElementSize) {
-      const devicePixelRatio = this.config_.ignoreDevicePixelRatio ? 1 : window.devicePixelRatio;
+      const devicePixelRatio =
+          this.config_.ignoreDevicePixelRatio ? 1 : window.devicePixelRatio;
       maxHeight = this.mediaElement_.clientWidth * devicePixelRatio;
       maxWidth = this.mediaElement_.clientHeight * devicePixelRatio;
     }
-     
-    // Get sorted Variants. 
-    let sortedVariants = SimpleAbrManager.filterAndSortVariants_(this.config_.restrictions, this.variants_, maxHeight, maxWidth);
+
+    // Get sorted Variants.
+    let sortedVariants = SimpleAbrManager.filterAndSortVariants_(
+        this.config_.restrictions, this.variants_, maxHeight, maxWidth);
     const defaultBandwidthEstimate = this.getDefaultBandwidth_();
-    const currentBandwidth = this.bandwidthEstimator_.getBandwidthEstimate(defaultBandwidthEstimate);
+    const currentBandwidth =
+        this.bandwidthEstimator_.getBandwidthEstimate(defaultBandwidthEstimate);
     if (this.variants_.length && !sortedVariants.length) {
-       
       // If we couldn't meet the ABR restrictions, we should still play
       // something.
       // These restrictions are not "hard" restrictions in the way that
       // top-level or DRM-based restrictions are.  Sort the variants without
-      // restrictions and keep just the first (lowest-bandwidth) one. 
-      log.warning('No variants met the ABR restrictions. ' + 'Choosing a variant by lowest bandwidth.');
-      sortedVariants = SimpleAbrManager.filterAndSortVariants_( 
-      /* restrictions= */ 
-      null, this.variants_,  
-      /* maxHeight= */ 
-      Infinity,  
-      /* maxWidth= */ 
-      Infinity);
+      // restrictions and keep just the first (lowest-bandwidth) one.
+      log.warning(
+          'No variants met the ABR restrictions. ' +
+          'Choosing a variant by lowest bandwidth.');
+      sortedVariants = SimpleAbrManager.filterAndSortVariants_(
+          /* restrictions= */
+          null, this.variants_,
+          /* maxHeight= */
+          Infinity,
+          /* maxWidth= */
+          Infinity);
       sortedVariants = [sortedVariants[0]];
     }
-     
-    // Start by assuming that we will use the first Stream. 
+
+    // Start by assuming that we will use the first Stream.
     let chosen = sortedVariants[0] || null;
     for (let i = 0; i < sortedVariants.length; i++) {
       const item = sortedVariants[i];
-      const playbackRate = !isNaN(this.playbackRate_) ? Math.abs(this.playbackRate_) : 1;
+      const playbackRate =
+          !isNaN(this.playbackRate_) ? Math.abs(this.playbackRate_) : 1;
       const itemBandwidth = playbackRate * item.bandwidth;
-      const minBandwidth = itemBandwidth / this.config_.bandwidthDowngradeTarget;
-      let next = {bandwidth:Infinity};
+      const minBandwidth =
+          itemBandwidth / this.config_.bandwidthDowngradeTarget;
+      let next = {bandwidth: Infinity};
       for (let j = i + 1; j < sortedVariants.length; j++) {
         if (item.bandwidth != sortedVariants[j].bandwidth) {
           next = sortedVariants[j];
@@ -167,73 +172,81 @@ export class SimpleAbrManager implements shaka.extern.AbrManager {
       }
       const nextBandwidth = playbackRate * next.bandwidth;
       const maxBandwidth = nextBandwidth / this.config_.bandwidthUpgradeTarget;
-      log.v2('Bandwidth ranges:', (itemBandwidth / 1e6).toFixed(3), (minBandwidth / 1e6).toFixed(3), (maxBandwidth / 1e6).toFixed(3));
-      if (currentBandwidth >= minBandwidth && currentBandwidth <= maxBandwidth && chosen.bandwidth != item.bandwidth) {
+      log.v2(
+          'Bandwidth ranges:', (itemBandwidth / 1e6).toFixed(3),
+          (minBandwidth / 1e6).toFixed(3), (maxBandwidth / 1e6).toFixed(3));
+      if (currentBandwidth >= minBandwidth &&
+          currentBandwidth <= maxBandwidth &&
+          chosen.bandwidth != item.bandwidth) {
         chosen = item;
       }
     }
     this.lastTimeChosenMs_ = Date.now();
     return chosen;
   }
-   
+
   /**
-     * @override
-     * @export
-     */ 
+   * @override
+   * @export
+   */
   enable() {
     this.enabled_ = true;
   }
-   
+
   /**
-     * @override
-     * @export
-     */ 
+   * @override
+   * @export
+   */
   disable() {
     this.enabled_ = false;
   }
-   
+
   /**
-     * @override
-     * @export
-     */ 
+   * @override
+   * @export
+   */
   segmentDownloaded(deltaTimeMs, numBytes) {
-    log.v2('Segment downloaded:', 'deltaTimeMs=' + deltaTimeMs, 'numBytes=' + numBytes, 'lastTimeChosenMs=' + this.lastTimeChosenMs_, 'enabled=' + this.enabled_);
+    log.v2(
+        'Segment downloaded:', 'deltaTimeMs=' + deltaTimeMs,
+        'numBytes=' + numBytes, 'lastTimeChosenMs=' + this.lastTimeChosenMs_,
+        'enabled=' + this.enabled_);
     asserts.assert(deltaTimeMs >= 0, 'expected a non-negative duration');
     this.bandwidthEstimator_.sample(deltaTimeMs, numBytes);
     if (this.lastTimeChosenMs_ != null && this.enabled_) {
       this.suggestStreams_();
     }
   }
-   
+
   /**
-     * @override
-     * @export
-     */ 
+   * @override
+   * @export
+   */
   getBandwidthEstimate() {
     const defaultBandwidthEstimate = this.getDefaultBandwidth_();
-    return this.bandwidthEstimator_.getBandwidthEstimate(defaultBandwidthEstimate);
+    return this.bandwidthEstimator_.getBandwidthEstimate(
+        defaultBandwidthEstimate);
   }
-   
+
   /**
-     * @override
-     * @export
-     */ 
+   * @override
+   * @export
+   */
   setVariants(variants) {
     this.variants_ = variants;
   }
-   
+
   /**
-     * @override
-     * @export
-     */ 
+   * @override
+   * @export
+   */
   playbackRateChanged(rate) {
     this.playbackRate_ = rate;
   }
-   
+
   /**
-     * @override
-     * @export
-     */ 
+   * @override
+   * @export
+   */
   setMediaElement(mediaElement) {
     this.mediaElement_ = mediaElement;
     if (this.resizeObserver_) {
@@ -241,48 +254,46 @@ export class SimpleAbrManager implements shaka.extern.AbrManager {
       this.resizeObserver_ = null;
     }
     if (this.mediaElement_ && 'ResizeObserver' in window) {
-      this.resizeObserver_ = new ResizeObserver( 
-      () => {
+      this.resizeObserver_ = new ResizeObserver(() => {
         const SimpleAbrManager = SimpleAbrManager;
-         
-        // Batch up resize changes before checking them. 
-        this.resizeObserverTimer_.tickAfter( 
-        /* seconds= */ 
-        SimpleAbrManager.RESIZE_OBSERVER_BATCH_TIME);
+
+        // Batch up resize changes before checking them.
+        this.resizeObserverTimer_.tickAfter(
+            /* seconds= */
+            SimpleAbrManager.RESIZE_OBSERVER_BATCH_TIME);
       });
       this.resizeObserver_.observe(this.mediaElement_);
     }
   }
-   
+
   /**
-     * @override
-     * @export
-     */ 
+   * @override
+   * @export
+   */
   configure(config) {
     this.config_ = config;
     if (this.bandwidthEstimator_ && this.config_) {
       this.bandwidthEstimator_.configure(this.config_.advanced);
     }
   }
-   
+
   /**
-     * Calls switch_() with the variant chosen by chooseVariant().
-     *
-     */ 
+   * Calls switch_() with the variant chosen by chooseVariant().
+   *
+   */
   private suggestStreams_() {
     log.v2('Suggesting Streams...');
-    asserts.assert(this.lastTimeChosenMs_ != null, 'lastTimeChosenMs_ should not be null');
+    asserts.assert(
+        this.lastTimeChosenMs_ != null, 'lastTimeChosenMs_ should not be null');
     if (!this.startupComplete_) {
-       
-      // Check if we've got enough data yet. 
+      // Check if we've got enough data yet.
       if (!this.bandwidthEstimator_.hasGoodEstimate()) {
         log.v2('Still waiting for a good estimate...');
         return;
       }
       this.startupComplete_ = true;
     } else {
-       
-      // Check if we've left the switch interval. 
+      // Check if we've left the switch interval.
       const now = Date.now();
       const delta = now - this.lastTimeChosenMs_;
       if (delta < this.config_.switchInterval * 1000) {
@@ -292,58 +303,61 @@ export class SimpleAbrManager implements shaka.extern.AbrManager {
     }
     const chosenVariant = this.chooseVariant();
     const defaultBandwidthEstimate = this.getDefaultBandwidth_();
-    const bandwidthEstimate = this.bandwidthEstimator_.getBandwidthEstimate(defaultBandwidthEstimate);
+    const bandwidthEstimate =
+        this.bandwidthEstimator_.getBandwidthEstimate(defaultBandwidthEstimate);
     const currentBandwidthKbps = Math.round(bandwidthEstimate / 1000.0);
     if (chosenVariant) {
-      log.debug('Calling switch_(), bandwidth=' + currentBandwidthKbps + ' kbps');
-       
+      log.debug(
+          'Calling switch_(), bandwidth=' + currentBandwidthKbps + ' kbps');
+
       // If any of these chosen streams are already chosen, Player will filter
-      // them out before passing the choices on to StreamingEngine. 
+      // them out before passing the choices on to StreamingEngine.
       this.switch_(chosenVariant);
     }
   }
-   
+
   private getDefaultBandwidth_() {
     let defaultBandwidthEstimate = this.config_.defaultBandwidthEstimate;
-     
+
     // Some browsers implement the Network Information API, which allows
     // retrieving information about a user's network connection.  Tizen 3 has
-    // NetworkInformation, but not the downlink attribute. 
-    if (navigator.connection && navigator.connection.downlink && this.config_.useNetworkInformation) {
-       
+    // NetworkInformation, but not the downlink attribute.
+    if (navigator.connection && navigator.connection.downlink &&
+        this.config_.useNetworkInformation) {
       // If it's available, get the bandwidth estimate from the browser (in
-      // megabits per second) and use it as defaultBandwidthEstimate. 
+      // megabits per second) and use it as defaultBandwidthEstimate.
       defaultBandwidthEstimate = navigator.connection.downlink * 1e6;
     }
     return defaultBandwidthEstimate;
   }
-   
+
   /**
-     * @return variants filtered according to
-     *   |restrictions| and sorted in ascending order of bandwidth.
-     */ 
-  private static filterAndSortVariants_(restrictions: shaka.extern.Restrictions | null, variants: shaka.extern.Variant[], maxHeight: number, maxWidth: number): shaka.extern.Variant[] {
+   * @return variants filtered according to
+   *   |restrictions| and sorted in ascending order of bandwidth.
+   */
+  private static filterAndSortVariants_(
+      restrictions: shaka.extern.Restrictions|null,
+      variants: shaka.extern.Variant[], maxHeight: number,
+      maxWidth: number): shaka.extern.Variant[] {
     if (restrictions) {
-      variants = variants.filter( 
-      (variant) => {
-         
+      variants = variants.filter((variant) => {
         // This was already checked in another scope, but the compiler doesn't
-        // seem to understand that. 
+        // seem to understand that.
         asserts.assert(restrictions, 'Restrictions should exist!');
-        return StreamUtils.meetsRestrictions(variant, restrictions,  
-        /* maxHwRes= */ 
-        {width:maxWidth, height:maxHeight});
+        return StreamUtils.meetsRestrictions(
+            variant, restrictions,
+            /* maxHwRes= */
+            {width: maxWidth, height: maxHeight});
       });
     }
-    return variants.sort( 
-    (v1, v2) => {
+    return variants.sort((v1, v2) => {
       return v1.bandwidth - v2.bandwidth;
     });
   }
 }
- 
+
 /**
  * The amount of time, in seconds, we wait to batch up rapid resize changes.
  * This allows us to avoid multiple resize events in most cases.
- */ 
+ */
 export const RESIZE_OBSERVER_BATCH_TIME: number = 1;

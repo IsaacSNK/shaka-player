@@ -2,77 +2,78 @@
  * Shaka Player
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
- */ 
-import{log}from './log';
-import*as logExports from './log';
-goog.require('shaka.polyfill');
-import{MimeUtils}from './mime_utils';
-import*as MimeUtilsExports from './mime_utils';
-import{Platform}from './platform';
-import*as PlatformExports from './platform';
- 
+ */
+import * as logExports from './debug___log';
+import {log} from './debug___log';
+import * as polyfillExports from './polyfill___all';
+import {polyfill} from './polyfill___all';
+import * as MimeUtilsExports from './util___mime_utils';
+import {MimeUtils} from './util___mime_utils';
+import * as PlatformExports from './util___platform';
+import {Platform} from './util___platform';
+
 /**
  * @summary A polyfill to patch MSE bugs.
  * @export
- */ 
+ */
 export class MediaSource {
-   
   /**
-     * Install the polyfill if needed.
-     * @export
-     */ 
+   * Install the polyfill if needed.
+   * @export
+   */
   static install() {
     log.debug('MediaSource.install');
-     
+
     // MediaSource bugs are difficult to detect without checking for the
     // affected platform.  SourceBuffer is not always exposed on window, for
     // example, and instances are only accessible after setting up MediaSource
     // on a video element.  Because of this, we use UA detection and other
-    // platform detection tricks to decide which patches to install. 
+    // platform detection tricks to decide which patches to install.
     const safariVersion = Platform.safariVersion();
     if (!window.MediaSource) {
       log.info('No MSE implementation available.');
     } else {
-      if (window.cast && cast.__platform__ && cast.__platform__.canDisplayType) {
+      if (window.cast && cast.__platform__ &&
+          cast.__platform__.canDisplayType) {
         log.info('Patching Chromecast MSE bugs.');
-         
-        // Chromecast cannot make accurate determinations via isTypeSupported. 
+
+        // Chromecast cannot make accurate determinations via isTypeSupported.
         MediaSource.patchCastIsTypeSupported_();
       } else {
         if (safariVersion) {
-           
-          // NOTE:  shaka.Player.isBrowserSupported() has its own restrictions on
-          // Safari version. 
+          // NOTE:  shaka.Player.isBrowserSupported() has its own restrictions
+          // on Safari version.
           if (safariVersion <= 12) {
             log.info('Patching Safari 11 & 12 MSE bugs.');
-             
-            // Safari 11 & 12 do not correctly implement abort() on SourceBuffer.
-            // Calling abort() before appending a segment causes that segment to be
-            // incomplete in the buffer.
-            // Bug filed: https://bugs.webkit.org/show_bug.cgi?id=165342 
+
+            // Safari 11 & 12 do not correctly implement abort() on
+            // SourceBuffer. Calling abort() before appending a segment causes
+            // that segment to be incomplete in the buffer. Bug filed:
+            // https://bugs.webkit.org/show_bug.cgi?id=165342
             MediaSource.stubAbort_();
-             
-            // If you remove up to a keyframe, Safari 11 & 12 incorrectly will also
-            // remove that keyframe and the content up to the next.
+
+            // If you remove up to a keyframe, Safari 11 & 12 incorrectly will
+            // also remove that keyframe and the content up to the next.
             // Offsetting the end of the removal range seems to help.
-            // Bug filed: https://bugs.webkit.org/show_bug.cgi?id=177884 
+            // Bug filed: https://bugs.webkit.org/show_bug.cgi?id=177884
             MediaSource.patchRemovalRange_();
           } else {
             log.info('Patching Safari 13 MSE bugs.');
-             
+
             // Safari 13 does not correctly implement abort() on SourceBuffer.
-            // Calling abort() before appending a segment causes that segment to be
-            // incomplete in the buffer.
-            // Bug filed: https://bugs.webkit.org/show_bug.cgi?id=165342 
+            // Calling abort() before appending a segment causes that segment to
+            // be incomplete in the buffer. Bug filed:
+            // https://bugs.webkit.org/show_bug.cgi?id=165342
             MediaSource.stubAbort_();
           }
         } else {
-          if (Platform.isTizen2() || Platform.isTizen3() || Platform.isTizen4()) {
+          if (Platform.isTizen2() || Platform.isTizen3() ||
+              Platform.isTizen4()) {
             log.info('Rejecting Opus.');
-             
-            // Tizen's implementation of MSE does not work well with opus. To prevent
-            // the player from trying to play opus on Tizen, we will override media
-            // source to always reject opus content. 
+
+            // Tizen's implementation of MSE does not work well with opus. To
+            // prevent the player from trying to play opus on Tizen, we will
+            // override media source to always reject opus content.
             MediaSource.rejectCodec_('opus');
           } else {
             log.info('Using native MSE as-is.');
@@ -80,143 +81,129 @@ export class MediaSource {
         }
       }
     }
-    if (window.MediaSource && MediaSource.isTypeSupported('video/webm; codecs="vp9"') && !MediaSource.isTypeSupported('video/webm; codecs="vp09.00.10.08"')) {
+    if (window.MediaSource &&
+        MediaSource.isTypeSupported('video/webm; codecs="vp9"') &&
+        !MediaSource.isTypeSupported('video/webm; codecs="vp09.00.10.08"')) {
       log.info('Patching vp09 support queries.');
-       
+
       // Only the old, deprecated style of VP9 codec strings is supported.
       // This occurs on older smart TVs.
-      // Patch isTypeSupported to translate the new strings into the old one. 
+      // Patch isTypeSupported to translate the new strings into the old one.
       MediaSource.patchVp09_();
     }
   }
-   
+
   /**
-     * Stub out abort().  On some buggy MSE implementations, calling abort()
-     * causes various problems.
-     *
-     */ 
+   * Stub out abort().  On some buggy MSE implementations, calling abort()
+   * causes various problems.
+   *
+   */
   private static stubAbort_() {
-     
-    /* eslint-disable no-restricted-syntax */ 
+    /* eslint-disable no-restricted-syntax */
     const addSourceBuffer = MediaSource.prototype.addSourceBuffer;
-    MediaSource.prototype.addSourceBuffer =  
-    function(...varArgs) {
+    MediaSource.prototype.addSourceBuffer = function(...varArgs) {
       const sourceBuffer = addSourceBuffer.apply(this, varArgs);
-      sourceBuffer.abort =  
-      function() {
-      };
-       
-      // Stub out for buggy implementations. 
+      sourceBuffer.abort = function() {};
+
+      // Stub out for buggy implementations.
       return sourceBuffer;
     };
   }
-   
+
   /* eslint-enable no-restricted-syntax */
   /**
-     * Patch remove().  On Safari 11, if you call remove() to remove the content
-     * up to a keyframe, Safari will also remove the keyframe and all of the data
-     * up to the next one. For example, if the keyframes are at 0s, 5s, and 10s,
-     * and you tried to remove 0s-5s, it would instead remove 0s-10s.
-     *
-     * Offsetting the end of the range seems to be a usable workaround.
-     *
-     */ 
+   * Patch remove().  On Safari 11, if you call remove() to remove the content
+   * up to a keyframe, Safari will also remove the keyframe and all of the data
+   * up to the next one. For example, if the keyframes are at 0s, 5s, and 10s,
+   * and you tried to remove 0s-5s, it would instead remove 0s-10s.
+   *
+   * Offsetting the end of the range seems to be a usable workaround.
+   *
+   */
   private static patchRemovalRange_() {
-     
-    // eslint-disable-next-line no-restricted-syntax 
+    // eslint-disable-next-line no-restricted-syntax
     const originalRemove = SourceBuffer.prototype.remove;
-     
-    // eslint-disable-next-line no-restricted-syntax 
-    SourceBuffer.prototype.remove =  
-    function(startTime, endTime) {
-       
-      // eslint-disable-next-line no-restricted-syntax 
+
+    // eslint-disable-next-line no-restricted-syntax
+    SourceBuffer.prototype.remove = function(startTime, endTime) {
+      // eslint-disable-next-line no-restricted-syntax
       return originalRemove.call(this, startTime, endTime - 0.001);
     };
   }
-   
+
   /**
-     * Patch |MediaSource.isTypeSupported| to always reject |codec|. This is used
-     * when we know that we are on a platform that does not work well with a given
-     * codec.
-     *
-     */ 
+   * Patch |MediaSource.isTypeSupported| to always reject |codec|. This is used
+   * when we know that we are on a platform that does not work well with a given
+   * codec.
+   *
+   */
   private static rejectCodec_(codec: string) {
     const isTypeSupported = MediaSource.isTypeSupported;
-    MediaSource.isTypeSupported =  
-    (mimeType) => {
+    MediaSource.isTypeSupported = (mimeType) => {
       const actualCodec = MimeUtils.getCodecBase(mimeType);
       return actualCodec != codec && isTypeSupported(mimeType);
     };
   }
-   
+
   /**
-     * Patch isTypeSupported() to chain to a private API on the Chromecast which
-     * can query for support of detailed content parameters.
-     *
-     */ 
+   * Patch isTypeSupported() to chain to a private API on the Chromecast which
+   * can query for support of detailed content parameters.
+   *
+   */
   private static patchCastIsTypeSupported_() {
     const originalIsTypeSupported = MediaSource.isTypeSupported;
-    MediaSource.isTypeSupported =  
-    (mimeType) => {
-       
-      // Parse the basic MIME type from its parameters. 
+    MediaSource.isTypeSupported = (mimeType) => {
+      // Parse the basic MIME type from its parameters.
       const pieces = mimeType.split(/ *; */);
-       
-      // Remove basic MIME type from pieces. 
+
+      // Remove basic MIME type from pieces.
       pieces.shift();
-      const hasCodecs = pieces.some( 
-      (piece) => piece.startsWith('codecs='));
+      const hasCodecs = pieces.some((piece) => piece.startsWith('codecs='));
       if (!hasCodecs) {
-         
         // Though the original reason for this special case was not documented,
         // it is presumed to be because the platform won't accept a MIME type
         // without codecs in canDisplayType.  It is valid, however, in
-        // isTypeSupported. 
+        // isTypeSupported.
         return originalIsTypeSupported(mimeType);
       }
-       
+
       // Only canDisplayType can check extended MIME type parameters on this
       // platform (such as frame rate, resolution, etc).
       // In previous versions of this polyfill, the MIME type parameters were
       // manipulated, filtered, or extended.  This is no longer true, so we pass
-      // the full MIME type to the platform as we received it. 
+      // the full MIME type to the platform as we received it.
       return cast.__platform__.canDisplayType(mimeType);
     };
   }
-   
+
   /**
-     * Patch isTypeSupported() to translate vp09 codec strings into vp9, to allow
-     * such content to play on older smart TVs.
-     *
-     */ 
+   * Patch isTypeSupported() to translate vp09 codec strings into vp9, to allow
+   * such content to play on older smart TVs.
+   *
+   */
   private static patchVp09_() {
     const originalIsTypeSupported = MediaSource.isTypeSupported;
     if (Platform.isWebOS()) {
-       
       // Don't do this on LG webOS as otherwise it is unable
-      // to play vp09 at all. 
+      // to play vp09 at all.
       return;
     }
-    MediaSource.isTypeSupported =  
-    (mimeType) => {
-       
-      // Split the MIME type into its various parameters. 
+    MediaSource.isTypeSupported = (mimeType) => {
+      // Split the MIME type into its various parameters.
       const pieces = mimeType.split(/ *; */);
-      const codecsIndex = pieces.findIndex( 
-      (piece) => piece.startsWith('codecs='));
+      const codecsIndex =
+          pieces.findIndex((piece) => piece.startsWith('codecs='));
       if (codecsIndex < 0) {
-         
-        // No codec? Call the original without modifying the MIME type. 
+        // No codec? Call the original without modifying the MIME type.
         return originalIsTypeSupported(mimeType);
       }
       const codecsParam = pieces[codecsIndex];
-      const codecs = codecsParam.replace('codecs=', '').replace(/"/g, '').split(/\s*,\s*/);
-      const vp09Index = codecs.findIndex( 
-      (codecName) => codecName.startsWith('vp09'));
+      const codecs =
+          codecsParam.replace('codecs=', '').replace(/"/g, '').split(/\s*,\s*/);
+      const vp09Index =
+          codecs.findIndex((codecName) => codecName.startsWith('vp09'));
       if (vp09Index >= 0) {
-         
-        // vp09? Replace it with vp9. 
+        // vp09? Replace it with vp9.
         codecs[vp09Index] = 'vp9';
         pieces[codecsIndex] = 'codecs="' + codecs.join(',') + '"';
         mimeType = pieces.join('; ');
@@ -225,4 +212,4 @@ export class MediaSource {
     };
   }
 }
-shaka.polyfill.register(MediaSource.install);
+polyfill.register(MediaSource.install);

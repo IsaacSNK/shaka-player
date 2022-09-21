@@ -2,19 +2,20 @@
  * Shaka Player
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
- */ 
-import{Element}from './element';
-import*as Enums from './enums';
-import{Utils}from './ui_utils';
-import{Dom}from './dom_utils';
-import{FakeEvent}from './fake_event';
-import*as FakeEventExports from './fake_event';
-import{Controls}from './controls';
- 
+ */
+import {Controls} from './ui___controls';
+import {Element} from './ui___element';
+import * as Enums from './ui___enums';
+import {Utils} from './ui___ui_utils';
+import {Dom} from './util___dom_utils';
+import * as FakeEventExports from './util___fake_event';
+import {FakeEvent} from './util___fake_event';
+
 /**
  * @export
- */ 
-export class SettingsMenu extends Element implements shaka.extern.IUISettingsMenu {
+ */
+export class SettingsMenu extends Element implements shaka.
+extern.IUISettingsMenu {
   protected button: HTMLButtonElement;
   protected icon: HTMLElement;
   protected nameSpan: HTMLElement;
@@ -22,18 +23,17 @@ export class SettingsMenu extends Element implements shaka.extern.IUISettingsMen
   protected menu: HTMLElement;
   protected backButton: HTMLButtonElement;
   protected backSpan: HTMLElement;
-   
+
   constructor(parent: HTMLElement, controls: Controls, iconText: string) {
     super(parent, controls);
     this.addButton_(iconText);
     this.addMenu_();
     this.inOverflowMenu_();
-    this.eventManager.listen(this.button, 'click',  
-    () => {
+    this.eventManager.listen(this.button, 'click', () => {
       this.onButtonClick_();
     });
   }
-   
+
   private addButton_(iconText: string) {
     this.button = Dom.createButton();
     this.button.classList.add('shaka-overflow-button');
@@ -52,7 +52,7 @@ export class SettingsMenu extends Element implements shaka.extern.IUISettingsMen
     this.button.appendChild(label);
     this.parent.appendChild(this.button);
   }
-   
+
   private addMenu_() {
     this.menu = Dom.createHTMLElement('div');
     this.menu.classList.add('shaka-no-propagation');
@@ -62,8 +62,7 @@ export class SettingsMenu extends Element implements shaka.extern.IUISettingsMen
     this.backButton = Dom.createButton();
     this.backButton.classList.add('shaka-back-to-overflow-button');
     this.menu.appendChild(this.backButton);
-    this.eventManager.listen(this.backButton, 'click',  
-    () => {
+    this.eventManager.listen(this.backButton, 'click', () => {
       this.controls.hideSettingsMenus();
     });
     const backIcon = Dom.createHTMLElement('i');
@@ -75,25 +74,23 @@ export class SettingsMenu extends Element implements shaka.extern.IUISettingsMen
     const controlsContainer = this.controls.getControlsContainer();
     controlsContainer.appendChild(this.menu);
   }
-   
+
   private inOverflowMenu_() {
-     
     // Initially, submenus are created with a "Close" option. When present
     // inside of the overflow menu, that option must be replaced with a
-    // "Back" arrow that returns the user to the main menu. 
+    // "Back" arrow that returns the user to the main menu.
     if (this.parent.classList.contains('shaka-overflow-menu')) {
       this.backButton.firstChild.textContent = Enums.MaterialDesignIcons.BACK;
-      this.eventManager.listen(this.backButton, 'click',  
-      () => {
+      this.eventManager.listen(this.backButton, 'click', () => {
         Utils.setDisplay(this.parent, true);
         (this.parent.childNodes[0] as HTMLElement).focus();
-         
-        // Make sure controls are displayed 
+
+        // Make sure controls are displayed
         this.controls.computeOpacity();
       });
     }
   }
-   
+
   private onButtonClick_() {
     if (this.menu.classList.contains('shaka-hidden')) {
       this.controls.dispatchEvent(new FakeEvent('submenuopen'));

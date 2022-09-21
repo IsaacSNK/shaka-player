@@ -2,12 +2,12 @@
  * Shaka Player
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
- */ 
- 
+ */
+
 /**
  * These strings are used to insert material design icons
  * and should never be localized.
- */ 
+ */
 export enum MaterialDesignIcons {
   FULLSCREEN = 'fullscreen',
   EXIT_FULLSCREEN = 'fullscreen_exit',
@@ -17,10 +17,10 @@ export enum MaterialDesignIcons {
   CHECKMARK = 'done',
   LANGUAGE = 'language',
   PIP = 'picture_in_picture_alt',
-   
+
   // 'branding_watermark' material icon looks like a "dark version"
   // of the p-i-p icon. We use "dark version" icons to signal that the
-  // feature is turned on. 
+  // feature is turned on.
   EXIT_PIP = 'branding_watermark',
   BACK = 'arrow_back',
   RESOLUTION = 'settings',

@@ -2,17 +2,16 @@
  * Shaka Player
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
- */ 
+ */
 goog.require('shaka.ui.Locales');
-import{PlayButton}from './play_button';
-import{Controls}from './controls';
- 
+import {PlayButton} from './ui___play_button';
+import {Controls} from './ui___controls';
+
 /**
  * @final
  * @export
- */ 
+ */
 export class BigPlayButton extends PlayButton {
-   
   constructor(parent: HTMLElement, controls: Controls) {
     super(parent, controls);
     this.button.classList.add('shaka-play-button');
@@ -20,8 +19,8 @@ export class BigPlayButton extends PlayButton {
     this.updateIcon();
     this.updateAriaLabel();
   }
-   
-  /** @override */ 
+
+  /** @override */
   updateIcon() {
     if (this.isPaused()) {
       this.button.setAttribute('icon', 'play');
@@ -29,8 +28,8 @@ export class BigPlayButton extends PlayButton {
       this.button.setAttribute('icon', 'pause');
     }
   }
-   
-  /** @override */ 
+
+  /** @override */
   updateAriaLabel() {
     const LocIds = shaka.ui.Locales.Ids;
     const label = this.isPaused() ? LocIds.PLAY : LocIds.PAUSE;

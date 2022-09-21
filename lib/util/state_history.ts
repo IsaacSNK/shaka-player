@@ -2,12 +2,12 @@
  * Shaka Player
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
- */ 
-import{asserts}from './asserts';
-import*as assertsExports from './asserts';
-import{log}from './log';
-import*as logExports from './log';
- 
+ */
+import * as assertsExports from './debug___asserts';
+import {asserts} from './debug___asserts';
+import * as logExports from './debug___log';
+import {log} from './debug___log';
+
 /**
  * This class is used to track the time spent in arbitrary states. When told of
  * a state, it will assume that state was active until a new state is provided.
@@ -15,38 +15,36 @@ import*as logExports from './log';
  * updated.
  *
  * @final
- */ 
+ */
 export class StateHistory {
-   
   /**
-       * The state that we think is still the current change. It is "open" for
-       * updating.
-       *
-       */ 
-  private open_: shaka.extern.StateChange | null = null;
-   
+   * The state that we think is still the current change. It is "open" for
+   * updating.
+   *
+   */
+  private open_: shaka.extern.StateChange|null = null;
+
   /**
-       * The stats that are "closed" for updating. The "open" state becomes closed
-       * once we move to a new state.
-       *
-       */ 
+   * The stats that are "closed" for updating. The "open" state becomes closed
+   * once we move to a new state.
+   *
+   */
   private closed_: shaka.extern.StateChange[] = [];
-   
+
   update(state: string) {
-     
-    // |open_| will only be |null| when we first call |update|. 
+    // |open_| will only be |null| when we first call |update|.
     if (this.open_ == null) {
       this.start_(state);
     } else {
       this.update_(state);
     }
   }
-   
+
   /**
-     * Go through all entries in the history and count how much time was spend in
-     * the given state.
-     *
-     */ 
+   * Go through all entries in the history and count how much time was spend in
+   * the given state.
+   *
+   */
   getTimeSpentIn(state: string): number {
     let sum = 0;
     if (this.open_ && this.open_.state == state) {
@@ -57,16 +55,19 @@ export class StateHistory {
     }
     return sum;
   }
-   
+
   /**
-     * Get a copy of each state change entry in the history. A copy of each entry
-     * is created to break the reference to the internal data.
-     *
-     */ 
+   * Get a copy of each state change entry in the history. A copy of each entry
+   * is created to break the reference to the internal data.
+   *
+   */
   getCopy(): shaka.extern.StateChange[] {
-    const clone =  
-    (entry) => {
-      return {timestamp:entry.timestamp, state:entry.state, duration:entry.duration};
+    const clone = (entry) => {
+      return {
+        timestamp: entry.timestamp,
+        state: entry.state,
+        duration: entry.duration
+      };
     };
     const copy = [];
     for (const entry of this.closed_) {
@@ -77,36 +78,43 @@ export class StateHistory {
     }
     return copy;
   }
-   
+
   private start_(state: string) {
-    asserts.assert(this.open_ == null, 'There must be no open entry in order when we start');
+    asserts.assert(
+        this.open_ == null,
+        'There must be no open entry in order when we start');
     log.v1('Changing Player state to', state);
-    this.open_ = {timestamp:this.getNowInSeconds_(), state:state, duration:0};
+    this.open_ = {
+      timestamp: this.getNowInSeconds_(),
+      state: state,
+      duration: 0
+    };
   }
-   
+
   private update_(state: string) {
-    asserts.assert(this.open_, 'There must be an open entry in order to update it');
+    asserts.assert(
+        this.open_, 'There must be an open entry in order to update it');
     const currentTimeSeconds = this.getNowInSeconds_();
-     
+
     // Always update the duration so that it can always be as accurate as
-    // possible. 
+    // possible.
     this.open_.duration = currentTimeSeconds - this.open_.timestamp;
-     
-    // If the state has not changed, there is no need to add a new entry. 
+
+    // If the state has not changed, there is no need to add a new entry.
     if (this.open_.state == state) {
       return;
     }
-     
-    // We have changed states, so "close" the open state. 
+
+    // We have changed states, so "close" the open state.
     log.v1('Changing Player state to', state);
     this.closed_.push(this.open_);
-    this.open_ = {timestamp:currentTimeSeconds, state:state, duration:0};
+    this.open_ = {timestamp: currentTimeSeconds, state: state, duration: 0};
   }
-   
+
   /**
-     * Get the system time in seconds.
-     *
-     */ 
+   * Get the system time in seconds.
+   *
+   */
   private getNowInSeconds_(): number {
     return Date.now() / 1000;
   }

@@ -2,32 +2,33 @@
  * Shaka Player
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
- */ 
-import{ContextMenu}from './context_menu';
-import*as ContextMenuExports from './context_menu';
-import{Controls}from './controls';
-import{Element}from './element';
-import*as Enums from './enums';
+ */
+import * as ContextMenuExports from './ui___context_menu';
+import {ContextMenu} from './ui___context_menu';
+import {Controls} from './ui___controls';
+import {Element} from './ui___element';
+import * as Enums from './ui___enums';
+
 goog.require('shaka.ui.Locales');
-import{Localization}from './localization';
-import*as LocalizationExports from './localization';
-import{OverflowMenu}from './overflow_menu';
-import*as OverflowMenuExports from './overflow_menu';
-import{Dom}from './dom_utils';
-import{Timer}from './timer';
-import{Controls}from './controls';
- 
+import {Localization} from './ui___localization';
+import * as LocalizationExports from './ui___localization';
+import {OverflowMenu} from './ui___overflow_menu';
+import * as OverflowMenuExports from './ui___overflow_menu';
+import {Dom} from './util___dom_utils';
+import {Timer} from './util___timer';
+import {Controls} from './ui___controls';
+
 /**
  * @final
  * @export
- */ 
+ */
 export class LoopButton extends Element {
   private button_: HTMLButtonElement;
   private icon_: HTMLElement;
   nameSpan_: any;
   private currentState_: HTMLElement;
   private loopEnabled_: boolean;
-   
+
   // No event is fired when the video.loop property changes, so
   // in order to detect a manual change to the property, we have
   // two options:
@@ -40,11 +41,11 @@ export class LoopButton extends Element {
   // about other video properties. I expect the timer to be less
   // of a performence hit.
   /**
-       * The timer that tracks down the ad progress.
-       *
-       */ 
+   * The timer that tracks down the ad progress.
+   *
+   */
   private timer_: Timer;
-   
+
   constructor(parent: HTMLElement, controls: Controls) {
     super(parent, controls);
     const LocIds = shaka.ui.Locales.Ids;
@@ -67,41 +68,39 @@ export class LoopButton extends Element {
     this.button_.appendChild(label);
     this.updateLocalizedStrings_();
     this.parent.appendChild(this.button_);
-    this.eventManager.listen(this.localization, LocalizationExports.LOCALE_UPDATED,  
-    () => {
-      this.updateLocalizedStrings_();
-    });
-    this.eventManager.listen(this.localization, LocalizationExports.LOCALE_CHANGED,  
-    () => {
-      this.updateLocalizedStrings_();
-    });
-    this.eventManager.listen(this.button_, 'click',  
-    () => {
+    this.eventManager.listen(
+        this.localization, LocalizationExports.LOCALE_UPDATED, () => {
+          this.updateLocalizedStrings_();
+        });
+    this.eventManager.listen(
+        this.localization, LocalizationExports.LOCALE_CHANGED, () => {
+          this.updateLocalizedStrings_();
+        });
+    this.eventManager.listen(this.button_, 'click', () => {
       this.onClick_();
     });
     this.loopEnabled_ = this.video.loop;
-    this.timer_ = new Timer( 
-    () => {
+    this.timer_ = new Timer(() => {
       this.onTimerTick_();
     });
     this.timer_.tickEvery(1);
   }
-   
+
   /**
-     * @override
-     */ 
+   * @override
+   */
   release() {
     this.timer_.stop();
     this.timer_ = null;
     super.release();
   }
-   
+
   private onClick_() {
     this.video.loop = !this.video.loop;
     this.timer_.tickNow();
     this.timer_.tickEvery(1);
   }
-   
+
   private onTimerTick_() {
     if (this.loopEnabled_ == this.video.loop) {
       return;
@@ -109,7 +108,7 @@ export class LoopButton extends Element {
     this.updateLocalizedStrings_();
     this.loopEnabled_ = this.video.loop;
   }
-   
+
   private updateLocalizedStrings_() {
     const LocIds = shaka.ui.Locales.Ids;
     const Icons = Enums.MaterialDesignIcons;
@@ -118,17 +117,18 @@ export class LoopButton extends Element {
     this.currentState_.textContent = this.localization.resolve(labelText);
     const icon = this.video.loop ? Icons.UNLOOP : Icons.LOOP;
     this.icon_.textContent = icon;
-    const ariaText = this.video.loop ? LocIds.EXIT_LOOP_MODE : LocIds.ENTER_LOOP_MODE;
+    const ariaText =
+        this.video.loop ? LocIds.EXIT_LOOP_MODE : LocIds.ENTER_LOOP_MODE;
     this.button_.ariaLabel = this.localization.resolve(ariaText);
   }
 }
- 
+
 /**
  * @final
- */ 
-export class Factory implements shaka.extern.IUIElement.Factory {
-   
-  /** @override */ 
+ */
+export class Factory implements shaka.
+extern.IUIElement.Factory {
+  /** @override */
   create(rootElement, controls) {
     return new LoopButton(rootElement, controls);
   }

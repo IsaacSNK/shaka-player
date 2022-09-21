@@ -2,197 +2,193 @@
  * Shaka Player
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
- */ 
- 
+ */
+
 /**
  * @export
- */ 
-export class ServerSideAd implements shaka.extern.IAd {
+ */
+export class ServerSideAd implements shaka.
+extern.IAd {
   private ad_: google.ima.dai.api.Ad;
-  private adProgressData_: google.ima.dai.api.AdProgressData | null = null;
+  private adProgressData_: google.ima.dai.api.AdProgressData|null = null;
   private video_: HTMLMediaElement;
-   
+
   constructor(imaAd: google.ima.dai.api.Ad, video: HTMLMediaElement) {
     this.ad_ = imaAd;
     this.video_ = video;
   }
-   
+
   setProgressData(data: google.ima.dai.api.AdProgressData) {
     this.adProgressData_ = data;
   }
-   
+
   /**
-     * @override
-     * @export
-     */ 
+   * @override
+   * @export
+   */
   getDuration() {
     if (!this.adProgressData_) {
-       
-      // Unknown yet 
+      // Unknown yet
       return -1;
     }
     return this.adProgressData_.duration;
   }
-   
+
   /**
-     * @override
-     * @export
-     */ 
+   * @override
+   * @export
+   */
   getMinSuggestedDuration() {
     return this.getDuration();
   }
-   
+
   /**
-     * @override
-     * @export
-     */ 
+   * @override
+   * @export
+   */
   getRemainingTime() {
     if (!this.adProgressData_) {
-       
-      // Unknown yet 
+      // Unknown yet
       return -1;
     }
     return this.adProgressData_.duration - this.adProgressData_.currentTime;
   }
-   
+
   /**
-     * @override
-     * @export
-     */ 
+   * @override
+   * @export
+   */
   isPaused() {
     return this.video_.paused;
   }
-   
+
   /**
-     * @override
-     * @export
-     */ 
+   * @override
+   * @export
+   */
   isSkippable() {
     return this.ad_.isSkippable();
   }
-   
+
   /**
-     * @override
-     * @export
-     */ 
+   * @override
+   * @export
+   */
   getTimeUntilSkippable() {
     const skipOffset = this.ad_.getSkipTimeOffset();
     const canSkipIn = this.getRemainingTime() - skipOffset;
     return Math.max(canSkipIn, 0);
   }
-   
+
   /**
-     * @override
-     * @export
-     */ 
+   * @override
+   * @export
+   */
   canSkipNow() {
     return this.getTimeUntilSkippable() == 0;
   }
-   
+
   /**
-     * @override
-     * @export
-     */ 
+   * @override
+   * @export
+   */
   skip() {
     this.video_.currentTime += this.getRemainingTime();
   }
-   
+
   /**
-     * @override
-     * @export
-     */ 
+   * @override
+   * @export
+   */
   pause() {
     return this.video_.pause();
   }
-   
+
   /**
-     * @override
-     * @export
-     */ 
+   * @override
+   * @export
+   */
   play() {
     return this.video_.play();
   }
-   
+
   /**
-     * @override
-     * @export
-     */ 
+   * @override
+   * @export
+   */
   getVolume() {
     return this.video_.volume;
   }
-   
+
   /**
-     * @override
-     * @export
-     */ 
+   * @override
+   * @export
+   */
   setVolume(volume) {
     this.video_.volume = volume;
   }
-   
+
   /**
-     * @override
-     * @export
-     */ 
+   * @override
+   * @export
+   */
   isMuted() {
     return this.video_.muted;
   }
-   
+
   /**
-     * @override
-     * @export
-     */ 
+   * @override
+   * @export
+   */
   isLinear() {
     return true;
   }
-   
+
   /**
-     * @override
-     * @export
-     */ 
-  resize(width, height) {
-  }
-   
+   * @override
+   * @export
+   */
+  resize(width, height) {}
+
   // Nothing
   /**
-     * @override
-     * @export
-     */ 
+   * @override
+   * @export
+   */
   setMuted(muted) {
     this.video_.muted = muted;
   }
-   
+
   /**
-     * @override
-     * @export
-     */ 
+   * @override
+   * @export
+   */
   getSequenceLength() {
     const podInfo = this.ad_.getAdPodInfo();
     if (podInfo == null) {
-       
-      // No pod, just one ad. 
+      // No pod, just one ad.
       return 1;
     }
     return podInfo.getTotalAds();
   }
-   
+
   /**
-     * @override
-     * @export
-     */ 
+   * @override
+   * @export
+   */
   getPositionInSequence() {
     const podInfo = this.ad_.getAdPodInfo();
     if (podInfo == null) {
-       
-      // No pod, just one ad. 
+      // No pod, just one ad.
       return 1;
     }
     return podInfo.getAdPosition();
   }
-   
+
   /**
-     * @override
-     * @export
-     */ 
+   * @override
+   * @export
+   */
   release() {
     this.ad_ = null;
     this.adProgressData_ = null;

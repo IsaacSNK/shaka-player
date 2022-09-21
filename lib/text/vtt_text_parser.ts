@@ -2,65 +2,66 @@
  * Shaka Player
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
- */ 
-import{asserts}from './asserts';
-import*as assertsExports from './asserts';
-import{log}from './log';
-import*as logExports from './log';
-import{Cue}from './cue';
-import*as CueExports from './cue';
-import{CueRegion}from './cue';
-import*as CueRegionExports from './cue';
-import{TextEngine}from './text_engine';
-import*as TextEngineExports from './text_engine';
-import{Error}from './error';
-import*as ErrorExports from './error';
-import{StringUtils}from './string_utils';
-import*as StringUtilsExports from './string_utils';
-import{TextParser}from './text_parser';
-import{XmlUtils}from './xml_utils';
- 
+ */
+import * as assertsExports from './debug___asserts';
+import {asserts} from './debug___asserts';
+import * as logExports from './debug___log';
+import {log} from './debug___log';
+import * as CueRegionExports from './text___cue';
+import * as CueExports from './text___cue';
+import {Cue, CueRegion} from './text___cue';
+import * as TextEngineExports from './text___text_engine';
+import {TextEngine} from './text___text_engine';
+import * as ErrorExports from './util___error';
+import {Error} from './util___error';
+import * as StringUtilsExports from './util___string_utils';
+import {StringUtils} from './util___string_utils';
+import {TextParser} from './util___text_parser';
+import {XmlUtils} from './util___xml_utils';
+
 /**
  * @export
- */ 
-export class VttTextParser implements shaka.extern.TextParser {
+ */
+export class VttTextParser implements shaka.
+extern.TextParser {
   private sequenceMode_: boolean = false;
-   
-  /** Constructs a VTT parser. */ 
-  constructor() {
-  }
-   
+
+  /** Constructs a VTT parser. */
+  constructor() {}
+
   /**
-     * @override
-     * @export
-     */ 
+   * @override
+   * @export
+   */
   parseInit(data) {
     asserts.assert(false, 'VTT does not have init segments');
   }
-   
+
   /**
-     * @override
-     * @export
-     */ 
+   * @override
+   * @export
+   */
   setSequenceMode(sequenceMode) {
     this.sequenceMode_ = sequenceMode;
   }
-   
+
   /**
-     * @override
-     * @export
-     */ 
+   * @override
+   * @export
+   */
   parseMedia(data, time) {
     const VttTextParser = VttTextParser;
-     
-    // Get the input as a string.  Normalize newlines to \n. 
+
+    // Get the input as a string.  Normalize newlines to \n.
     let str = StringUtils.fromUTF8(data);
     str = str.replace(/\r\n|\r(?=[^\n]|$)/gm, '\n');
     const blocks = str.split(/\n{2,}/m);
     if (!/^WEBVTT($|[ \t\n])/m.test(blocks[0])) {
-      throw new Error(ErrorExports.Severity.CRITICAL, ErrorExports.Category.TEXT, ErrorExports.Code.INVALID_TEXT_HEADER);
+      throw new Error(
+          ErrorExports.Severity.CRITICAL, ErrorExports.Category.TEXT,
+          ErrorExports.Code.INVALID_TEXT_HEADER);
     }
-     
+
     // Depending on "segmentRelativeVttTiming" configuration,
     // "vttOffset" will correspond to either "periodStart" (default)
     // or "segmentStart", for segmented VTT where timings are relative
@@ -68,15 +69,14 @@ export class VttTextParser implements shaka.extern.TextParser {
     // NOTE: "periodStart" is the timestamp offset applied via TextEngine.
     // It is no longer closely tied to periods, but the name stuck around.
     // NOTE: This offset and the flag choosing its meaning have no effect on
-    // HLS content, which should use X-TIMESTAMP-MAP and periodStart instead. 
+    // HLS content, which should use X-TIMESTAMP-MAP and periodStart instead.
     let offset = time.vttOffset;
-     
+
     // Only use 'X-TIMESTAMP-MAP' in sequence mode, as that is currently
     // shorthand for HLS.  Note that an offset based on the first video
     // timestamp has already been extracted, and appears in periodStart.
-    // The relative offset from X-TIMESTAMP-MAP will be added to that for HLS. 
+    // The relative offset from X-TIMESTAMP-MAP will be added to that for HLS.
     if (blocks[0].includes('X-TIMESTAMP-MAP') && this.sequenceMode_) {
-       
       // https://bit.ly/2K92l7y
       // The 'X-TIMESTAMP-MAP' header is used in HLS to align text with
       // the rest of the media.
@@ -85,14 +85,17 @@ export class VttTextParser implements shaka.extern.TextParser {
       // where n is MPEG-2 time and m is cue time it maps to.
       // For example 'X-TIMESTAMP-MAP=LOCAL:00:00:00.000,MPEGTS:900000'
       // means an offset of 10 seconds
-      // 900000/MPEG_TIMESCALE - cue time. 
-      const cueTimeMatch = blocks[0].match(/LOCAL:((?:(\d{1,}):)?(\d{2}):(\d{2})\.(\d{3}))/m);
+      // 900000/MPEG_TIMESCALE - cue time.
+      const cueTimeMatch =
+          blocks[0].match(/LOCAL:((?:(\d{1,}):)?(\d{2}):(\d{2})\.(\d{3}))/m);
       const mpegTimeMatch = blocks[0].match(/MPEGTS:(\d+)/m);
       if (cueTimeMatch && mpegTimeMatch) {
         const parser = new TextParser(cueTimeMatch[1]);
         const cueTime = VttTextParser.parseTime_(parser);
         if (cueTime == null) {
-          throw new Error(ErrorExports.Severity.CRITICAL, ErrorExports.Category.TEXT, ErrorExports.Code.INVALID_TEXT_HEADER);
+          throw new Error(
+              ErrorExports.Severity.CRITICAL, ErrorExports.Category.TEXT,
+              ErrorExports.Code.INVALID_TEXT_HEADER);
         }
         let mpegTime = Number(mpegTimeMatch[1]);
         const mpegTimescale = MPEG_TIMESCALE_;
@@ -105,9 +108,9 @@ export class VttTextParser implements shaka.extern.TextParser {
         offset = time.periodStart + mpegTime / mpegTimescale - cueTime;
       }
     }
-     
+
     // Parse VTT regions.
-    /* !Array.<!shaka.extern.CueRegion> */ 
+    /* !Array.<!shaka.extern.CueRegion> */
     const regions = [];
     for (const line of blocks[0].split('\n')) {
       if (/^Region:/.test(line)) {
@@ -117,8 +120,8 @@ export class VttTextParser implements shaka.extern.TextParser {
     }
     const styles: Map<string, Cue> = new Map();
     VttTextParser.addDefaultTextColor_(styles);
-     
-    // Parse cues. 
+
+    // Parse cues.
     const ret = [];
     for (const block of blocks.slice(1)) {
       const lines = block.split('\n');
@@ -130,11 +133,11 @@ export class VttTextParser implements shaka.extern.TextParser {
     }
     return ret;
   }
-   
+
   /**
-     * Add default color
-     *
-     */ 
+   * Add default color
+   *
+   */
   private static addDefaultTextColor_(styles: Map<string, Cue>) {
     const textColor = CueExports.defaultTextColor;
     for (const [key, value] of Object.entries(textColor)) {
@@ -149,51 +152,52 @@ export class VttTextParser implements shaka.extern.TextParser {
       styles.set(key, cue);
     }
   }
-   
+
   /**
-     * Parses a string into a Region object.
-     *
-     */ 
+   * Parses a string into a Region object.
+   *
+   */
   private static parseRegion_(text: string): shaka.extern.CueRegion {
     const VttTextParser = VttTextParser;
     const parser = new TextParser(text);
-     
+
     // The region string looks like this:
     // Region: id=fred width=50% lines=3 regionanchor=0%,100%
-    //         viewportanchor=10%,90% scroll=up 
+    //         viewportanchor=10%,90% scroll=up
     const region = new CueRegion();
-     
-    // Skip 'Region:' 
+
+    // Skip 'Region:'
     parser.readWord();
     parser.skipWhitespace();
     let word = parser.readWord();
     while (word) {
       if (!VttTextParser.parseRegionSetting_(region, word)) {
-        log.warning('VTT parser encountered an invalid VTTRegion setting: ', word, ' The setting will be ignored.');
+        log.warning(
+            'VTT parser encountered an invalid VTTRegion setting: ', word,
+            ' The setting will be ignored.');
       }
       parser.skipWhitespace();
       word = parser.readWord();
     }
     return region;
   }
-   
+
   /**
-     * Parses a style block into a Cue object.
-     *
-     */ 
+   * Parses a style block into a Cue object.
+   *
+   */
   private static parseStyle_(text: string[], styles: Map<string, Cue>) {
-     
-    // Skip empty blocks. 
+    // Skip empty blocks.
     if (text.length == 1 && !text[0]) {
       return;
     }
-     
-    // Skip comment blocks. 
+
+    // Skip comment blocks.
     if (/^NOTE($|[ \t])/.test(text[0])) {
       return;
     }
-     
-    // Only style block are allowed. 
+
+    // Only style block are allowed.
     if (text[0] != 'STYLE') {
       return;
     }
@@ -201,15 +205,15 @@ export class VttTextParser implements shaka.extern.TextParser {
       return;
     }
     let styleSelector = 'global';
-     
+
     // Look for what is within parentisesis. For example:
-    // <code>:: cue (b) {</code>, what we are looking for is <code>b</code> 
+    // <code>:: cue (b) {</code>, what we are looking for is <code>b</code>
     const selector = text[1].match(/\((.*)\)/);
     if (selector) {
       styleSelector = selector.pop();
     }
-     
-    // We start at 2 to avoid '::cue' and end earlier to avoid '}' 
+
+    // We start at 2 to avoid '::cue' and end earlier to avoid '}'
     let propertyLines = text.slice(2, -1);
     if (text[1].includes('}')) {
       const payload = /\{(.*?)\}/.exec(text[1]);
@@ -220,14 +224,13 @@ export class VttTextParser implements shaka.extern.TextParser {
     const cue = new Cue(0, 0, '');
     let validStyle = false;
     for (let i = 0; i < propertyLines.length; i++) {
-       
       // We look for CSS properties. As a general rule they are separated by
-      // <code>:</code>. Eg: <code>color: red;</code> 
+      // <code>:</code>. Eg: <code>color: red;</code>
       const lineParts = /^\s*([^:]+):\s*(.*)/.exec(propertyLines[i]);
       if (lineParts) {
         const name = lineParts[1].trim();
         const value = lineParts[2].trim().replace(';', '');
-        switch(name) {
+        switch (name) {
           case 'background-color':
             validStyle = true;
             cue.backgroundColor = value;
@@ -251,7 +254,7 @@ export class VttTextParser implements shaka.extern.TextParser {
             }
             break;
           case 'font-style':
-            switch(value) {
+            switch (value) {
               case 'normal':
                 validStyle = true;
                 cue.fontStyle = CueExports.fontStyle.NORMAL;
@@ -264,7 +267,8 @@ export class VttTextParser implements shaka.extern.TextParser {
                 validStyle = true;
                 cue.fontStyle = CueExports.fontStyle.OBLIQUE;
                 break;
-            }break;
+            }
+            break;
           case 'opacity':
             validStyle = true;
             cue.opacity = parseFloat(value);
@@ -278,7 +282,8 @@ export class VttTextParser implements shaka.extern.TextParser {
             cue.wrapLine = value != 'noWrap';
             break;
           default:
-            log.warning('VTT parser encountered an unsupported style: ', lineParts);
+            log.warning(
+                'VTT parser encountered an unsupported style: ', lineParts);
             break;
         }
       }
@@ -287,25 +292,27 @@ export class VttTextParser implements shaka.extern.TextParser {
       styles.set(styleSelector, cue);
     }
   }
-   
+
   /**
-     * Parses a text block into a Cue object.
-     *
-     */ 
-  private static parseCue_(text: string[], timeOffset: number, regions: shaka.extern.CueRegion[], styles: Map<string, Cue>): Cue {
+   * Parses a text block into a Cue object.
+   *
+   */
+  private static parseCue_(
+      text: string[], timeOffset: number, regions: shaka.extern.CueRegion[],
+      styles: Map<string, Cue>): Cue {
     const VttTextParser = VttTextParser;
-     
-    // Skip empty blocks. 
+
+    // Skip empty blocks.
     if (text.length == 1 && !text[0]) {
       return null;
     }
-     
-    // Skip comment blocks. 
+
+    // Skip comment blocks.
     if (/^NOTE($|[ \t])/.test(text[0])) {
       return null;
     }
-     
-    // Skip style blocks. 
+
+    // Skip style blocks.
     if (text[0] == 'STYLE') {
       return null;
     }
@@ -314,19 +321,22 @@ export class VttTextParser implements shaka.extern.TextParser {
       id = text[0];
       text.splice(0, 1);
     }
-     
-    // Parse the times. 
+
+    // Parse the times.
     const parser = new TextParser(text[0]);
     let start = VttTextParser.parseTime_(parser);
     const expect = parser.readRegex(/[ \t]+--\x3e[ \t]+/g);
     let end = VttTextParser.parseTime_(parser);
     if (start == null || expect == null || end == null) {
-      throw new Error(ErrorExports.Severity.CRITICAL, ErrorExports.Category.TEXT, ErrorExports.Code.INVALID_TEXT_CUE, 'Could not parse cue time range in WebVTT');
+      throw new Error(
+          ErrorExports.Severity.CRITICAL, ErrorExports.Category.TEXT,
+          ErrorExports.Code.INVALID_TEXT_CUE,
+          'Could not parse cue time range in WebVTT');
     }
     start += timeOffset;
     end += timeOffset;
-     
-    // Get the payload. 
+
+    // Get the payload.
     const payload = text.slice(1).join('\n').trim();
     let cue = null;
     if (styles.has('global')) {
@@ -338,13 +348,15 @@ export class VttTextParser implements shaka.extern.TextParser {
       cue = new Cue(start, end, '');
     }
     VttTextParser.parseCueStyles(payload, cue, styles);
-     
-    // Parse optional settings. 
+
+    // Parse optional settings.
     parser.skipWhitespace();
     let word = parser.readWord();
     while (word) {
       if (!VttTextParser.parseCueSetting(cue, word, regions)) {
-        log.warning('VTT parser encountered an invalid VTT setting: ', word, ' The setting will be ignored.');
+        log.warning(
+            'VTT parser encountered an invalid VTT setting: ', word,
+            ' The setting will be ignored.');
       }
       parser.skipWhitespace();
       word = parser.readWord();
@@ -354,12 +366,13 @@ export class VttTextParser implements shaka.extern.TextParser {
     }
     return cue;
   }
-   
+
   /**
-     * Parses a WebVTT styles from the given payload.
-     *
-     */ 
-  static parseCueStyles(payload: string, rootCue: Cue, styles: Map<string, Cue>) {
+   * Parses a WebVTT styles from the given payload.
+   *
+   */
+  static parseCueStyles(
+      payload: string, rootCue: Cue, styles: Map<string, Cue>) {
     const VttTextParser = VttTextParser;
     if (styles.size === 0) {
       VttTextParser.addDefaultTextColor_(styles);
@@ -373,7 +386,8 @@ export class VttTextParser implements shaka.extern.TextParser {
       const childNodes = element.childNodes;
       if (childNodes.length == 1) {
         const childNode = childNodes[0];
-        if (childNode.nodeType == Node.TEXT_NODE || childNode.nodeType == Node.CDATA_SECTION_NODE) {
+        if (childNode.nodeType == Node.TEXT_NODE ||
+            childNode.nodeType == Node.CDATA_SECTION_NODE) {
           rootCue.payload = payload;
           return;
         }
@@ -383,20 +397,20 @@ export class VttTextParser implements shaka.extern.TextParser {
       }
       rootCue.nestedCues = cues;
     } else {
-      log.warning("The cue's markup could not be parsed: ", payload);
+      log.warning('The cue\'s markup could not be parsed: ', payload);
       rootCue.payload = payload;
     }
   }
-   
+
   /**
-     * Converts karaoke style tag to be valid for xml parsing
-     * For example,
-     * input: Text <00:00:00.450> time <00:00:01.450> 1
-     * output: Text <div time="00:00:00.450"> time
-     *         <div time="00:00:01.450"> 1</div></div>
-     *
-     * @return processed payload
-     */ 
+   * Converts karaoke style tag to be valid for xml parsing
+   * For example,
+   * input: Text <00:00:00.450> time <00:00:01.450> 1
+   * output: Text <div time="00:00:00.450"> time
+   *         <div time="00:00:01.450"> 1</div></div>
+   *
+   * @return processed payload
+   */
   private static replaceKaraokeStylePayload_(payload: string): string {
     const names = [];
     let nameStart = -1;
@@ -425,18 +439,18 @@ export class VttTextParser implements shaka.extern.TextParser {
     }
     return newPayload;
   }
-   
+
   /**
-     * Converts color end tag to be valid for xml parsing
-     * For example,
-     * input: <c.yellow.bg_blue>Yellow text on blue bg</c>
-     * output: <c.yellow.bg_blue>Yellow text on blue bg</c.yellow.bg_blue>
-     *
-     * Returns original payload if invalid tag is found.
-     * Invalid tag example: <c.yellow><b>Example</c></b>
-     *
-     * @return processed payload
-     */ 
+   * Converts color end tag to be valid for xml parsing
+   * For example,
+   * input: <c.yellow.bg_blue>Yellow text on blue bg</c>
+   * output: <c.yellow.bg_blue>Yellow text on blue bg</c.yellow.bg_blue>
+   *
+   * Returns original payload if invalid tag is found.
+   * Invalid tag example: <c.yellow><b>Example</c></b>
+   *
+   * @return processed payload
+   */
   private static replaceColorPayload_(payload: string): string {
     const names = [];
     let nameStart = -1;
@@ -479,38 +493,42 @@ export class VttTextParser implements shaka.extern.TextParser {
     }
     return newPayload;
   }
-   
+
   private static getOrDefault_(value: string, defaultValue: string) {
     if (value && value.length > 0) {
       return value;
     }
     return defaultValue;
   }
-   
+
   /**
-     * Merges values created in parseStyle_
-     */ 
+   * Merges values created in parseStyle_
+   */
   private static mergeStyle_(cue: shaka.extern.Cue, refCue: shaka.extern.Cue) {
     if (!refCue) {
       return;
     }
     const VttTextParser = VttTextParser;
-     
-    // Overwrites if new value string length > 0 
-    cue.backgroundColor = VttTextParser.getOrDefault_(refCue.backgroundColor, cue.backgroundColor);
+
+    // Overwrites if new value string length > 0
+    cue.backgroundColor = VttTextParser.getOrDefault_(
+        refCue.backgroundColor, cue.backgroundColor);
     cue.color = VttTextParser.getOrDefault_(refCue.color, cue.color);
-    cue.fontFamily = VttTextParser.getOrDefault_(refCue.fontFamily, cue.fontFamily);
+    cue.fontFamily =
+        VttTextParser.getOrDefault_(refCue.fontFamily, cue.fontFamily);
     cue.fontSize = VttTextParser.getOrDefault_(refCue.fontSize, cue.fontSize);
-     
+
     // Overwrite with new values as unable to determine
-    // if new value is set or not 
+    // if new value is set or not
     cue.fontWeight = refCue.fontWeight;
     cue.fontStyle = refCue.fontStyle;
     cue.opacity = refCue.opacity;
     cue.wrapLine = refCue.wrapLine;
   }
-   
-  private static generateCueFromElement_(element: Node, rootCue: Cue, cues: shaka.extern.Cue[], styles: Map<string, Cue>) {
+
+  private static generateCueFromElement_(
+      element: Node, rootCue: Cue, cues: shaka.extern.Cue[],
+      styles: Map<string, Cue>) {
     const VttTextParser = VttTextParser;
     const nestedCue = rootCue.clone();
     if (element.nodeType === Node.ELEMENT_NODE && element.nodeName) {
@@ -522,7 +540,7 @@ export class VttTextParser implements shaka.extern.TextParser {
         if (styles.has(tag)) {
           VttTextParser.mergeStyle_(nestedCue, styles.get(tag));
         }
-        switch(tag) {
+        switch (tag) {
           case 'b':
             nestedCue.fontWeight = bold;
             break;
@@ -532,19 +550,18 @@ export class VttTextParser implements shaka.extern.TextParser {
           case 'u':
             nestedCue.textDecoration.push(underline);
             break;
-          case 'div':
-            {
-              const time = (element as Element).getAttribute('time');
-              if (!time) {
-                break;
-              }
-              const parser = new TextParser(time);
-              const cueTime = VttTextParser.parseTime_(parser);
-              if (cueTime) {
-                nestedCue.startTime = cueTime;
-              }
+          case 'div': {
+            const time = (element as Element).getAttribute('time');
+            if (!time) {
               break;
             }
+            const parser = new TextParser(time);
+            const cueTime = VttTextParser.parseTime_(parser);
+            if (cueTime) {
+              nestedCue.startTime = cueTime;
+            }
+            break;
+          }
           default:
             break;
         }
@@ -552,9 +569,8 @@ export class VttTextParser implements shaka.extern.TextParser {
     }
     const isTextNode = XmlUtils.isText(element);
     if (isTextNode) {
-       
       // Trailing line breaks may lost when convert cue to HTML tag
-      // Need to insert line break cue to preserve line breaks 
+      // Need to insert line break cue to preserve line breaks
       const textArr = element.textContent.split('\n');
       let isFirst = true;
       for (const text of textArr) {
@@ -572,17 +588,19 @@ export class VttTextParser implements shaka.extern.TextParser {
       }
     } else {
       for (const childNode of element.childNodes) {
-        VttTextParser.generateCueFromElement_(childNode, nestedCue, cues, styles);
+        VttTextParser.generateCueFromElement_(
+            childNode, nestedCue, cues, styles);
       }
     }
   }
-   
+
   /**
-     * Parses a WebVTT setting from the given word.
-     *
-     * @return True on success.
-     */ 
-  static parseCueSetting(cue: Cue, word: string, regions: CueRegion[]): boolean {
+   * Parses a WebVTT setting from the given word.
+   *
+   * @return True on success.
+   */
+  static parseCueSetting(
+      cue: Cue, word: string, regions: CueRegion[]): boolean {
     const VttTextParser = VttTextParser;
     let results = null;
     if (results = /^align:(start|middle|center|end|left|right)$/.exec(word)) {
@@ -594,7 +612,9 @@ export class VttTextParser implements shaka.extern.TextParser {
         if (results = /^size:([\d.]+)%$/.exec(word)) {
           cue.size = Number(results[1]);
         } else {
-          if (results = /^position:([\d.]+)%(?:,(line-left|line-right|center|start|end))?$/.exec(word)) {
+          if (results =
+                  /^position:([\d.]+)%(?:,(line-left|line-right|center|start|end))?$/
+                      .exec(word)) {
             cue.position = Number(results[1]);
             if (results[2]) {
               VttTextParser.setPositionAlign_(cue, results[2]);
@@ -614,25 +634,28 @@ export class VttTextParser implements shaka.extern.TextParser {
     }
     return true;
   }
-   
-  private static getRegionById_(regions: CueRegion[], id: string): CueRegion | null {
-    const regionsWithId = regions.filter( 
-    (region) => {
+
+  private static getRegionById_(regions: CueRegion[], id: string): CueRegion|
+      null {
+    const regionsWithId = regions.filter((region) => {
       return region.id == id;
     });
     if (!regionsWithId.length) {
-      log.warning('VTT parser could not find a region with id: ', id, ' The region will be ignored.');
+      log.warning(
+          'VTT parser could not find a region with id: ', id,
+          ' The region will be ignored.');
       return null;
     }
-    asserts.assert(regionsWithId.length == 1, 'VTTRegion ids should be unique!');
+    asserts.assert(
+        regionsWithId.length == 1, 'VTTRegion ids should be unique!');
     return regionsWithId[0];
   }
-   
+
   /**
-     * Parses a WebVTTRegion setting from the given word.
-     *
-     * @return True on success.
-     */ 
+   * Parses a WebVTTRegion setting from the given word.
+   *
+   * @return True on success.
+   */
   private static parseRegionSetting_(region: CueRegion, word: string): boolean {
     let results = null;
     if (results = /^id=(.*)$/.exec(word)) {
@@ -645,11 +668,13 @@ export class VttTextParser implements shaka.extern.TextParser {
           region.height = Number(results[1]);
           region.heightUnits = CueRegionExports.units.LINES;
         } else {
-          if (results = /^regionanchor=(\d{1,2}|100)%,(\d{1,2}|100)%$/.exec(word)) {
+          if (results =
+                  /^regionanchor=(\d{1,2}|100)%,(\d{1,2}|100)%$/.exec(word)) {
             region.regionAnchorX = Number(results[1]);
             region.regionAnchorY = Number(results[2]);
           } else {
-            if (results = /^viewportanchor=(\d{1,2}|100)%,(\d{1,2}|100)%$/.exec(word)) {
+            if (results = /^viewportanchor=(\d{1,2}|100)%,(\d{1,2}|100)%$/.exec(
+                    word)) {
               region.viewportAnchorX = Number(results[1]);
               region.viewportAnchorY = Number(results[2]);
             } else {
@@ -665,17 +690,19 @@ export class VttTextParser implements shaka.extern.TextParser {
     }
     return true;
   }
-   
+
   private static setTextAlign_(cue: Cue, align: string) {
     const Cue = Cue;
     if (align == 'middle') {
       cue.textAlign = Cue.textAlign.CENTER;
     } else {
-      asserts.assert(align.toUpperCase() in Cue.textAlign, align.toUpperCase() + ' Should be in Cue.textAlign values!');
+      asserts.assert(
+          align.toUpperCase() in Cue.textAlign,
+          align.toUpperCase() + ' Should be in Cue.textAlign values!');
       cue.textAlign = Cue.textAlign[align.toUpperCase()];
     }
   }
-   
+
   private static setPositionAlign_(cue: Cue, align: string) {
     const Cue = Cue;
     if (align == 'line-left' || align == 'start') {
@@ -688,7 +715,7 @@ export class VttTextParser implements shaka.extern.TextParser {
       }
     }
   }
-   
+
   private static setVerticalWritingMode_(cue: Cue, value: string) {
     const Cue = Cue;
     if (value == 'lr') {
@@ -697,15 +724,18 @@ export class VttTextParser implements shaka.extern.TextParser {
       cue.writingMode = Cue.writingMode.VERTICAL_RIGHT_TO_LEFT;
     }
   }
-   
-  private static parsedLineValueAndInterpretation_(cue: Cue, word: string): boolean {
+
+  private static parsedLineValueAndInterpretation_(
+      cue: Cue, word: string): boolean {
     const Cue = Cue;
     let results = null;
     if (results = /^line:([\d.]+)%(?:,(start|end|center))?$/.exec(word)) {
       cue.lineInterpretation = Cue.lineInterpretation.PERCENTAGE;
       cue.line = Number(results[1]);
       if (results[2]) {
-        asserts.assert(results[2].toUpperCase() in Cue.lineAlign, results[2].toUpperCase() + ' Should be in Cue.lineAlign values!');
+        asserts.assert(
+            results[2].toUpperCase() in Cue.lineAlign,
+            results[2].toUpperCase() + ' Should be in Cue.lineAlign values!');
         cue.lineAlign = Cue.lineAlign[results[2].toUpperCase()];
       }
     } else {
@@ -713,7 +743,9 @@ export class VttTextParser implements shaka.extern.TextParser {
         cue.lineInterpretation = Cue.lineInterpretation.LINE_NUMBER;
         cue.line = Number(results[1]);
         if (results[2]) {
-          asserts.assert(results[2].toUpperCase() in Cue.lineAlign, results[2].toUpperCase() + ' Should be in Cue.lineAlign values!');
+          asserts.assert(
+              results[2].toUpperCase() in Cue.lineAlign,
+              results[2].toUpperCase() + ' Should be in Cue.lineAlign values!');
           cue.lineAlign = Cue.lineAlign[results[2].toUpperCase()];
         }
       } else {
@@ -722,19 +754,19 @@ export class VttTextParser implements shaka.extern.TextParser {
     }
     return true;
   }
-   
+
   /**
-     * Parses a WebVTT time from the given parser.
-     *
-     */ 
-  private static parseTime_(parser: TextParser): number | null {
+   * Parses a WebVTT time from the given parser.
+   *
+   */
+  private static parseTime_(parser: TextParser): number|null {
     const results = parser.readRegex(timeFormat_);
     if (results == null) {
       return null;
     }
-     
+
     // This capture is optional, but will still be in the array as undefined,
-    // in which case it is 0. 
+    // in which case it is 0.
     const hours = Number(results[1]) || 0;
     const minutes = Number(results[2]);
     const seconds = Number(results[3]);
@@ -745,22 +777,19 @@ export class VttTextParser implements shaka.extern.TextParser {
     return milliseconds / 1000 + seconds + minutes * 60 + hours * 3600;
   }
 }
- 
+
 export const MPEG_TIMESCALE_: number = 90000;
- 
+
 /**
  * At this value, timestamps roll over in TS content.
- */ 
+ */
 export const TS_ROLLOVER_: number = 8589934592;
- 
+
 /**
  * @example 00:00.000 or 00:00:00.000 or 0:00:00.000 or
  * 00:00.00 or 00:00:00.00 or 0:00:00.00
- */ 
+ */
 export const timeFormat_: RegExp = /(?:(\d{1,}):)?(\d{2}):(\d{2})\.(\d{2,3})/g;
-TextEngine.registerParser('text/vtt',  
-() => new VttTextParser());
-TextEngine.registerParser('text/vtt; codecs="vtt"',  
-() => new VttTextParser());
-TextEngine.registerParser('text/vtt; codecs="wvtt"',  
-() => new VttTextParser());
+TextEngine.registerParser('text/vtt', () => new VttTextParser());
+TextEngine.registerParser('text/vtt; codecs="vtt"', () => new VttTextParser());
+TextEngine.registerParser('text/vtt; codecs="wvtt"', () => new VttTextParser());

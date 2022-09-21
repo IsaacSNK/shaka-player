@@ -2,114 +2,126 @@
  * Shaka Player
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
- */ 
-import{asserts}from './asserts';
-import*as assertsExports from './asserts';
-import{log}from './log';
-import*as logExports from './log';
-import{HttpPluginUtils}from './http_plugin_utils';
-import{NetworkingEngine}from './networking_engine';
-import*as NetworkingEngineExports from './networking_engine';
-import{AbortableOperation}from './abortable_operation';
-import{Error}from './error';
-import*as ErrorExports from './error';
-import{MapUtils}from './map_utils';
-import{Timer}from './timer';
- 
+ */
+import * as assertsExports from './debug___asserts';
+import {asserts} from './debug___asserts';
+import * as logExports from './debug___log';
+import {log} from './debug___log';
+import {HttpPluginUtils} from './net___http_plugin_utils';
+import * as NetworkingEngineExports from './net___networking_engine';
+import {NetworkingEngine} from './net___networking_engine';
+import {AbortableOperation} from './util___abortable_operation';
+import * as ErrorExports from './util___error';
+import {Error} from './util___error';
+import {MapUtils} from './util___map_utils';
+import {Timer} from './util___timer';
+
 /**
  * @summary A networking plugin to handle http and https URIs via the Fetch API.
  * @export
- */ 
+ */
 export class HttpFetchPlugin {
-   
   /**
-     * @param progressUpdated Called when a
-     *   progress event happened.
-     * @param headersReceived Called when the
-     *   headers for the download are received, but before the body is.
-     * @export
-     */ 
-  static parse(uri: string, request: shaka.extern.Request, requestType: NetworkingEngineExports.RequestType, progressUpdated: shaka.extern.ProgressUpdated, headersReceived: shaka.extern.HeadersReceived): shaka.extern.IAbortableOperation<shaka.extern.Response> {
+   * @param progressUpdated Called when a
+   *   progress event happened.
+   * @param headersReceived Called when the
+   *   headers for the download are received, but before the body is.
+   * @export
+   */
+  static parse(
+      uri: string, request: shaka.extern.Request,
+      requestType: NetworkingEngineExports.RequestType,
+      progressUpdated: shaka.extern.ProgressUpdated,
+      headersReceived: shaka.extern.HeadersReceived):
+      shaka.extern.IAbortableOperation<shaka.extern.Response> {
     const headers = new Headers_();
-    MapUtils.asMap(request.headers).forEach( 
-    (value, key) => {
+    MapUtils.asMap(request.headers).forEach((value, key) => {
       headers.append(key, value);
     });
     const controller = new AbortController_();
-    const init: RequestInit = { 
-    // Edge does not treat null as undefined for body; https://bit.ly/2luyE6x 
-    body:request.body || undefined, headers:headers, method:request.method, signal:controller.signal, credentials:request.allowCrossSiteCredentials ? 'include' : undefined};
-    const abortStatus: AbortStatus = {canceled:false, timedOut:false};
-    const pendingRequest = HttpFetchPlugin.request_(uri, requestType, init, abortStatus, progressUpdated, headersReceived, request.streamDataCallback);
-    const op: AbortableOperation = new AbortableOperation(pendingRequest,  
-    () => {
-      abortStatus.canceled = true;
-      controller.abort();
-      return Promise.resolve();
-    });
-     
+    const init: RequestInit = {
+      // Edge does not treat null as undefined for body; https://bit.ly/2luyE6x
+      body: request.body || undefined,
+      headers: headers,
+      method: request.method,
+      signal: controller.signal,
+      credentials: request.allowCrossSiteCredentials ? 'include' : undefined
+    };
+    const abortStatus: AbortStatus = {canceled: false, timedOut: false};
+    const pendingRequest = HttpFetchPlugin.request_(
+        uri, requestType, init, abortStatus, progressUpdated, headersReceived,
+        request.streamDataCallback);
+    const op: AbortableOperation =
+        new AbortableOperation(pendingRequest, () => {
+          abortStatus.canceled = true;
+          controller.abort();
+          return Promise.resolve();
+        });
+
     // The fetch API does not timeout natively, so do a timeout manually using
-    // the AbortController. 
+    // the AbortController.
     const timeoutMs = request.retryParameters.timeout;
     if (timeoutMs) {
-      const timer = new Timer( 
-      () => {
+      const timer = new Timer(() => {
         abortStatus.timedOut = true;
         controller.abort();
       });
       timer.tickAfter(timeoutMs / 1000);
-       
+
       // To avoid calling |abort| on the network request after it finished, we
-      // will stop the timer when the requests resolves/rejects. 
-      op.finally( 
-      () => {
+      // will stop the timer when the requests resolves/rejects.
+      op.finally(() => {
         timer.stop();
       });
     }
     return op;
   }
-   
-  private static async request_(uri: string, requestType: NetworkingEngineExports.RequestType, init: RequestInit, abortStatus: AbortStatus, progressUpdated: shaka.extern.ProgressUpdated, headersReceived: shaka.extern.HeadersReceived, streamDataCallback: ((p1: BufferSource) => Promise) | null): Promise<shaka.extern.Response> {
+
+  private static async request_(
+      uri: string, requestType: NetworkingEngineExports.RequestType,
+      init: RequestInit, abortStatus: AbortStatus,
+      progressUpdated: shaka.extern.ProgressUpdated,
+      headersReceived: shaka.extern.HeadersReceived,
+      streamDataCallback: ((p1: BufferSource) => Promise)|
+      null): Promise<shaka.extern.Response> {
     const fetch = fetch_;
     const ReadableStream = ReadableStream_;
     let response;
     let arrayBuffer;
     let loaded = 0;
     let lastLoaded = 0;
-     
-    // Last time stamp when we got a progress event. 
+
+    // Last time stamp when we got a progress event.
     let lastTime = Date.now();
     try {
-       
       // The promise returned by fetch resolves as soon as the HTTP response
       // headers are available. The download itself isn't done until the promise
-      // for retrieving the data (arrayBuffer, blob, etc) has resolved. 
+      // for retrieving the data (arrayBuffer, blob, etc) has resolved.
       response = await fetch(uri, init);
-       
+
       // At this point in the process, we have the headers of the response, but
-      // not the body yet. 
-      headersReceived(HttpFetchPlugin.headersToGenericObject_(response.headers));
-       
+      // not the body yet.
+      headersReceived(
+          HttpFetchPlugin.headersToGenericObject_(response.headers));
+
       // Getting the reader in this way allows us to observe the process of
       // downloading the body, instead of just waiting for an opaque promise to
       // resolve.
       // We first clone the response because calling getReader locks the body
       // stream; if we didn't clone it here, we would be unable to get the
-      // response's arrayBuffer later. 
+      // response's arrayBuffer later.
       const reader = response.clone().body.getReader();
       const contentLengthRaw = response.headers.get('Content-Length');
-      const contentLength = contentLengthRaw ? parseInt(contentLengthRaw, 10) : 0;
-      const start =  
-      (controller) => {
-        const push =  
-        async() => {
+      const contentLength =
+          contentLengthRaw ? parseInt(contentLengthRaw, 10) : 0;
+      const start = (controller) => {
+        const push = async () => {
           let readObj;
           try {
             readObj = await reader.read();
           } catch (e) {
-             
             // If we abort the request, we'll get an error here.  Just ignore it
-            // since real errors will be reported when we read the buffer below. 
+            // since real errors will be reported when we read the buffer below.
             log.v1('error reading from stream', e.message);
             return;
           }
@@ -120,17 +132,20 @@ export class HttpFetchPlugin {
             }
           }
           const currentTime = Date.now();
-           
+
           // If the time between last time and this time we got progress event
           // is long enough, or if a whole segment is downloaded, call
-          // progressUpdated(). 
+          // progressUpdated().
           if (currentTime - lastTime > 100 || readObj.done) {
-            progressUpdated(currentTime - lastTime, loaded - lastLoaded, contentLength - loaded);
+            progressUpdated(
+                currentTime - lastTime, loaded - lastLoaded,
+                contentLength - loaded);
             lastLoaded = loaded;
             lastTime = currentTime;
           }
           if (readObj.done) {
-            asserts.assert(!readObj.value, 'readObj should be unset when "done" is true.');
+            asserts.assert(
+                !readObj.value, 'readObj should be unset when "done" is true.');
             controller.close();
           } else {
             controller.enqueue(readObj.value);
@@ -139,56 +154,60 @@ export class HttpFetchPlugin {
         };
         push();
       };
-       
+
       // Create a ReadableStream to use the reader. We don't need to use the
       // actual stream for anything, though, as we are using the response's
       // arrayBuffer method to get the body, so we don't store the
-      // ReadableStream. 
+      // ReadableStream.
       new ReadableStream({start});
-       
-      // eslint-disable-line no-new 
+
+      // eslint-disable-line no-new
       arrayBuffer = await response.arrayBuffer();
     } catch (error) {
       if (abortStatus.canceled) {
-        throw new Error(ErrorExports.Severity.RECOVERABLE, ErrorExports.Category.NETWORK, ErrorExports.Code.OPERATION_ABORTED, uri, requestType);
+        throw new Error(
+            ErrorExports.Severity.RECOVERABLE, ErrorExports.Category.NETWORK,
+            ErrorExports.Code.OPERATION_ABORTED, uri, requestType);
       } else {
         if (abortStatus.timedOut) {
-          throw new Error(ErrorExports.Severity.RECOVERABLE, ErrorExports.Category.NETWORK, ErrorExports.Code.TIMEOUT, uri, requestType);
+          throw new Error(
+              ErrorExports.Severity.RECOVERABLE, ErrorExports.Category.NETWORK,
+              ErrorExports.Code.TIMEOUT, uri, requestType);
         } else {
-          throw new Error(ErrorExports.Severity.RECOVERABLE, ErrorExports.Category.NETWORK, ErrorExports.Code.HTTP_ERROR, uri, error, requestType);
+          throw new Error(
+              ErrorExports.Severity.RECOVERABLE, ErrorExports.Category.NETWORK,
+              ErrorExports.Code.HTTP_ERROR, uri, error, requestType);
         }
       }
     }
     const headers = HttpFetchPlugin.headersToGenericObject_(response.headers);
-    return HttpPluginUtils.makeResponse(headers, arrayBuffer, response.status, uri, response.url, requestType);
+    return HttpPluginUtils.makeResponse(
+        headers, arrayBuffer, response.status, uri, response.url, requestType);
   }
-   
-  private static headersToGenericObject_(headers: Headers): {[key:string]:string} {
+
+  private static headersToGenericObject_(headers: Headers):
+      {[key: string]: string} {
     const headersObj = {};
-    headers.forEach( 
-    (value, key) => {
-       
+    headers.forEach((value, key) => {
       // Since Edge incorrectly return the header with a leading new line
-      // character ('\n'), we trim the header here. 
+      // character ('\n'), we trim the header here.
       headersObj[key.trim()] = value;
     });
     return headersObj;
   }
-   
+
   /**
-     * Determine if the Fetch API is supported in the browser. Note: this is
-     * deliberately exposed as a method to allow the client app to use the same
-     * logic as Shaka when determining support.
-     * @export
-     */ 
+   * Determine if the Fetch API is supported in the browser. Note: this is
+   * deliberately exposed as a method to allow the client app to use the same
+   * logic as Shaka when determining support.
+   * @export
+   */
   static isSupported(): boolean {
-     
     // On Edge, ReadableStream exists, but attempting to construct it results in
     // an error. See https://bit.ly/2zwaFLL
-    // So this has to check that ReadableStream is present AND usable. 
+    // So this has to check that ReadableStream is present AND usable.
     if (window.ReadableStream) {
-       
-      // eslint-disable-line no-new 
+      // eslint-disable-line no-new
       try {
         new ReadableStream({});
       } catch (e) {
@@ -200,41 +219,50 @@ export class HttpFetchPlugin {
     return !!(window.fetch && window.AbortController);
   }
 }
-type AbortStatus = {canceled:boolean, timedOut:boolean};
- 
-export{AbortStatus};
- 
+type AbortStatus = {
+  canceled: boolean,
+  timedOut: boolean
+};
+
+export {AbortStatus};
+
 /**
  * Overridden in unit tests, but compiled out in production.
  *
- */ 
+ */
 export const fetch_: (p1: string, p2: RequestInit) => any = window.fetch;
- 
+
 /**
  * Overridden in unit tests, but compiled out in production.
  *
- */ 
+ */
 export const AbortController_: () => any = window.AbortController;
- 
+
 /**
  * Overridden in unit tests, but compiled out in production.
  *
- */ 
+ */
 export const ReadableStream_: (p1: Object) => any = window.ReadableStream;
- 
+
 /**
  * Overridden in unit tests, but compiled out in production.
  *
- */ 
+ */
 export const Headers_: () => any = window.Headers;
 if (HttpFetchPlugin.isSupported()) {
-  NetworkingEngine.registerScheme('http', HttpFetchPlugin.parse, NetworkingEngineExports.PluginPriority.PREFERRED,  
-  /* progressSupport= */ 
-  true);
-  NetworkingEngine.registerScheme('https', HttpFetchPlugin.parse, NetworkingEngineExports.PluginPriority.PREFERRED,  
-  /* progressSupport= */ 
-  true);
-  NetworkingEngine.registerScheme('blob', HttpFetchPlugin.parse, NetworkingEngineExports.PluginPriority.PREFERRED,  
-  /* progressSupport= */ 
-  true);
+  NetworkingEngine.registerScheme(
+      'http', HttpFetchPlugin.parse,
+      NetworkingEngineExports.PluginPriority.PREFERRED,
+      /* progressSupport= */
+      true);
+  NetworkingEngine.registerScheme(
+      'https', HttpFetchPlugin.parse,
+      NetworkingEngineExports.PluginPriority.PREFERRED,
+      /* progressSupport= */
+      true);
+  NetworkingEngine.registerScheme(
+      'blob', HttpFetchPlugin.parse,
+      NetworkingEngineExports.PluginPriority.PREFERRED,
+      /* progressSupport= */
+      true);
 }

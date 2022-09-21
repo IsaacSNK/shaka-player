@@ -2,18 +2,17 @@
  * Shaka Player
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
- */ 
-import{Controls}from './controls';
-import*as Enums from './enums';
+ */
+import {Controls} from './ui___controls';
+import * as Enums from './ui___enums';
 goog.require('shaka.ui.Locales');
-import{PlayButton}from './play_button';
- 
+import {PlayButton} from './ui___play_button';
+
 /**
  * @final
  * @export
- */ 
+ */
 export class SmallPlayButton extends PlayButton {
-   
   constructor(parent: HTMLElement, controls: Controls) {
     super(parent, controls);
     this.button.classList.add('shaka-small-play-button');
@@ -22,8 +21,8 @@ export class SmallPlayButton extends PlayButton {
     this.updateIcon();
     this.updateAriaLabel();
   }
-   
-  /** @override */ 
+
+  /** @override */
   updateIcon() {
     const Icons = Enums.MaterialDesignIcons;
     if (this.video.ended) {
@@ -32,8 +31,8 @@ export class SmallPlayButton extends PlayButton {
       this.button.textContent = this.isPaused() ? Icons.PLAY : Icons.PAUSE;
     }
   }
-   
-  /** @override */ 
+
+  /** @override */
   updateAriaLabel() {
     const LocIds = shaka.ui.Locales.Ids;
     if (this.video.ended) {
@@ -44,13 +43,13 @@ export class SmallPlayButton extends PlayButton {
     }
   }
 }
- 
+
 /**
  * @final
- */ 
-export class Factory implements shaka.extern.IUIElement.Factory {
-   
-  /** @override */ 
+ */
+export class Factory implements shaka.
+extern.IUIElement.Factory {
+  /** @override */
   create(rootElement, controls) {
     return new SmallPlayButton(rootElement, controls);
   }

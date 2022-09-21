@@ -2,92 +2,88 @@
  * Shaka Player
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
- */ 
-import{DBConnection}from './db_connection';
-import{Error}from './error';
-import*as ErrorExports from './error';
-import{DBOperation}from './db_operation';
- 
+ */
+import {DBConnection} from './indexeddb___db_connection';
+import {DBOperation} from './indexeddb___db_operation';
+import * as ErrorExports from './util___error';
+import {Error} from './util___error';
+
 /**
  * indexeddb.StorageCellBase is a base class for all stores that use IndexedDB.
  *
- */ 
-export class BaseStorageCell implements shaka.extern.StorageCell {
+ */
+export class BaseStorageCell implements shaka.
+extern.StorageCell {
   protected connection_: DBConnection;
   protected segmentStore_: string;
   protected manifestStore_: string;
-   
-  constructor(connection: IDBDatabase, segmentStore: string, manifestStore: string) {
+
+  constructor(
+      connection: IDBDatabase, segmentStore: string, manifestStore: string) {
     this.connection_ = new DBConnection(connection);
     this.segmentStore_ = segmentStore;
     this.manifestStore_ = manifestStore;
   }
-   
-  /** @override */ 
+
+  /** @override */
   destroy() {
     return this.connection_.destroy();
   }
-   
-  /** @override */ 
+
+  /** @override */
   hasFixedKeySpace() {
-     
     // By default, all IDB stores are read-only.  The latest one will need to
-    // override this default to be read-write. 
+    // override this default to be read-write.
     return true;
   }
-   
-  /** @override */ 
+
+  /** @override */
   addSegments(segments) {
-     
-    // By default, reject all additions. 
+    // By default, reject all additions.
     return this.rejectAdd(this.segmentStore_);
   }
-   
-  /** @override */ 
+
+  /** @override */
   removeSegments(keys, onRemove) {
     return this.remove_(this.segmentStore_, keys, onRemove);
   }
-   
-  /** @override */ 
+
+  /** @override */
   async getSegments(keys) {
     const rawSegments = await this.get_(this.segmentStore_, keys);
-    return rawSegments.map( 
-    (s) => this.convertSegmentData(s));
+    return rawSegments.map((s) => this.convertSegmentData(s));
   }
-   
-  /** @override */ 
+
+  /** @override */
   addManifests(manifests) {
-     
-    // By default, reject all additions. 
+    // By default, reject all additions.
     return this.rejectAdd(this.manifestStore_);
   }
-   
-  /** @override */ 
+
+  /** @override */
   updateManifest(key, manifest) {
-     
-    // By default, reject all updates. 
+    // By default, reject all updates.
     return this.rejectUpdate(this.manifestStore_);
   }
-   
-  protected updateManifestImplementation(key: number, manifest: shaka.extern.ManifestDB): Promise {
+
+  protected updateManifestImplementation(
+      key: number, manifest: shaka.extern.ManifestDB): Promise {
     const op = this.connection_.startReadWriteOperation(this.manifestStore_);
     const store = op.store();
-    store.get(key).onsuccess =  
-    (e) => {
+    store.get(key).onsuccess = (e) => {
       store.put(manifest, key);
     };
     return op.promise();
   }
-   
-  /** @override */ 
+
+  /** @override */
   updateManifestExpiration(key, newExpiration) {
     const op = this.connection_.startReadWriteOperation(this.manifestStore_);
     const store = op.store();
-    store.get(key).onsuccess =  
-    (e) => {
+    store.get(key).onsuccess = (e) => {
       const manifest = e.target.result;
-       
-      // If we can't find the value, then there is nothing for us to update. 
+
+      // If we can't find the value, then there is nothing for us to update.
       if (manifest) {
         manifest.expiration = newExpiration;
         store.put(manifest, key);
@@ -95,121 +91,124 @@ export class BaseStorageCell implements shaka.extern.StorageCell {
     };
     return op.promise();
   }
-   
-  /** @override */ 
+
+  /** @override */
   removeManifests(keys, onRemove) {
     return this.remove_(this.manifestStore_, keys, onRemove);
   }
-   
-  /** @override */ 
+
+  /** @override */
   async getManifests(keys) {
     const rawManifests = await this.get_(this.manifestStore_, keys);
-    return Promise.all(rawManifests.map( 
-    (m) => this.convertManifest(m)));
+    return Promise.all(rawManifests.map((m) => this.convertManifest(m)));
   }
-   
-  /** @override */ 
+
+  /** @override */
   async getAllManifests() {
-    const op: DBOperation = this.connection_.startReadOnlyOperation(this.manifestStore_);
+    const op: DBOperation =
+        this.connection_.startReadOnlyOperation(this.manifestStore_);
     const values: Map<number, shaka.extern.ManifestDB> = new Map();
-    await op.forEachEntry( 
-    async(key, value) => {
+    await op.forEachEntry(async (key, value) => {
       const manifest = await this.convertManifest(value);
       values.set((key as number), manifest);
     });
     await op.promise();
     return values;
   }
-   
+
   protected convertSegmentData(old: any): shaka.extern.SegmentDataDB {
-     
-    // Conversion is specific to each subclass.  By default, do nothing. 
+    // Conversion is specific to each subclass.  By default, do nothing.
     return (old as shaka.extern.SegmentDataDB);
   }
-   
+
   protected convertManifest(old: any): Promise<shaka.extern.ManifestDB> {
-     
-    // Conversion is specific to each subclass.  By default, do nothing. 
+    // Conversion is specific to each subclass.  By default, do nothing.
     return Promise.resolve((old as shaka.extern.ManifestDB));
   }
-   
+
   protected rejectAdd(storeName: string): Promise {
-    return Promise.reject(new Error(ErrorExports.Severity.CRITICAL, ErrorExports.Category.STORAGE, ErrorExports.Code.NEW_KEY_OPERATION_NOT_SUPPORTED, 'Cannot add new value to ' + storeName));
+    return Promise.reject(new Error(
+        ErrorExports.Severity.CRITICAL, ErrorExports.Category.STORAGE,
+        ErrorExports.Code.NEW_KEY_OPERATION_NOT_SUPPORTED,
+        'Cannot add new value to ' + storeName));
   }
-   
+
   protected rejectUpdate(storeName: string): Promise {
-    return Promise.reject(new Error(ErrorExports.Severity.CRITICAL, ErrorExports.Category.STORAGE, ErrorExports.Code.MODIFY_OPERATION_NOT_SUPPORTED, 'Cannot modify values in ' + storeName));
+    return Promise.reject(new Error(
+        ErrorExports.Severity.CRITICAL, ErrorExports.Category.STORAGE,
+        ErrorExports.Code.MODIFY_OPERATION_NOT_SUPPORTED,
+        'Cannot modify values in ' + storeName));
   }
-   
+
   /**
-     * @template T
-     */ 
+   * @template T
+   */
   protected async add(storeName: string, values: T[]): Promise<number[]> {
     const op = this.connection_.startReadWriteOperation(storeName);
     const store = op.store();
     const keys: number[] = [];
-     
+
     // Write each segment out. When each request completes, the key will
     // be in |request.result| as can be seen in
-    // https://w3c.github.io/IndexedDB/#key-generator-construct. 
+    // https://w3c.github.io/IndexedDB/#key-generator-construct.
     for (const value of values) {
       const request = store.add(value);
-      request.onsuccess =  
-      (event) => {
+      request.onsuccess = (event) => {
         const key = request.result;
         keys.push(key);
       };
     }
-     
+
     // Wait until the operation completes or else |keys| will not be fully
-    // populated. 
+    // populated.
     await op.promise();
     return keys;
   }
-   
-  private remove_(storeName: string, keys: number[], onRemove: (p1: number) => any): Promise {
+
+  private remove_(
+      storeName: string, keys: number[],
+      onRemove: (p1: number) => any): Promise {
     const op = this.connection_.startReadWriteOperation(storeName);
     const store = op.store();
     for (const key of keys) {
-      store.delete(key).onsuccess =  
-      () => onRemove(key);
+      store.delete(key).onsuccess = () => onRemove(key);
     }
     return op.promise();
   }
-   
+
   /**
-     * @template T
-     */ 
+   * @template T
+   */
   private async get_(storeName: string, keys: number[]): Promise<T[]> {
     const op = this.connection_.startReadOnlyOperation(storeName);
     const store = op.store();
     const values = {};
     const missing: number[] = [];
-     
+
     // Use a map to store the objects so that we can reorder the results to
-    // match the order of |keys|. 
+    // match the order of |keys|.
     for (const key of keys) {
       const request = store.get(key);
-      request.onsuccess =  
-      () => {
-         
+      request.onsuccess = () => {
         // Make sure a defined value was found. Indexeddb treats no-value found
-        // as a success with an undefined result. 
+        // as a success with an undefined result.
         if (request.result == undefined) {
           missing.push(key);
         }
         values[key] = request.result;
       };
     }
-     
+
     // Wait until the operation completes or else values may be missing from
     // |values|. Use the original key list to convert the map to a list so that
-    // the order will match. 
+    // the order will match.
     await op.promise();
     if (missing.length) {
-      throw new Error(ErrorExports.Severity.CRITICAL, ErrorExports.Category.STORAGE, ErrorExports.Code.KEY_NOT_FOUND, 'Could not find values for ' + missing);
+      throw new Error(
+          ErrorExports.Severity.CRITICAL, ErrorExports.Category.STORAGE,
+          ErrorExports.Code.KEY_NOT_FOUND,
+          'Could not find values for ' + missing);
     }
-    return keys.map( 
-    (key) => values[key]);
+    return keys.map((key) => values[key]);
   }
 }

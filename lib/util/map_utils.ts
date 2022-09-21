@@ -2,43 +2,42 @@
  * Shaka Player
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
- */ 
- 
+ */
+
 /**
  * @summary A set of map/object utility functions.
- */ 
+ */
 export class MapUtils {
-   
   /**
-     * @template KEY,VALUE
-     */ 
-  static asMap(object: {[key:KEY]:VALUE}): Map<KEY, VALUE> {
+   * @template KEY,VALUE
+   */
+  static asMap(object: {[key: KEY]: VALUE}): Map<KEY, VALUE> {
     const map = new Map();
     for (const key of Object.keys(object)) {
       map.set(key, object[key]);
     }
     return map;
   }
-   
+
   /**
-     * @template KEY,VALUE
-     */ 
-  static asObject(map: Map<KEY, VALUE>): {[key:KEY]:VALUE} {
+   * @template KEY,VALUE
+   */
+  static asObject(map: Map<KEY, VALUE>): {[key: KEY]: VALUE} {
     const obj = {};
-    map.forEach( 
-    (value, key) => {
+    map.forEach((value, key) => {
       obj[key] = value;
     });
     return obj;
   }
-   
+
   /**
-     * NOTE: This only works for simple value types and
-     * will not be accurate if map values are objects!
-     *
-     * @template KEY,VALUE
-     */ 
-  static hasSameElements(map1: Map<KEY, VALUE>, map2: Map<KEY, VALUE>): boolean {
+   * NOTE: This only works for simple value types and
+   * will not be accurate if map values are objects!
+   *
+   * @template KEY,VALUE
+   */
+  static hasSameElements(map1: Map<KEY, VALUE>, map2: Map<KEY, VALUE>):
+      boolean {
     if (!map1 && !map2) {
       return true;
     } else {

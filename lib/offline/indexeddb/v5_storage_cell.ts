@@ -2,42 +2,40 @@
  * Shaka Player
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
- */ 
-import{BaseStorageCell}from './base_storage_cell';
- 
+ */
+import {BaseStorageCell} from './indexeddb___base_storage_cell';
+
 /**
  * The V5StorageCell is for all stores that follow the shaka.externs V5 offline
  * types introduced in v3.0.
  *
- */ 
-export class V5StorageCell extends BaseStorageCell implements shaka.extern.StorageCell {
-   
-  /** @override */ 
+ */
+export class V5StorageCell extends BaseStorageCell implements shaka.
+extern.StorageCell {
+  /** @override */
   hasFixedKeySpace() {
-     
-    // This makes the cell read-write. 
+    // This makes the cell read-write.
     return false;
   }
-   
-  /** @override */ 
+
+  /** @override */
   addSegments(segments) {
     return this.add(this.segmentStore_, segments);
   }
-   
-  /** @override */ 
+
+  /** @override */
   addManifests(manifests) {
     return this.add(this.manifestStore_, manifests);
   }
-   
-  /** @override */ 
+
+  /** @override */
   updateManifest(key, manifest) {
     return this.updateManifestImplementation(key, manifest);
   }
-   
-  /** @override */ 
+
+  /** @override */
   convertManifest(old) {
-     
-    // JSON serialization turns Infinity into null, so turn it back now. 
+    // JSON serialization turns Infinity into null, so turn it back now.
     if (old.expiration == null) {
       old.expiration = Infinity;
     }

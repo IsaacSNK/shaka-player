@@ -2,44 +2,46 @@
  * Shaka Player
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
- */ 
+ */
 goog.require('goog.Uri');
-import{log}from './log';
-import*as logExports from './log';
- 
+import {log} from './debug___log';
+import * as logExports from './debug___log';
+
 /**
  * @summary
  * A CmcdManager maintains CMCD state as well as a collection of utility
  * functions.
- */ 
+ */
 export class CmcdManager {
   private playerInterface_: PlayerInterface;
-  private config_: shaka.extern.CmcdConfiguration | null;
-   
+  private config_: shaka.extern.CmcdConfiguration|null;
+
   /**
-       * Session ID
-       *
-       */ 
+   * Session ID
+   *
+   */
   private sid_: string = '';
-   
+
   /**
-       * Streaming format
-       *
-       */ 
-  private sf_: StreamingFormat | undefined = undefined;
+   * Streaming format
+   *
+   */
+  private sf_: StreamingFormat|undefined = undefined;
   private playbackStarted_: boolean = false;
   private buffering_: boolean = true;
   private starved_: boolean = false;
-   
-  constructor(playerInterface: PlayerInterface, config: shaka.extern.CmcdConfiguration) {
+
+  constructor(
+      playerInterface: PlayerInterface,
+      config: shaka.extern.CmcdConfiguration) {
     this.playerInterface_ = playerInterface;
     this.config_ = config;
   }
-   
+
   /**
-     * Set the buffering state
-     *
-     */ 
+   * Set the buffering state
+   *
+   */
   setBuffering(buffering: boolean) {
     if (!buffering && !this.playbackStarted_) {
       this.playbackStarted_ = true;
@@ -49,38 +51,43 @@ export class CmcdManager {
     }
     this.buffering_ = buffering;
   }
-   
+
   /**
-     * Apply CMCD data to a manifest request.
-     *
-     *   The request to apply CMCD data to
-     *   The manifest format
-     */ 
+   * Apply CMCD data to a manifest request.
+   *
+   *   The request to apply CMCD data to
+   *   The manifest format
+   */
   applyManifestData(request: shaka.extern.Request, manifestInfo: ManifestInfo) {
     try {
       if (!this.config_.enabled) {
         return;
       }
       this.sf_ = manifestInfo.format;
-      this.apply_(request, {ot:ObjectType.MANIFEST, su:!this.playbackStarted_});
+      this.apply_(
+          request, {ot: ObjectType.MANIFEST, su: !this.playbackStarted_});
     } catch (error) {
-      log.warnOnce('CMCD_MANIFEST_ERROR', 'Could not generate manifest CMCD data.', error);
+      log.warnOnce(
+          'CMCD_MANIFEST_ERROR', 'Could not generate manifest CMCD data.',
+          error);
     }
   }
-   
+
   /**
-     * Apply CMCD data to a segment request
-     *
-     */ 
+   * Apply CMCD data to a segment request
+   *
+   */
   applySegmentData(request: shaka.extern.Request, segmentInfo: SegmentInfo) {
     try {
       if (!this.config_.enabled) {
         return;
       }
-      const data = {d:segmentInfo.duration * 1000, st:this.getStreamType_()};
+      const data = {d: segmentInfo.duration * 1000, st: this.getStreamType_()};
       data.ot = this.getObjectType_(segmentInfo);
       const ObjectType = ObjectType;
-      const isMedia = data.ot === ObjectType.VIDEO || data.ot === ObjectType.AUDIO || data.ot === ObjectType.MUXED || data.ot === ObjectType.TIMED_TEXT;
+      const isMedia = data.ot === ObjectType.VIDEO ||
+          data.ot === ObjectType.AUDIO || data.ot === ObjectType.MUXED ||
+          data.ot === ObjectType.TIMED_TEXT;
       if (isMedia) {
         data.bl = this.getBufferLength_(segmentInfo.type);
       }
@@ -92,29 +99,31 @@ export class CmcdManager {
       }
       this.apply_(request, data);
     } catch (error) {
-      log.warnOnce('CMCD_SEGMENT_ERROR', 'Could not generate segment CMCD data.', error);
+      log.warnOnce(
+          'CMCD_SEGMENT_ERROR', 'Could not generate segment CMCD data.', error);
     }
   }
-   
+
   /**
-     * Apply CMCD data to a text request
-     *
-     */ 
+   * Apply CMCD data to a text request
+   *
+   */
   applyTextData(request: shaka.extern.Request) {
     try {
       if (!this.config_.enabled) {
         return;
       }
-      this.apply_(request, {ot:ObjectType.CAPTION, su:true});
+      this.apply_(request, {ot: ObjectType.CAPTION, su: true});
     } catch (error) {
-      log.warnOnce('CMCD_TEXT_ERROR', 'Could not generate text CMCD data.', error);
+      log.warnOnce(
+          'CMCD_TEXT_ERROR', 'Could not generate text CMCD data.', error);
     }
   }
-   
+
   /**
-     * Apply CMCD data to streams loaded via src=.
-     *
-     */ 
+   * Apply CMCD data to streams loaded via src=.
+   *
+   */
   appendSrcData(uri: string, mimeType: string): string {
     try {
       if (!this.config_.enabled) {
@@ -126,15 +135,16 @@ export class CmcdManager {
       const query = CmcdManager.toQuery(data);
       return CmcdManager.appendQueryToUri(uri, query);
     } catch (error) {
-      log.warnOnce('CMCD_SRC_ERROR', 'Could not generate src CMCD data.', error);
+      log.warnOnce(
+          'CMCD_SRC_ERROR', 'Could not generate src CMCD data.', error);
       return uri;
     }
   }
-   
+
   /**
-     * Apply CMCD data to side car text track uri.
-     *
-     */ 
+   * Apply CMCD data to side car text track uri.
+   *
+   */
   appendTextTrackData(uri: string): string {
     try {
       if (!this.config_.enabled) {
@@ -146,38 +156,49 @@ export class CmcdManager {
       const query = CmcdManager.toQuery(data);
       return CmcdManager.appendQueryToUri(uri, query);
     } catch (error) {
-      log.warnOnce('CMCD_TEXT_TRACK_ERROR', 'Could not generate text track CMCD data.', error);
+      log.warnOnce(
+          'CMCD_TEXT_TRACK_ERROR', 'Could not generate text track CMCD data.',
+          error);
       return uri;
     }
   }
-   
+
   /**
-     * Create baseline CMCD data
-     *
-     */ 
+   * Create baseline CMCD data
+   *
+   */
   private createData_(): CmcdData {
     if (!this.sid_) {
       this.sid_ = this.config_.sessionId || window.crypto.randomUUID();
     }
-    return {v:Version, sf:this.sf_, sid:this.sid_, cid:this.config_.contentId, mtp:this.playerInterface_.getBandwidthEstimate() / 1000};
+    return {
+      v: Version,
+      sf: this.sf_,
+      sid: this.sid_,
+      cid: this.config_.contentId,
+      mtp: this.playerInterface_.getBandwidthEstimate() / 1000
+    };
   }
-   
+
   /**
-     * Apply CMCD data to a request.
-     *
-     * @param request The request to apply CMCD data to
-     * @param data The data object
-     * @param useHeaders Send data via request headers
-     */ 
-  private apply_(request: shaka.extern.Request, data: CmcdData = {}, useHeaders: boolean = this.config_.useHeaders) {
+   * Apply CMCD data to a request.
+   *
+   * @param request The request to apply CMCD data to
+   * @param data The data object
+   * @param useHeaders Send data via request headers
+   */
+  private apply_(
+      request: shaka.extern.Request, data: CmcdData = {},
+      useHeaders: boolean = this.config_.useHeaders) {
     if (!this.config_.enabled) {
       return;
     }
-     
-    // apply baseline data 
+
+    // apply baseline data
     Object.assign(data, this.createData_());
     data.pr = this.playerInterface_.getPlaybackRate();
-    const isVideo = data.ot === ObjectType.VIDEO || data.ot === ObjectType.MUXED;
+    const isVideo =
+        data.ot === ObjectType.VIDEO || data.ot === ObjectType.MUXED;
     if (this.starved_ && isVideo) {
       data.bs = true;
       data.su = true;
@@ -186,8 +207,8 @@ export class CmcdManager {
     if (data.su == null) {
       data.su = this.buffering_;
     }
-     
-    // TODO: Implement rtp, nrr, nor, dl 
+
+    // TODO: Implement rtp, nrr, nor, dl
     if (useHeaders) {
       const headers = CmcdManager.toHeaders(data);
       if (!Object.keys(headers).length) {
@@ -199,17 +220,16 @@ export class CmcdManager {
       if (!query) {
         return;
       }
-      request.uris = request.uris.map( 
-      (uri) => {
+      request.uris = request.uris.map((uri) => {
         return CmcdManager.appendQueryToUri(uri, query);
       });
     }
   }
-   
+
   /**
-     * The CMCD object type.
-     *
-     */ 
+   * The CMCD object type.
+   *
+   */
   private getObjectType_(segmentInfo: SegmentInfo) {
     const type = segmentInfo.type;
     if (segmentInfo.init) {
@@ -232,13 +252,13 @@ export class CmcdManager {
     }
     return undefined;
   }
-   
+
   /**
-     * The CMCD object type from mimeType.
-     *
-     */ 
-  private getObjectTypeFromMimeType_(mimeType: string): ObjectType | undefined {
-    switch(mimeType) {
+   * The CMCD object type from mimeType.
+   *
+   */
+  private getObjectTypeFromMimeType_(mimeType: string): ObjectType|undefined {
+    switch (mimeType) {
       case 'video/webm':
       case 'video/mp4':
         return ObjectType.MUXED;
@@ -248,29 +268,28 @@ export class CmcdManager {
         return undefined;
     }
   }
-   
+
   /**
-     * Get the buffer length for a media type in milliseconds
-     *
-     */ 
+   * Get the buffer length for a media type in milliseconds
+   *
+   */
   private getBufferLength_(type: string): number {
     const ranges = this.playerInterface_.getBufferedInfo()[type];
     if (!ranges.length) {
       return NaN;
     }
     const start = this.playerInterface_.getCurrentTime();
-    const range = ranges.find( 
-    (r) => r.start <= start && r.end >= start);
+    const range = ranges.find((r) => r.start <= start && r.end >= start);
     if (!range) {
       return NaN;
     }
     return (range.end - start) * 1000;
   }
-   
+
   /**
-     * Get the stream type
-     *
-     */ 
+   * Get the stream type
+   *
+   */
   private getStreamType_(): StreamType {
     const isLive = this.playerInterface_.isLive();
     if (isLive) {
@@ -279,11 +298,11 @@ export class CmcdManager {
       return StreamType.VOD;
     }
   }
-   
+
   /**
-     * Get the highest bandwidth for a given type.
-     *
-     */ 
+   * Get the highest bandwidth for a given type.
+   *
+   */
   private getTopBandwidth_(type: string): number {
     const variants = this.playerInterface_.getVariantTracks();
     if (!variants.length) {
@@ -296,7 +315,7 @@ export class CmcdManager {
       }
     }
     const ObjectType = ObjectType;
-    switch(type) {
+    switch (type) {
       case ObjectType.VIDEO:
         return top.videoBandwidth || NaN;
       case ObjectType.AUDIO:
@@ -305,51 +324,57 @@ export class CmcdManager {
         return top.bandwidth;
     }
   }
-   
+
   /**
-     * Serialize a CMCD data object according to the rules defined in the
-     * section 3.2 of
-     * [CTA-5004](https://cdn.cta.tech/cta/media/media/resources/standards/pdfs/cta-5004-final.pdf).
-     *
-     * @param data The CMCD data object
-     */ 
+   * Serialize a CMCD data object according to the rules defined in the
+   * section 3.2 of
+   * [CTA-5004](https://cdn.cta.tech/cta/media/media/resources/standards/pdfs/cta-5004-final.pdf).
+   *
+   * @param data The CMCD data object
+   */
   static serialize(data: CmcdData): string {
     const results = [];
-    const isValid =  
-    (value) => !Number.isNaN(value) && value != null && value !== '' && value !== false;
-    const toRounded =  
-    (value) => Math.round(value);
-    const toHundred =  
-    (value) => toRounded(value / 100) * 100;
-    const toUrlSafe =  
-    (value) => encodeURIComponent(value);
-    const formatters = {br:toRounded, d:toRounded, bl:toHundred, dl:toHundred, mtp:toHundred, nor:toUrlSafe, rtp:toHundred, tb:toRounded};
+    const isValid = (value) => !Number.isNaN(value) && value != null &&
+        value !== '' && value !== false;
+    const toRounded = (value) => Math.round(value);
+    const toHundred = (value) => toRounded(value / 100) * 100;
+    const toUrlSafe = (value) => encodeURIComponent(value);
+    const formatters = {
+      br: toRounded,
+      d: toRounded,
+      bl: toHundred,
+      dl: toHundred,
+      mtp: toHundred,
+      nor: toUrlSafe,
+      rtp: toHundred,
+      tb: toRounded
+    };
     const keys = Object.keys(data || {}).sort();
     for (const key of keys) {
       let value = data[key];
-       
-      // ignore invalid values 
+
+      // ignore invalid values
       if (!isValid(value)) {
         continue;
       }
-       
-      // Version should only be reported if not equal to 1. 
+
+      // Version should only be reported if not equal to 1.
       if (key === 'v' && value === 1) {
         continue;
       }
-       
-      // Playback rate should only be sent if not equal to 1. 
+
+      // Playback rate should only be sent if not equal to 1.
       if (key == 'pr' && value === 1) {
         continue;
       }
-       
-      // Certain values require special formatting 
+
+      // Certain values require special formatting
       const formatter = formatters[key];
       if (formatter) {
         value = formatter(value);
       }
-       
-      // Serialize the key/value pair 
+
+      // Serialize the key/value pair
       const type = typeof value;
       let result;
       if (type === 'string' && key !== 'ot' && key !== 'sf' && key !== 'st') {
@@ -369,23 +394,41 @@ export class CmcdManager {
     }
     return results.join(',');
   }
-   
+
   /**
-     * Convert a CMCD data object to request headers according to the rules
-     * defined in the section 2.1 and 3.2 of
-     * [CTA-5004](https://cdn.cta.tech/cta/media/media/resources/standards/pdfs/cta-5004-final.pdf).
-     *
-     * @param data The CMCD data object
-     */ 
+   * Convert a CMCD data object to request headers according to the rules
+   * defined in the section 2.1 and 3.2 of
+   * [CTA-5004](https://cdn.cta.tech/cta/media/media/resources/standards/pdfs/cta-5004-final.pdf).
+   *
+   * @param data The CMCD data object
+   */
   static toHeaders(data: CmcdData): Object {
     const keys = Object.keys(data);
     const headers = {};
     const headerNames = ['Object', 'Request', 'Session', 'Status'];
     const headerGroups = [{}, {}, {}, {}];
-    const headerMap = {br:0, d:0, ot:0, tb:0, bl:1, dl:1, mtp:1, nor:1, nrr:1, su:1, cid:2, pr:2, sf:2, sid:2, st:2, v:2, bs:3, rtp:3};
+    const headerMap = {
+      br: 0,
+      d: 0,
+      ot: 0,
+      tb: 0,
+      bl: 1,
+      dl: 1,
+      mtp: 1,
+      nor: 1,
+      nrr: 1,
+      su: 1,
+      cid: 2,
+      pr: 2,
+      sf: 2,
+      sid: 2,
+      st: 2,
+      v: 2,
+      bs: 3,
+      rtp: 3
+    };
     for (const key of keys) {
-       
-      // Unmapped fields are mapped to the Request header 
+      // Unmapped fields are mapped to the Request header
       const index = headerMap[key] != null ? headerMap[key] : 1;
       headerGroups[index][key] = data[key];
     }
@@ -397,22 +440,22 @@ export class CmcdManager {
     }
     return headers;
   }
-   
+
   /**
-     * Convert a CMCD data object to query args according to the rules
-     * defined in the section 2.2 and 3.2 of
-     * [CTA-5004](https://cdn.cta.tech/cta/media/media/resources/standards/pdfs/cta-5004-final.pdf).
-     *
-     * @param data The CMCD data object
-     */ 
+   * Convert a CMCD data object to query args according to the rules
+   * defined in the section 2.2 and 3.2 of
+   * [CTA-5004](https://cdn.cta.tech/cta/media/media/resources/standards/pdfs/cta-5004-final.pdf).
+   *
+   * @param data The CMCD data object
+   */
   static toQuery(data: CmcdData): string {
     return CmcdManager.serialize(data);
   }
-   
+
   /**
-     * Append query args to a uri.
-     *
-     */ 
+   * Append query args to a uri.
+   *
+   */
   static appendQueryToUri(uri: string, query: string): string {
     if (!query) {
       return uri;
@@ -425,16 +468,32 @@ export class CmcdManager {
     return url.toString();
   }
 }
-type PlayerInterface = {getBandwidthEstimate:() => number, getBufferedInfo:() => shaka.extern.BufferedInfo, getCurrentTime:() => number, getVariantTracks:() => shaka.extern.Track[], getPlaybackRate:() => number, isLive:() => boolean};
- 
-export{PlayerInterface};
-type SegmentInfo = {type:string, init:boolean, duration:number, mimeType:string, codecs:string, bandwidth:number | undefined};
- 
-export{SegmentInfo};
-type ManifestInfo = {format:StreamingFormat};
- 
-export{ManifestInfo};
- 
+type PlayerInterface = {
+  getBandwidthEstimate: () => number,
+  getBufferedInfo: () => shaka.extern.BufferedInfo,
+  getCurrentTime: () => number,
+  getVariantTracks: () => shaka.extern.Track[],
+  getPlaybackRate: () => number,
+  isLive: () => boolean
+};
+
+export {PlayerInterface};
+type SegmentInfo = {
+  type: string,
+  init: boolean,
+  duration: number,
+  mimeType: string,
+  codecs: string,
+  bandwidth: number|undefined
+};
+
+export {SegmentInfo};
+type ManifestInfo = {
+  format: StreamingFormat
+};
+
+export {ManifestInfo};
+
 export enum ObjectType {
   MANIFEST = 'm',
   AUDIO = 'a',
@@ -446,23 +505,23 @@ export enum ObjectType {
   KEY = 'k',
   OTHER = 'o'
 }
- 
+
 export enum StreamType {
   VOD = 'v',
   LIVE = 'l'
 }
- 
+
 /**
  * @export
- */ 
+ */
 export enum StreamingFormat {
   DASH = 'd',
   HLS = 'h',
   SMOOTH = 's',
   OTHER = 'o'
 }
- 
+
 /**
  * The CMCD spec version
- */ 
+ */
 export const Version: number = 1;

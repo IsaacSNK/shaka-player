@@ -2,9 +2,9 @@
  * Shaka Player
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
- */ 
-import{Version}from './version';
- 
+ */
+import {Version} from './deprecate___version';
+
 /**
  * The enforcer's job is to call the correct callback when a feature will need
  * to be removed later or removed now.
@@ -14,32 +14,33 @@ import{Version}from './version';
  * testing and production could be equal users of the enforcer.
  *
  * @final
- */ 
+ */
 export class Enforcer {
   private libraryVersion_: Version;
   private onPending_: shaka.deprecate.Listener;
   private onExpired_: shaka.deprecate.Listener;
-   
-  constructor(libraryVersion: Version, onPending: shaka.deprecate.Listener, onExpired: shaka.deprecate.Listener) {
+
+  constructor(
+      libraryVersion: Version, onPending: shaka.deprecate.Listener,
+      onExpired: shaka.deprecate.Listener) {
     this.libraryVersion_ = libraryVersion;
     this.onPending_ = onPending;
     this.onExpired_ = onExpired;
   }
-   
+
   /**
-     * Tell the enforcer that a feature will expire on |expiredOn| and that it
-     * should notify the listeners if it is pending or expired.
-     *
-     */ 
+   * Tell the enforcer that a feature will expire on |expiredOn| and that it
+   * should notify the listeners if it is pending or expired.
+   *
+   */
   enforce(expiresOn: Version, name: string, description: string) {
-     
     // If the expiration version is larger than the library version
     // (compareTo > 0), it means the expiration is in the future, and is still
-    // pending. 
+    // pending.
     const isPending = expiresOn.compareTo(this.libraryVersion_) > 0;
-     
+
     // Find the right callback (pending or expired) for this enforcement request
-    // call it to handle this features pending/expired removal. 
+    // call it to handle this features pending/expired removal.
     const callback = isPending ? this.onPending_ : this.onExpired_;
     callback(this.libraryVersion_, expiresOn, name, description);
   }

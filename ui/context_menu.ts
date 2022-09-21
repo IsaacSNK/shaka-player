@@ -2,26 +2,26 @@
  * Shaka Player
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
- */ 
-import{asserts}from './asserts';
-import*as assertsExports from './asserts';
-import{log}from './log';
-import*as logExports from './log';
-import{Element}from './element';
-import{Utils}from './ui_utils';
-import{Dom}from './dom_utils';
-import{Controls}from './controls';
- 
+ */
+import * as assertsExports from './debug___asserts';
+import {asserts} from './debug___asserts';
+import * as logExports from './debug___log';
+import {log} from './debug___log';
+import {Controls} from './ui___controls';
+import {Element} from './ui___element';
+import {Utils} from './ui___ui_utils';
+import {Dom} from './util___dom_utils';
+
 /**
  * @final
  * @export
- */ 
+ */
 export class ContextMenu extends Element {
   private config_: shaka.extern.UIConfiguration;
   private controlsContainer_: HTMLElement;
   private children_: shaka.extern.IUIElement[] = [];
   private contextMenu_: HTMLElement;
-   
+
   constructor(parent: HTMLElement, controls: Controls) {
     super(parent, controls);
     this.config_ = this.controls.getConfig();
@@ -31,11 +31,11 @@ export class ContextMenu extends Element {
     this.contextMenu_.classList.add('shaka-context-menu');
     this.contextMenu_.classList.add('shaka-hidden');
     this.controlsContainer_.appendChild(this.contextMenu_);
-    this.eventManager.listen(this.controlsContainer_, 'contextmenu',  
-    (e) => {
+    this.eventManager.listen(this.controlsContainer_, 'contextmenu', (e) => {
       if (this.contextMenu_.classList.contains('shaka-hidden')) {
         e.preventDefault();
-        const controlsLocation = this.controlsContainer_.getBoundingClientRect();
+        const controlsLocation =
+            this.controlsContainer_.getBoundingClientRect();
         this.contextMenu_.style.left = `${e.clientX - controlsLocation.left}px`;
         this.contextMenu_.style.top = `${e.clientY - controlsLocation.top}px`;
         Utils.setDisplay(this.contextMenu_, true);
@@ -43,14 +43,13 @@ export class ContextMenu extends Element {
         Utils.setDisplay(this.contextMenu_, false);
       }
     });
-    this.eventManager.listen(window, 'click',  
-    () => {
+    this.eventManager.listen(window, 'click', () => {
       Utils.setDisplay(this.contextMenu_, false);
     });
     this.createChildren_();
   }
-   
-  /** @override */ 
+
+  /** @override */
   release() {
     this.controlsContainer_ = null;
     for (const element of this.children_) {
@@ -59,14 +58,15 @@ export class ContextMenu extends Element {
     this.children_ = [];
     super.release();
   }
-   
+
   /**
-     * @export
-     */ 
-  static registerElement(name: string, factory: shaka.extern.IUIElement.Factory) {
+   * @export
+   */
+  static registerElement(
+      name: string, factory: shaka.extern.IUIElement.Factory) {
     elementNamesToFactories_.set(name, factory);
   }
-   
+
   private createChildren_() {
     for (const name of this.config_.contextMenuElements) {
       const factory = elementNamesToFactories_.get(name);
@@ -79,5 +79,6 @@ export class ContextMenu extends Element {
     }
   }
 }
- 
-export const elementNamesToFactories_: Map<string, shaka.extern.IUIElement.Factory> = new Map();
+
+export const elementNamesToFactories_:
+    Map<string, shaka.extern.IUIElement.Factory> = new Map();

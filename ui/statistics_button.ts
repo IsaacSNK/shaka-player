@@ -2,28 +2,29 @@
  * Shaka Player
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
- */ 
-import{log}from './log';
-import*as logExports from './log';
-import{ContextMenu}from './context_menu';
-import*as ContextMenuExports from './context_menu';
-import{Controls}from './controls';
-import{Element}from './element';
-import*as Enums from './enums';
+ */
+import * as logExports from './debug___log';
+import {log} from './debug___log';
+import * as ContextMenuExports from './ui___context_menu';
+import {ContextMenu} from './ui___context_menu';
+import {Controls} from './ui___controls';
+import {Element} from './ui___element';
+import * as Enums from './ui___enums';
+
 goog.require('shaka.ui.Locales');
-import{Localization}from './localization';
-import*as LocalizationExports from './localization';
-import{OverflowMenu}from './overflow_menu';
-import*as OverflowMenuExports from './overflow_menu';
-import{Utils}from './ui_utils';
-import{Dom}from './dom_utils';
-import{Timer}from './timer';
-import{Controls}from './controls';
- 
+import {Localization} from './ui___localization';
+import * as LocalizationExports from './ui___localization';
+import {OverflowMenu} from './ui___overflow_menu';
+import * as OverflowMenuExports from './ui___overflow_menu';
+import {Utils} from './ui___ui_utils';
+import {Dom} from './util___dom_utils';
+import {Timer} from './util___timer';
+import {Controls} from './ui___controls';
+
 /**
  * @final
  * @export
- */ 
+ */
 export class StatisticsButton extends Element {
   private button_: HTMLButtonElement;
   private icon_: HTMLElement;
@@ -32,11 +33,11 @@ export class StatisticsButton extends Element {
   private container_: HTMLElement;
   private statisticsList_: Array = [];
   private skippedStats_: Array = ['stateHistory', 'switchHistory'];
-  private currentStats_: {[key:string]:number};
-  private displayedElements_: {[key:string]:HTMLElement} = {};
-  private parseFrom_: {[key:string]:(p1: string) => string};
+  private currentStats_: {[key: string]: number};
+  private displayedElements_: {[key: string]: HTMLElement} = {};
+  private parseFrom_: {[key: string]: (p1: string) => string};
   private timer_: Timer;
-   
+
   constructor(parent: HTMLElement, controls: Controls) {
     super(parent, controls);
     this.button_ = Dom.createButton();
@@ -62,61 +63,70 @@ export class StatisticsButton extends Element {
     const controlsContainer = this.controls.getControlsContainer();
     controlsContainer.appendChild(this.container_);
     this.currentStats_ = this.player.getStats();
-    const parsePx =  
-    (name) => {
+    const parsePx = (name) => {
       return this.currentStats_[name] + ' (px)';
     };
-    const parsePercent =  
-    (name) => {
+    const parsePercent = (name) => {
       return this.currentStats_[name] + ' (%)';
     };
-    const parseFrames =  
-    (name) => {
+    const parseFrames = (name) => {
       return this.currentStats_[name] + ' (frames)';
     };
-    const parseSeconds =  
-    (name) => {
+    const parseSeconds = (name) => {
       return this.currentStats_[name].toFixed(2) + ' (s)';
     };
-    const parseBits =  
-    (name) => {
+    const parseBits = (name) => {
       return Math.round(this.currentStats_[name] / 1000) + ' (kbits/s)';
     };
-    const parseTime =  
-    (name) => {
+    const parseTime = (name) => {
       return Utils.buildTimeString(this.currentStats_[name], false) + ' (m)';
     };
-    const parseGaps =  
-    (name) => {
+    const parseGaps = (name) => {
       return this.currentStats_[name] + ' (gaps)';
     };
-    const parseStalls =  
-    (name) => {
+    const parseStalls = (name) => {
       return this.currentStats_[name] + ' (stalls)';
     };
-    this.parseFrom_ = {'width':parsePx, 'height':parsePx, 'completionPercent':parsePercent, 'bufferingTime':parseSeconds, 'drmTimeSeconds':parseSeconds, 'licenseTime':parseSeconds, 'liveLatency':parseSeconds, 'loadLatency':parseSeconds, 'manifestTimeSeconds':parseSeconds, 'estimatedBandwidth':parseBits, 'streamBandwidth':parseBits, 'maxSegmentDuration':parseTime, 'pauseTime':parseTime, 'playTime':parseTime, 'corruptedFrames':parseFrames, 'decodedFrames':parseFrames, 'droppedFrames':parseFrames, 'stallsDetected':parseStalls, 
-    'gapsJumped':parseGaps};
-    this.timer_ = new Timer( 
-    () => {
+    this.parseFrom_ = {
+      'width': parsePx,
+      'height': parsePx,
+      'completionPercent': parsePercent,
+      'bufferingTime': parseSeconds,
+      'drmTimeSeconds': parseSeconds,
+      'licenseTime': parseSeconds,
+      'liveLatency': parseSeconds,
+      'loadLatency': parseSeconds,
+      'manifestTimeSeconds': parseSeconds,
+      'estimatedBandwidth': parseBits,
+      'streamBandwidth': parseBits,
+      'maxSegmentDuration': parseTime,
+      'pauseTime': parseTime,
+      'playTime': parseTime,
+      'corruptedFrames': parseFrames,
+      'decodedFrames': parseFrames,
+      'droppedFrames': parseFrames,
+      'stallsDetected': parseStalls,
+      'gapsJumped': parseGaps
+    };
+    this.timer_ = new Timer(() => {
       this.onTimerTick_();
     });
     this.updateLocalizedStrings_();
     this.loadContainer_();
-    this.eventManager.listen(this.localization, LocalizationExports.LOCALE_UPDATED,  
-    () => {
-      this.updateLocalizedStrings_();
-    });
-    this.eventManager.listen(this.localization, LocalizationExports.LOCALE_CHANGED,  
-    () => {
-      this.updateLocalizedStrings_();
-    });
-    this.eventManager.listen(this.button_, 'click',  
-    () => {
+    this.eventManager.listen(
+        this.localization, LocalizationExports.LOCALE_UPDATED, () => {
+          this.updateLocalizedStrings_();
+        });
+    this.eventManager.listen(
+        this.localization, LocalizationExports.LOCALE_CHANGED, () => {
+          this.updateLocalizedStrings_();
+        });
+    this.eventManager.listen(this.button_, 'click', () => {
       this.onClick_();
       this.updateLocalizedStrings_();
     });
   }
-   
+
   private onClick_() {
     Utils.setDisplay(this.parent, false);
     if (this.container_.classList.contains('shaka-hidden')) {
@@ -129,15 +139,17 @@ export class StatisticsButton extends Element {
       Utils.setDisplay(this.container_, false);
     }
   }
-   
+
   private updateLocalizedStrings_() {
     const LocIds = shaka.ui.Locales.Ids;
     this.nameSpan_.textContent = this.localization.resolve(LocIds.STATISTICS);
     this.button_.ariaLabel = this.localization.resolve(LocIds.STATISTICS);
-    const labelText = this.container_.classList.contains('shaka-hidden') ? LocIds.OFF : LocIds.ON;
+    const labelText = this.container_.classList.contains('shaka-hidden') ?
+        LocIds.OFF :
+        LocIds.ON;
     this.stateSpan_.textContent = this.localization.resolve(labelText);
   }
-   
+
   private generateComponent_(name) {
     const section = Dom.createHTMLElement('div');
     const label = Dom.createHTMLElement('label');
@@ -149,7 +161,7 @@ export class StatisticsButton extends Element {
     this.displayedElements_[name] = value;
     return section;
   }
-   
+
   private loadContainer_() {
     for (const name of this.controls.getConfig().statisticsList) {
       if (name in this.currentStats_ && !this.skippedStats_.includes(name)) {
@@ -160,28 +172,28 @@ export class StatisticsButton extends Element {
       }
     }
   }
-   
+
   private onTimerTick_() {
     this.currentStats_ = this.player.getStats();
     for (const name of this.statisticsList_) {
       this.displayedElements_[name].textContent = this.parseFrom_[name](name);
     }
   }
-   
-  /** @override */ 
+
+  /** @override */
   release() {
     this.timer_.stop();
     this.timer_ = null;
     super.release();
   }
 }
- 
+
 /**
  * @final
- */ 
-export class Factory implements shaka.extern.IUIElement.Factory {
-   
-  /** @override */ 
+ */
+export class Factory implements shaka.
+extern.IUIElement.Factory {
+  /** @override */
   create(rootElement, controls) {
     return new StatisticsButton(rootElement, controls);
   }

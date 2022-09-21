@@ -2,55 +2,56 @@
  * Shaka Player
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
- */ 
-import{Cea708Window}from './cea708_window';
-import*as Cea708WindowExports from './cea708_window';
-import{DtvccPacket}from './dtvcc_packet_builder';
-import{ICaptionDecoder}from './i_caption_decoder';
-import*as ICaptionDecoderExports from './i_caption_decoder';
- 
+ */
+import * as Cea708WindowExports from './cea___cea708_window';
+import {Cea708Window} from './cea___cea708_window';
+import {DtvccPacket} from './cea___dtvcc_packet_builder';
+import * as ICaptionDecoderExports from './cea___i_caption_decoder';
+import {ICaptionDecoder} from './cea___i_caption_decoder';
+
 /**
  * CEA-708 closed captions service as defined by CEA-708-E. A decoder can own up
  * to 63 services. Each service owns eight windows.
- */ 
+ */
 export class Cea708Service {
-   
   /**
-       * Number for this specific service (1 - 63).
-       */ 
+   * Number for this specific service (1 - 63).
+   */
   private serviceNumber_: number;
-   
+
   /**
-       * Eight Cea708 Windows, as defined by the spec.
-       */ 
-  private windows_: (Cea708Window | null)[] = [null, null, null, null, null, null, null, null];
-   
+   * Eight Cea708 Windows, as defined by the spec.
+   */
+  private windows_: (Cea708Window|
+                     null)[] = [null, null, null, null, null, null, null, null];
+
   /**
-       * The current window for which window command operate on.
-       */ 
-  private currentWindow_: Cea708Window | null = null;
-   
+   * The current window for which window command operate on.
+   */
+  private currentWindow_: Cea708Window|null = null;
+
   constructor(serviceNumber: number) {
     this.serviceNumber_ = serviceNumber;
   }
-   
+
   /**
-     * Processes a CEA-708 control code.
-     * @throws {!shaka.util.Error}
-     */ 
-  handleCea708ControlCode(dtvccPacket: DtvccPacket): ICaptionDecoderExports.ClosedCaption | null {
+   * Processes a CEA-708 control code.
+   * @throws {!shaka.util.Error}
+   */
+  handleCea708ControlCode(dtvccPacket: DtvccPacket):
+      ICaptionDecoderExports.ClosedCaption|null {
     const blockData = dtvccPacket.readByte();
     let controlCode = blockData.value;
     const pts = blockData.pts;
-     
-    // Read extended control code if needed. 
+
+    // Read extended control code if needed.
     if (controlCode === EXT_CEA708_CTRL_CODE_BYTE1) {
       const extendedControlCodeBlock = dtvccPacket.readByte();
       controlCode = controlCode << 16 | extendedControlCodeBlock.value;
     }
-     
+
     // Control codes are in 1 of 4 logical groups:
-    // CL (C0, C2), CR (C1, C3), GL (G0, G2), GR (G1, G2). 
+    // CL (C0, C2), CR (C1, C3), GL (G0, G2), GR (G1, G2).
     if (controlCode >= 0 && controlCode <= 31) {
       return this.handleC0_(controlCode, pts);
     } else {
@@ -84,110 +85,108 @@ export class Cea708Service {
     }
     return null;
   }
-   
+
   /**
-     * Handles G0 group data.
-     */ 
+   * Handles G0 group data.
+   */
   private handleG0_(controlCode: number) {
     if (!this.currentWindow_) {
       return;
     }
-     
+
     // G0 contains ASCII from 0x20 to 0x7f, with the exception that 0x7f
-    // is replaced by a musical note. 
+    // is replaced by a musical note.
     if (controlCode === 127) {
       this.currentWindow_.setCharacter('\u266a');
       return;
     }
     this.currentWindow_.setCharacter(String.fromCharCode(controlCode));
   }
-   
+
   /**
-     * Handles G1 group data.
-     */ 
+   * Handles G1 group data.
+   */
   private handleG1_(controlCode: number) {
     if (!this.currentWindow_) {
       return;
     }
-     
-    // G1 is the Latin-1 Character Set from 0xa0 to 0xff. 
+
+    // G1 is the Latin-1 Character Set from 0xa0 to 0xff.
     this.currentWindow_.setCharacter(String.fromCharCode(controlCode));
   }
-   
+
   /**
-     * Handles G2 group data.
-     */ 
+   * Handles G2 group data.
+   */
   private handleG2_(controlCode: number) {
     if (!this.currentWindow_) {
       return;
     }
     if (!G2Charset.has(controlCode)) {
-       
-      // If the character is unsupported, the spec says to put an underline. 
+      // If the character is unsupported, the spec says to put an underline.
       this.currentWindow_.setCharacter('_');
       return;
     }
     const char = G2Charset.get(controlCode);
     this.currentWindow_.setCharacter(char);
   }
-   
+
   /**
-     * Handles G3 group data.
-     */ 
+   * Handles G3 group data.
+   */
   private handleG3_(controlCode: number) {
     if (!this.currentWindow_) {
       return;
     }
-     
+
     // As of CEA-708-E, the G3 group only contains 1 character. It's a
-    // [CC] character which has no unicode value on 0xa0. 
+    // [CC] character which has no unicode value on 0xa0.
     if (controlCode != 160) {
-       
-      // Similar to G2, the spec decrees an underline if char is unsupported. 
+      // Similar to G2, the spec decrees an underline if char is unsupported.
       this.currentWindow_.setCharacter('_');
       return;
     }
     this.currentWindow_.setCharacter('[CC]');
   }
-   
+
   /**
-     * Handles C0 group data.
-     */ 
-  private handleC0_(controlCode: number, pts: number): ICaptionDecoderExports.ClosedCaption | null {
-     
-    // All these commands pertain to the current window, so ensure it exists. 
+   * Handles C0 group data.
+   */
+  private handleC0_(controlCode: number, pts: number):
+      ICaptionDecoderExports.ClosedCaption|null {
+    // All these commands pertain to the current window, so ensure it exists.
     if (!this.currentWindow_) {
       return null;
     }
     const window = this.currentWindow_;
     let parsedClosedCaption = null;
-     
+
     // Note: This decoder ignores the "ETX" (end of text) control code. Since
-    // this is JavaScript, a '\0' is not needed to terminate a string. 
-    switch(controlCode) {
+    // this is JavaScript, a '\0' is not needed to terminate a string.
+    switch (controlCode) {
       case ASCII_BACKSPACE:
         window.backspace();
         break;
       case ASCII_CARRIAGE_RETURN:
-         
-        // Force out the buffer, since the top row could be lost. 
+
+        // Force out the buffer, since the top row could be lost.
         if (window.isVisible()) {
           parsedClosedCaption = window.forceEmit(pts, this.serviceNumber_);
         }
         window.carriageReturn();
         break;
       case ASCII_HOR_CARRIAGE_RETURN:
-         
-        // Force out the buffer, a row will be erased. 
+
+        // Force out the buffer, a row will be erased.
         if (window.isVisible()) {
           parsedClosedCaption = window.forceEmit(pts, this.serviceNumber_);
         }
         window.horizontalCarriageReturn();
         break;
       case ASCII_FORM_FEED:
-         
+
         // Clear window and move pen to (0,0).
-        // Force emit if the window is visible. 
+        // Force emit if the window is visible.
         if (window.isVisible()) {
           parsedClosedCaption = window.forceEmit(pts, this.serviceNumber_);
         }
@@ -197,18 +196,19 @@ export class Cea708Service {
     }
     return parsedClosedCaption;
   }
-   
+
   /**
-     * Processes C1 group data.
-     * These are caption commands.
-     * @param pts in seconds
-     * @throws {!shaka.util.Error} a possible out-of-range buffer read.
-     */ 
-  private handleC1_(dtvccPacket: DtvccPacket, captionCommand: number, pts: number): ICaptionDecoderExports.ClosedCaption | null {
-     
+   * Processes C1 group data.
+   * These are caption commands.
+   * @param pts in seconds
+   * @throws {!shaka.util.Error} a possible out-of-range buffer read.
+   */
+  private handleC1_(
+      dtvccPacket: DtvccPacket, captionCommand: number,
+      pts: number): ICaptionDecoderExports.ClosedCaption|null {
     // Note: This decoder ignores delay and delayCancel control codes in the C1.
     // group. These control codes delay processing of data for a set amount of
-    // time, however this decoder processes that data immediately. 
+    // time, however this decoder processes that data immediately.
     if (captionCommand >= 128 && captionCommand <= 135) {
       const windowNum = captionCommand & 7;
       this.setCurrentWindow_(windowNum);
@@ -265,14 +265,13 @@ export class Cea708Service {
     }
     return null;
   }
-   
+
   /**
-     * Handles C2 group data.
-     */ 
+   * Handles C2 group data.
+   */
   private handleC2_(dtvccPacket: DtvccPacket, controlCode: number) {
-     
     // As of the CEA-708-E spec there are no commands on the C2 table, but if
-    // seen, then the appropriate number of bytes must be skipped as per spec. 
+    // seen, then the appropriate number of bytes must be skipped as per spec.
     if (controlCode >= 8 && controlCode <= 15) {
       dtvccPacket.skip(1);
     } else {
@@ -285,14 +284,13 @@ export class Cea708Service {
       }
     }
   }
-   
+
   /**
-     * Handles C3 group data.
-     */ 
+   * Handles C3 group data.
+   */
   private handleC3_(dtvccPacket: DtvccPacket, controlCode: number) {
-     
     // As of the CEA-708-E spec there are no commands on the C3 table, but if
-    // seen, then the appropriate number of bytes must be skipped as per spec. 
+    // seen, then the appropriate number of bytes must be skipped as per spec.
     if (controlCode >= 128 && controlCode <= 135) {
       dtvccPacket.skip(4);
     } else {
@@ -301,20 +299,19 @@ export class Cea708Service {
       }
     }
   }
-   
+
   private setCurrentWindow_(windowNum: number) {
-     
-    // If the window isn't created, ignore the command. 
+    // If the window isn't created, ignore the command.
     if (!this.windows_[windowNum]) {
       return;
     }
     this.currentWindow_ = this.windows_[windowNum];
   }
-   
+
   /**
-     * Yields each non-null window specified in the 8-bit bitmap.
-     * @param bitmap 8 bits corresponding to each of the 8 windows.
-     */ 
+   * Yields each non-null window specified in the 8-bit bitmap.
+   * @param bitmap 8 bits corresponding to each of the 8 windows.
+   */
   private getSpecifiedWindowIds_(bitmap: number): number[] {
     const ids = [];
     for (let i = 0; i < 8; i++) {
@@ -326,14 +323,14 @@ export class Cea708Service {
     }
     return ids;
   }
-   
-  private clearWindows_(windowsBitmap: number, pts: number): ICaptionDecoderExports.ClosedCaption | null {
+
+  private clearWindows_(windowsBitmap: number, pts: number):
+      ICaptionDecoderExports.ClosedCaption|null {
     let parsedClosedCaption = null;
-     
-    // Clears windows from the 8 bit bitmap. 
+
+    // Clears windows from the 8 bit bitmap.
     for (const windowId of this.getSpecifiedWindowIds_(windowsBitmap)) {
-       
-      // If window visible and being cleared, emit buffer and reset start time! 
+      // If window visible and being cleared, emit buffer and reset start time!
       const window = this.windows_[windowId];
       if (window.isVisible()) {
         parsedClosedCaption = window.forceEmit(pts, this.serviceNumber_);
@@ -342,112 +339,109 @@ export class Cea708Service {
     }
     return parsedClosedCaption;
   }
-   
+
   private displayWindows_(windowsBitmap: number, pts: number) {
-     
-    // Displays windows from the 8 bit bitmap. 
+    // Displays windows from the 8 bit bitmap.
     for (const windowId of this.getSpecifiedWindowIds_(windowsBitmap)) {
       const window = this.windows_[windowId];
       if (!window.isVisible()) {
-         
-        // We are turning on the visibility, set the start time. 
+        // We are turning on the visibility, set the start time.
         window.setStartTime(pts);
       }
       window.display();
     }
   }
-   
-  private hideWindows_(windowsBitmap: number, pts: number): ICaptionDecoderExports.ClosedCaption | null {
+
+  private hideWindows_(windowsBitmap: number, pts: number):
+      ICaptionDecoderExports.ClosedCaption|null {
     let parsedClosedCaption = null;
-     
-    // Hides windows from the 8 bit bitmap. 
+
+    // Hides windows from the 8 bit bitmap.
     for (const windowId of this.getSpecifiedWindowIds_(windowsBitmap)) {
       const window = this.windows_[windowId];
       if (window.isVisible()) {
-         
-        // We are turning off the visibility, emit! 
+        // We are turning off the visibility, emit!
         parsedClosedCaption = window.forceEmit(pts, this.serviceNumber_);
       }
       window.hide();
     }
     return parsedClosedCaption;
   }
-   
-  private toggleWindows_(windowsBitmap: number, pts: number): ICaptionDecoderExports.ClosedCaption | null {
+
+  private toggleWindows_(windowsBitmap: number, pts: number):
+      ICaptionDecoderExports.ClosedCaption|null {
     let parsedClosedCaption = null;
-     
-    // Toggles windows from the 8 bit bitmap. 
+
+    // Toggles windows from the 8 bit bitmap.
     for (const windowId of this.getSpecifiedWindowIds_(windowsBitmap)) {
       const window = this.windows_[windowId];
       if (window.isVisible()) {
-         
-        // We are turning off the visibility, emit! 
+        // We are turning off the visibility, emit!
         parsedClosedCaption = window.forceEmit(pts, this.serviceNumber_);
       } else {
-         
-        // We are turning on visibility, set the start time. 
+        // We are turning on visibility, set the start time.
         window.setStartTime(pts);
       }
       window.toggle();
     }
     return parsedClosedCaption;
   }
-   
-  private deleteWindows_(windowsBitmap: number, pts: number): ICaptionDecoderExports.ClosedCaption | null {
+
+  private deleteWindows_(windowsBitmap: number, pts: number):
+      ICaptionDecoderExports.ClosedCaption|null {
     let parsedClosedCaption = null;
-     
-    // Deletes windows from the 8 bit bitmap. 
+
+    // Deletes windows from the 8 bit bitmap.
     for (const windowId of this.getSpecifiedWindowIds_(windowsBitmap)) {
       const window = this.windows_[windowId];
       if (window.isVisible()) {
-         
-        // We are turning off the visibility, emit! 
+        // We are turning off the visibility, emit!
         parsedClosedCaption = window.forceEmit(pts, this.serviceNumber_);
       }
-       
-      // Delete the window from the list of windows 
+
+      // Delete the window from the list of windows
       this.windows_[windowId] = null;
     }
     return parsedClosedCaption;
   }
-   
+
   /**
-     * Emits anything currently present in any of the windows, and then
-     * deletes all windows, cancels all delays, reinitializes the service.
-     */ 
-  private reset_(pts: number): ICaptionDecoderExports.ClosedCaption | null {
+   * Emits anything currently present in any of the windows, and then
+   * deletes all windows, cancels all delays, reinitializes the service.
+   */
+  private reset_(pts: number): ICaptionDecoderExports.ClosedCaption|null {
     const allWindowsBitmap = 255;
-     
-    // All windows should be deleted. 
+
+    // All windows should be deleted.
     const caption = this.deleteWindows_(allWindowsBitmap, pts);
     this.clear();
     return caption;
   }
-   
+
   /**
-     * Clears the state of the service completely.
-     */ 
+   * Clears the state of the service completely.
+   */
   clear() {
     this.currentWindow_ = null;
     this.windows_ = [null, null, null, null, null, null, null, null];
   }
-   
+
   /**
-     * @throws {!shaka.util.Error}
-     */ 
+   * @throws {!shaka.util.Error}
+   */
   private setPenAttributes_(dtvccPacket: DtvccPacket) {
-     
     // Two bytes follow. For the purpose of this decoder, we are only concerned
-    // with byte 2, which is of the form |I|U|EDTYP|FNTAG|. 
-     
+    // with byte 2, which is of the form |I|U|EDTYP|FNTAG|.
+
     // I (1 bit): Italics toggle.
     // U (1 bit): Underline toggle.
     // EDTYP (3 bits): Edge type (unused in this decoder).
     // FNTAG (3 bits): Font tag (unused in this decoder).
-    // More info at https://en.wikipedia.org/wiki/CEA-708#SetPenAttributes_(0x90_+_2_bytes) 
-    dtvccPacket.skip( 
-    // Skip first byte 
-    1);
+    // More info at
+    // https://en.wikipedia.org/wiki/CEA-708#SetPenAttributes_(0x90_+_2_bytes)
+    dtvccPacket.skip(
+        // Skip first byte
+        1);
     const attrByte2 = dtvccPacket.readByte().value;
     if (!this.currentWindow_) {
       return;
@@ -457,47 +451,47 @@ export class Cea708Service {
     this.currentWindow_.setPenItalics(italics);
     this.currentWindow_.setPenUnderline(underline);
   }
-   
+
   /**
-     * @throws {!shaka.util.Error}
-     */ 
+   * @throws {!shaka.util.Error}
+   */
   private setPenColor_(dtvccPacket: DtvccPacket) {
-     
-    // Read foreground and background properties. 
+    // Read foreground and background properties.
     const foregroundByte = dtvccPacket.readByte().value;
     const backgroundByte = dtvccPacket.readByte().value;
-    dtvccPacket.skip( 
-    // Edge color not supported, skip it. 
-    1);
+    dtvccPacket.skip(
+        // Edge color not supported, skip it.
+        1);
     if (!this.currentWindow_) {
       return;
     }
-     
+
     // Byte semantics are described at the following link:
-    // https://en.wikipedia.org/wiki/CEA-708#SetPenColor_(0x91_+_3_bytes) 
-     
-    // Foreground color properties: |FOP|F_R|F_G|F_B|. 
+    // https://en.wikipedia.org/wiki/CEA-708#SetPenColor_(0x91_+_3_bytes)
+
+    // Foreground color properties: |FOP|F_R|F_G|F_B|.
     const foregroundBlue = foregroundByte & 3;
     const foregroundGreen = (foregroundByte & 12) >> 2;
     const foregroundRed = (foregroundByte & 48) >> 4;
-     
-    // Background color properties: |BOP|B_R|B_G|B_B|. 
+
+    // Background color properties: |BOP|B_R|B_G|B_B|.
     const backgroundBlue = backgroundByte & 3;
     const backgroundGreen = (backgroundByte & 12) >> 2;
     const backgroundRed = (backgroundByte & 48) >> 4;
-    const foregroundColor = this.rgbColorToHex_(foregroundRed, foregroundGreen, foregroundBlue);
-    const backgroundColor = this.rgbColorToHex_(backgroundRed, backgroundGreen, backgroundBlue);
+    const foregroundColor =
+        this.rgbColorToHex_(foregroundRed, foregroundGreen, foregroundBlue);
+    const backgroundColor =
+        this.rgbColorToHex_(backgroundRed, backgroundGreen, backgroundBlue);
     this.currentWindow_.setPenTextColor(foregroundColor);
     this.currentWindow_.setPenBackgroundColor(backgroundColor);
   }
-   
+
   /**
-     * @throws {!shaka.util.Error}
-     */ 
+   * @throws {!shaka.util.Error}
+   */
   private setPenLocation_(dtvccPacket: DtvccPacket) {
-     
     // Following 2 bytes take the following form:
-    // b1 = |0|0|0|0|ROW| and b2 = |0|0|COLUMN| 
+    // b1 = |0|0|0|0|ROW| and b2 = |0|0|COLUMN|
     const locationByte1 = dtvccPacket.readByte().value;
     const locationByte2 = dtvccPacket.readByte().value;
     if (!this.currentWindow_) {
@@ -507,105 +501,107 @@ export class Cea708Service {
     const col = locationByte2 & 63;
     this.currentWindow_.setPenLocation(row, col);
   }
-   
+
   /**
-     * @throws {!shaka.util.Error}
-     */ 
+   * @throws {!shaka.util.Error}
+   */
   private setWindowAttributes_(dtvccPacket: DtvccPacket) {
-     
     // 4 bytes follow, with the following form:
     // Byte 1 contains fill-color information. Unused in this decoder.
     // Byte 2 contains border color information. Unused in this decoder.
     // Byte 3 contains justification information. In this decoder, we only use
     // the last 2 bits, which specifies text justification on the screen.
     // Byte 4 is special effects. Unused in this decoder.
-    // More info at https://en.wikipedia.org/wiki/CEA-708#SetWindowAttributes_(0x97_+_4_bytes) 
-    dtvccPacket.skip( 
-    // Fill color not supported, skip. 
-    1);
-    dtvccPacket.skip( 
-    // Border colors not supported, skip. 
-    1);
+    // More info at
+    // https://en.wikipedia.org/wiki/CEA-708#SetWindowAttributes_(0x97_+_4_bytes)
+    dtvccPacket.skip(
+        // Fill color not supported, skip.
+        1);
+    dtvccPacket.skip(
+        // Border colors not supported, skip.
+        1);
     const b3 = dtvccPacket.readByte().value;
-    dtvccPacket.skip( 
-    // Effects not supported, skip. 
-    1);
+    dtvccPacket.skip(
+        // Effects not supported, skip.
+        1);
     if (!this.currentWindow_) {
       return;
     }
-     
+
     // Word wrap is outdated as of CEA-708-E, so we ignore those bits.
-    // Extract the text justification and set it on the window. 
+    // Extract the text justification and set it on the window.
     const justification = (b3 & 3 as Cea708WindowExports.TextJustification);
     this.currentWindow_.setJustification(justification);
   }
-   
+
   /**
-     * @throws {!shaka.util.Error}
-     */ 
-  private defineWindow_(dtvccPacket: DtvccPacket, windowNum: number, pts: number) {
-     
-    // Create the window if it doesn't exist. 
+   * @throws {!shaka.util.Error}
+   */
+  private defineWindow_(
+      dtvccPacket: DtvccPacket, windowNum: number, pts: number) {
+    // Create the window if it doesn't exist.
     const windowAlreadyExists = this.windows_[windowNum] !== null;
     if (!windowAlreadyExists) {
       const window = new Cea708Window(windowNum);
       window.setStartTime(pts);
       this.windows_[windowNum] = window;
     }
-     
+
     // 6 Bytes follow, with the following form:
     // b1 = |0|0|V|R|C|PRIOR| , b2 = |P|VERT_ANCHOR| , b3 = |HOR_ANCHOR|
     // b4 = |ANC_ID|ROW_CNT| , b5 = |0|0|COL_COUNT| , b6 = |0|0|WNSTY|PNSTY|
-    // Semantics of these bytes at https://en.wikipedia.org/wiki/CEA-708#DefineWindow07_(0x98-0x9F,_+_6_bytes) 
+    // Semantics of these bytes at
+    // https://en.wikipedia.org/wiki/CEA-708#DefineWindow07_(0x98-0x9F,_+_6_bytes)
     const b1 = dtvccPacket.readByte().value;
     const b2 = dtvccPacket.readByte().value;
     const b3 = dtvccPacket.readByte().value;
     const b4 = dtvccPacket.readByte().value;
     const b5 = dtvccPacket.readByte().value;
     const b6 = dtvccPacket.readByte().value;
-     
+
     // As per 8.4.7 of CEA-708-E, row locks and column locks are to be ignored.
-    // So this decoder will ignore these values. 
+    // So this decoder will ignore these values.
     const visible = (b1 & 32) > 0;
     const verticalAnchor = b2 & 127;
     const relativeToggle = (b2 & 128) > 0;
     const horAnchor = b3;
     const rowCount = (b4 & 15) + 1;
-     
-    // Spec says to add 1. 
+
+    // Spec says to add 1.
     const anchorId = (b4 & 240) >> 4;
     const colCount = (b5 & 63) + 1;
-     
-    // Spec says to add 1. 
-     
+
+    // Spec says to add 1.
+
     // If pen style = 0 AND window previously existed, keep its pen style.
     // Otherwise, change the pen style (For now, just reset to the default pen).
-    // TODO add support for predefined pen styles and fonts. 
+    // TODO add support for predefined pen styles and fonts.
     const penStyle = b6 & 7;
     if (!windowAlreadyExists || penStyle !== 0) {
       this.windows_[windowNum].resetPen();
     }
-    this.windows_[windowNum].defineWindow(visible, verticalAnchor, horAnchor, anchorId, relativeToggle, rowCount, colCount);
-     
-    // Set the current window to the newly defined window. 
+    this.windows_[windowNum].defineWindow(
+        visible, verticalAnchor, horAnchor, anchorId, relativeToggle, rowCount,
+        colCount);
+
+    // Set the current window to the newly defined window.
     this.currentWindow_ = this.windows_[windowNum];
   }
-   
+
   /**
-     * Maps 64 possible CEA-708 colors to 8 CSS colors.
-     * @param red value from 0-3
-     * @param green value from 0-3
-     * @param blue value from 0-3
-     */ 
+   * Maps 64 possible CEA-708 colors to 8 CSS colors.
+   * @param red value from 0-3
+   * @param green value from 0-3
+   * @param blue value from 0-3
+   */
   private rgbColorToHex_(red: number, green: number, blue: number): string {
-     
     // Rather than supporting 64 colors, this decoder supports 8 colors and
     // gets the closest color, as per 9.19 of CEA-708-E. This is because some
     // colors on television such as white, are often sent with lower intensity
-    // and often appear dull/greyish on the browser, making them hard to read. 
-     
-    // As per CEA-708-E 9.19, these mappings will map 64 colors to 8 colors. 
-    const colorMapping = {0:0, 1:0, 2:1, 3:1};
+    // and often appear dull/greyish on the browser, making them hard to read.
+
+    // As per CEA-708-E 9.19, these mappings will map 64 colors to 8 colors.
+    const colorMapping = {0: 0, 1: 0, 2: 1, 3: 1};
     red = colorMapping[red];
     green = colorMapping[green];
     blue = colorMapping[blue];
@@ -613,29 +609,43 @@ export class Cea708Service {
     return Colors[colorCode];
   }
 }
- 
+
 export const ASCII_BACKSPACE: number = 8;
- 
+
 export const ASCII_FORM_FEED: number = 12;
- 
+
 export const ASCII_CARRIAGE_RETURN: number = 13;
- 
+
 export const ASCII_HOR_CARRIAGE_RETURN: number = 14;
- 
+
 /**
  * For extended control codes in block_data on CEA-708, byte 1 is 0x10.
- *  */ 
+ *  */
 export const EXT_CEA708_CTRL_CODE_BYTE1: number = 16;
- 
+
 /**
  * Holds characters mapping for bytes that are G2 control codes.
- *  */ 
-export const G2Charset: Map<number, string> = new Map([[32, ' '], [33, '\u00a0'], [37, '\u2026'], [42, '\u0160'], [44, '\u0152'], [48, '\u2588'], [49, '\u2018'], [50, '\u2019'], [51, '\u201c'], [52, '\u201d'], [53, '\u2022'], [57, '\u2122'], [58, '\u0161'], [60, '\u0153'], [61, '\u2120'], [63, '\u0178'], [118, '\u215b'], [119, '\u215c'], [120, '\u215d'], [121, '\u215e'], [122, '\u2502'], [123, '\u2510'], [124, '\u2514'], [125, '\u2500'], [126, '\u2518'], [127, '\u250c']]);
- 
+ *  */
+export const G2Charset: Map<number, string> = new Map([
+  [32, ' '],       [33, '\u00a0'],  [37, '\u2026'],  [42, '\u0160'],
+  [44, '\u0152'],  [48, '\u2588'],  [49, '\u2018'],  [50, '\u2019'],
+  [51, '\u201c'],  [52, '\u201d'],  [53, '\u2022'],  [57, '\u2122'],
+  [58, '\u0161'],  [60, '\u0153'],  [61, '\u2120'],  [63, '\u0178'],
+  [118, '\u215b'], [119, '\u215c'], [120, '\u215d'], [121, '\u215e'],
+  [122, '\u2502'], [123, '\u2510'], [124, '\u2514'], [125, '\u2500'],
+  [126, '\u2518'], [127, '\u250c']
+]);
+
 /**
  * An array of 8 colors that 64 colors can be quantized to. Order here matters.
- *  */ 
-export const Colors: string[] = ['black', 'blue', 'green', 'cyan', 'red', 'magenta', 'yellow', 'white'];
-type Cea708Byte = {pts:number, type:number, value:number, order:number};
- 
-export{Cea708Byte};
+ *  */
+export const Colors: string[] =
+    ['black', 'blue', 'green', 'cyan', 'red', 'magenta', 'yellow', 'white'];
+type Cea708Byte = {
+  pts: number,
+  type: number,
+  value: number,
+  order: number
+};
+
+export {Cea708Byte};

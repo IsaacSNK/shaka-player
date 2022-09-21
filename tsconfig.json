@@ -13,6 +13,7 @@
     "sourceMap": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
+    "strict": false
   },
   "include": ["./lib/**/*.ts"],
   "exclude": [

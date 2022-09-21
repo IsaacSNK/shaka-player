@@ -2,50 +2,49 @@
  * Shaka Player
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
- */ 
-import{asserts}from './asserts';
-import*as assertsExports from './asserts';
-import{log}from './log';
-import*as logExports from './log';
-import{Cue}from './cue';
-import*as CueExports from './cue';
-import{TextEngine}from './text_engine';
-import*as TextEngineExports from './text_engine';
-import{StringUtils}from './string_utils';
-import*as StringUtilsExports from './string_utils';
- 
+ */
+import * as assertsExports from './debug___asserts';
+import {asserts} from './debug___asserts';
+import * as logExports from './debug___log';
+import {log} from './debug___log';
+import * as CueExports from './text___cue';
+import {Cue} from './text___cue';
+import * as TextEngineExports from './text___text_engine';
+import {TextEngine} from './text___text_engine';
+import * as StringUtilsExports from './util___string_utils';
+import {StringUtils} from './util___string_utils';
+
 /**
  * LRC file format: https://en.wikipedia.org/wiki/LRC_(file_format)
  *
  * @export
- */ 
-export class LrcTextParser implements shaka.extern.TextParser {
-   
+ */
+export class LrcTextParser implements shaka.
+extern.TextParser {
   /**
-     * @override
-     * @export
-     */ 
+   * @override
+   * @export
+   */
   parseInit(data) {
     asserts.assert(false, 'LRC does not have init segments');
   }
-   
+
   /**
-     * @override
-     * @export
-     */ 
-  setSequenceMode(sequenceMode) {
-  }
-   
+   * @override
+   * @export
+   */
+  setSequenceMode(sequenceMode) {}
+
   // Unused.
   /**
-     * @override
-     * @export
-     */ 
+   * @override
+   * @export
+   */
   parseMedia(data, time) {
     const StringUtils = StringUtils;
     const LrcTextParser = LrcTextParser;
-     
-    // Get the input as a string. 
+
+    // Get the input as a string.
     const str = StringUtils.fromUTF8(data);
     let prevCue: shaka.extern.Cue = null;
     const cues: shaka.extern.Cue[] = [];
@@ -54,19 +53,19 @@ export class LrcTextParser implements shaka.extern.TextParser {
       if (!line || /^\s+$/.test(line)) {
         continue;
       }
-       
-      // LRC content 
+
+      // LRC content
       const match = LrcTextParser.lyricLine_.exec(line);
       if (match) {
         const startTime = LrcTextParser.parseTime_(match[1]);
-         
+
         // This time can be overwritten by a subsequent cue.
-        // By default we add 2 seconds of duration. 
+        // By default we add 2 seconds of duration.
         const endTime = time.segmentEnd ? time.segmentEnd : startTime + 2;
         const payload = match[2];
         const cue = new Cue(startTime, endTime, payload);
-         
-        // Update previous 
+
+        // Update previous
         if (prevCue) {
           prevCue.endTime = startTime;
           cues.push(prevCue);
@@ -81,11 +80,11 @@ export class LrcTextParser implements shaka.extern.TextParser {
     }
     return cues;
   }
-   
+
   /**
-     * Parses a LRC time from the given parser.
-     *
-     */ 
+   * Parses a LRC time from the given parser.
+   *
+   */
   private static parseTime_(string: string): number {
     const LrcTextParser = LrcTextParser;
     const match = LrcTextParser.timeFormat_.exec(string);
@@ -94,17 +93,17 @@ export class LrcTextParser implements shaka.extern.TextParser {
     return minutes * 60 + seconds;
   }
 }
- 
+
 /**
  * @example [00:12.0]Text or [00:12.00]Text or [00:12.000]Text or
  * [00:12,0]Text or [00:12,00]Text or [00:12,000]Text
- */ 
+ */
 export const lyricLine_: RegExp = /^\[(\d{1,2}:\d{1,2}(?:[.,]\d{1,3})?)\](.*)/;
- 
+
 /**
  * @example 00:12.0 or 00:12.00 or 00:12.000 or
  * 00:12,0 or 00:12,00 or 00:12,000
- */ 
+ */
 export const timeFormat_: RegExp = /^(\d+):(\d{1,2}(?:[.,]\d{1,3})?)$/;
-TextEngine.registerParser('application/x-subtitle-lrc',  
-() => new LrcTextParser());
+TextEngine.registerParser(
+    'application/x-subtitle-lrc', () => new LrcTextParser());

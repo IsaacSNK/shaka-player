@@ -3,10 +3,10 @@
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-import * as logExports from './log';
-import {log} from './log';
-
-goog.require('shaka.polyfill');
+import * as logExports from './debug___log';
+import {log} from './debug___log';
+import * as polyfillExports from './polyfill___all';
+import {polyfill} from './polyfill___all';
 
 /**
  * @summary A polyfill to add support for the ARIAMixin interface mixin, for
@@ -73,4 +73,4 @@ export class Aria {
 }
 
 /* eslint-enable no-restricted-syntax */
-shaka.polyfill.register(Aria.install);
+polyfill.register(Aria.install);

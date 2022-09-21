@@ -2,51 +2,51 @@
  * Shaka Player
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
- */ 
-import{asserts}from './asserts';
-import*as assertsExports from './asserts';
-import{log}from './log';
-import*as logExports from './log';
-import{DrmEngine}from './drm_engine';
-import*as DrmEngineExports from './drm_engine';
-goog.require('shaka.polyfill');
-import{BufferUtils}from './buffer_utils';
-import{EventManager}from './event_manager';
-import*as EventManagerExports from './event_manager';
-import{FakeEvent}from './fake_event';
-import*as FakeEventExports from './fake_event';
-import{FakeEventTarget}from './fake_event_target';
-import*as FakeEventTargetExports from './fake_event_target';
-import{PublicPromise}from './public_promise';
-import{StringUtils}from './string_utils';
-import*as StringUtilsExports from './string_utils';
-import{Timer}from './timer';
-import{Uint8ArrayUtils}from './uint8array_utils';
- 
+ */
+import * as assertsExports from './debug___asserts';
+import {asserts} from './debug___asserts';
+import * as logExports from './debug___log';
+import {log} from './debug___log';
+import * as DrmEngineExports from './media___drm_engine';
+import {DrmEngine} from './media___drm_engine';
+import * as polyfillExports from './polyfill___all';
+import {polyfill} from './polyfill___all';
+import {BufferUtils} from './util___buffer_utils';
+import * as EventManagerExports from './util___event_manager';
+import {EventManager} from './util___event_manager';
+import * as FakeEventExports from './util___fake_event';
+import {FakeEvent} from './util___fake_event';
+import * as FakeEventTargetExports from './util___fake_event_target';
+import {FakeEventTarget} from './util___fake_event_target';
+import {PublicPromise} from './util___public_promise';
+import * as StringUtilsExports from './util___string_utils';
+import {StringUtils} from './util___string_utils';
+import {Timer} from './util___timer';
+import {Uint8ArrayUtils} from './util___uint8array_utils';
+
 /**
  * @summary A polyfill to implement
  * {@link https://bit.ly/EmeMar15 EME draft 12 March 2015} on top of
  * webkit-prefixed {@link https://bit.ly/Eme01b EME v0.1b}.
  * @export
- */ 
+ */
 export class PatchedMediaKeysWebkit {
-   
   /**
-     * Installs the polyfill if needed.
-     * @export
-     */ 
+   * Installs the polyfill if needed.
+   * @export
+   */
   static install() {
-     
-    // Alias. 
+    // Alias.
     const PatchedMediaKeysWebkit = PatchedMediaKeysWebkit;
-    if (!window.HTMLVideoElement || navigator.requestMediaKeySystemAccess &&  
-    // eslint-disable-next-line no-restricted-syntax 
-    MediaKeySystemAccess.prototype.getConfiguration) {
+    if (!window.HTMLVideoElement ||
+        navigator.requestMediaKeySystemAccess &&
+            // eslint-disable-next-line no-restricted-syntax
+            MediaKeySystemAccess.prototype.getConfiguration) {
       return;
     }
-     
+
     // eslint-disable-next-line no-restricted-syntax
-    // eslint-disable-next-line no-restricted-syntax 
+    // eslint-disable-next-line no-restricted-syntax
     if (HTMLMediaElement.prototype.webkitGenerateKeyRequest) {
       log.info('Using webkit-prefixed EME v0.1b');
       PatchedMediaKeysWebkit.prefix_ = 'webkit';
@@ -57,32 +57,36 @@ export class PatchedMediaKeysWebkit {
         return;
       }
     }
-    asserts.assert( 
-    // eslint-disable-next-line no-restricted-syntax 
-    HTMLMediaElement.prototype[PatchedMediaKeysWebkit.prefixApi_('generateKeyRequest')], 'PatchedMediaKeysWebkit APIs not available!');
-     
-    // Install patches. 
-    navigator.requestMediaKeySystemAccess = PatchedMediaKeysWebkit.requestMediaKeySystemAccess;
-     
+    asserts.assert(
+        // eslint-disable-next-line no-restricted-syntax
+        HTMLMediaElement
+            .prototype[PatchedMediaKeysWebkit.prefixApi_('generateKeyRequest')],
+        'PatchedMediaKeysWebkit APIs not available!');
+
+    // Install patches.
+    navigator.requestMediaKeySystemAccess =
+        PatchedMediaKeysWebkit.requestMediaKeySystemAccess;
+
     // Delete mediaKeys to work around strict mode compatibility issues.
-    // eslint-disable-next-line no-restricted-syntax 
+    // eslint-disable-next-line no-restricted-syntax
     delete HTMLMediaElement.prototype['mediaKeys'];
-     
+
     // Work around read-only declaration for mediaKeys by using a string.
-    // eslint-disable-next-line no-restricted-syntax 
+    // eslint-disable-next-line no-restricted-syntax
     HTMLMediaElement.prototype['mediaKeys'] = null;
-     
-    // eslint-disable-next-line no-restricted-syntax 
-    HTMLMediaElement.prototype.setMediaKeys = PatchedMediaKeysWebkit.setMediaKeys;
+
+    // eslint-disable-next-line no-restricted-syntax
+    HTMLMediaElement.prototype.setMediaKeys =
+        PatchedMediaKeysWebkit.setMediaKeys;
     window.MediaKeys = PatchedMediaKeysWebkit.MediaKeys;
     window.MediaKeySystemAccess = PatchedMediaKeysWebkit.MediaKeySystemAccess;
     window.shakaMediaKeysPolyfill = true;
   }
-   
+
   /**
-     * Prefix the api with the stored prefix.
-     *
-     */ 
+   * Prefix the api with the stored prefix.
+   *
+   */
   private static prefixApi_(api: string): string {
     const prefix = prefix_;
     if (prefix) {
@@ -90,123 +94,139 @@ export class PatchedMediaKeysWebkit {
     }
     return api;
   }
-   
+
   /**
-     * An implementation of navigator.requestMediaKeySystemAccess.
-     * Retrieves a MediaKeySystemAccess object.
-     *
-     * @this {!Navigator}
-     */ 
-  static requestMediaKeySystemAccess(keySystem: string, supportedConfigurations: MediaKeySystemConfiguration[]): Promise<MediaKeySystemAccess> {
+   * An implementation of navigator.requestMediaKeySystemAccess.
+   * Retrieves a MediaKeySystemAccess object.
+   *
+   * @this {!Navigator}
+   */
+  static requestMediaKeySystemAccess(
+      keySystem: string,
+      supportedConfigurations: MediaKeySystemConfiguration[]):
+      Promise<MediaKeySystemAccess> {
     log.debug('PatchedMediaKeysWebkit.requestMediaKeySystemAccess');
-    asserts.assert(this == navigator, 'bad "this" for requestMediaKeySystemAccess');
-     
-    // Alias. 
+    asserts.assert(
+        this == navigator, 'bad "this" for requestMediaKeySystemAccess');
+
+    // Alias.
     const PatchedMediaKeysWebkit = PatchedMediaKeysWebkit;
     try {
-      const access = new PatchedMediaKeysWebkit.MediaKeySystemAccess(keySystem, supportedConfigurations);
+      const access = new PatchedMediaKeysWebkit.MediaKeySystemAccess(
+          keySystem, supportedConfigurations);
       return Promise.resolve((access as MediaKeySystemAccess));
     } catch (exception) {
       return Promise.reject(exception);
     }
   }
-   
+
   /**
-     * An implementation of HTMLMediaElement.prototype.setMediaKeys.
-     * Attaches a MediaKeys object to the media element.
-     *
-     * @this {!HTMLMediaElement}
-     */ 
+   * An implementation of HTMLMediaElement.prototype.setMediaKeys.
+   * Attaches a MediaKeys object to the media element.
+   *
+   * @this {!HTMLMediaElement}
+   */
   static setMediaKeys(mediaKeys: MediaKeys): Promise {
     log.debug('PatchedMediaKeysWebkit.setMediaKeys');
-    asserts.assert(this instanceof HTMLMediaElement, 'bad "this" for setMediaKeys');
-     
-    // Alias. 
+    asserts.assert(
+        this instanceof HTMLMediaElement, 'bad "this" for setMediaKeys');
+
+    // Alias.
     const PatchedMediaKeysWebkit = PatchedMediaKeysWebkit;
     const newMediaKeys = (mediaKeys as MediaKeys);
     const oldMediaKeys = (this.mediaKeys as MediaKeys);
     if (oldMediaKeys && oldMediaKeys != newMediaKeys) {
-      asserts.assert(oldMediaKeys instanceof PatchedMediaKeysWebkit.MediaKeys, 'non-polyfill instance of oldMediaKeys');
-       
-      // Have the old MediaKeys stop listening to events on the video tag. 
+      asserts.assert(
+          oldMediaKeys instanceof PatchedMediaKeysWebkit.MediaKeys,
+          'non-polyfill instance of oldMediaKeys');
+
+      // Have the old MediaKeys stop listening to events on the video tag.
       oldMediaKeys.setMedia(null);
     }
     delete this['mediaKeys'];
-     
-    // In case there is an existing getter. 
+
+    // In case there is an existing getter.
     this['mediaKeys'] = mediaKeys;
-     
-    // Work around the read-only declaration. 
+
+    // Work around the read-only declaration.
     if (newMediaKeys) {
-      asserts.assert(newMediaKeys instanceof PatchedMediaKeysWebkit.MediaKeys, 'non-polyfill instance of newMediaKeys');
+      asserts.assert(
+          newMediaKeys instanceof PatchedMediaKeysWebkit.MediaKeys,
+          'non-polyfill instance of newMediaKeys');
       newMediaKeys.setMedia(this);
     }
     return Promise.resolve();
   }
-   
+
   /**
-     * For some of this polyfill's implementation, we need to query a video
-     * element.  But for some embedded systems, it is memory-expensive to create
-     * multiple video elements.  Therefore, we check the document to see if we can
-     * borrow one to query before we fall back to creating one temporarily.
-     *
-     */ 
+   * For some of this polyfill's implementation, we need to query a video
+   * element.  But for some embedded systems, it is memory-expensive to create
+   * multiple video elements.  Therefore, we check the document to see if we can
+   * borrow one to query before we fall back to creating one temporarily.
+   *
+   */
   private static getVideoElement_(): HTMLVideoElement {
     const videos = document.getElementsByTagName('video');
     const video = videos.length ? videos[0] : document.createElement('video');
     return (video as HTMLVideoElement);
   }
 }
- 
+
 /**
  * An implementation of MediaKeySystemAccess.
  *
- */ 
+ */
 export class MediaKeySystemAccess implements MediaKeySystemAccess {
   private internalKeySystem_: string;
   private configuration_: MediaKeySystemConfiguration;
-   
-  constructor(public keySystem: string, supportedConfigurations: MediaKeySystemConfiguration[]) {
+
+  constructor(
+      public keySystem: string,
+      supportedConfigurations: MediaKeySystemConfiguration[]) {
     log.debug('PatchedMediaKeysWebkit.MediaKeySystemAccess');
     this.internalKeySystem_ = keySystem;
-     
-    // This is only a guess, since we don't really know from the prefixed API. 
+
+    // This is only a guess, since we don't really know from the prefixed API.
     let allowPersistentState = false;
     if (keySystem == 'org.w3.clearkey') {
-       
-      // ClearKey's string must be prefixed in v0.1b. 
+      // ClearKey's string must be prefixed in v0.1b.
       this.internalKeySystem_ = 'webkit-org.w3.clearkey';
-       
-      // ClearKey doesn't support persistence. 
+
+      // ClearKey doesn't support persistence.
       allowPersistentState = false;
     }
     let success = false;
     const tmpVideo = PatchedMediaKeysWebkit.getVideoElement_();
     for (const cfg of supportedConfigurations) {
-       
       // Create a new config object and start adding in the pieces which we
       // find support for.  We will return this from getConfiguration() if
-      // asked. 
-      const newCfg: MediaKeySystemConfiguration = {'audioCapabilities':[], 'videoCapabilities':[],  
-      // It is technically against spec to return these as optional, but we
-      // don't truly know their values from the prefixed API: 
-      'persistentState':'optional', 'distinctiveIdentifier':'optional',  
-      // Pretend the requested init data types are supported, since we don't
-      // really know that either: 
-      'initDataTypes':cfg.initDataTypes, 'sessionTypes':['temporary'], 'label':cfg.label};
-       
+      // asked.
+      const newCfg: MediaKeySystemConfiguration = {
+        'audioCapabilities': [],
+        'videoCapabilities': [],
+        // It is technically against spec to return these as optional, but we
+        // don't truly know their values from the prefixed API:
+        'persistentState': 'optional',
+        'distinctiveIdentifier': 'optional',
+        // Pretend the requested init data types are supported, since we don't
+        // really know that either:
+        'initDataTypes': cfg.initDataTypes,
+        'sessionTypes': ['temporary'],
+        'label': cfg.label
+      };
+
       // v0.1b tests for key system availability with an extra argument on
-      // canPlayType. 
+      // canPlayType.
       let ranAnyTests = false;
       if (cfg.audioCapabilities) {
         for (const cap of cfg.audioCapabilities) {
           if (cap.contentType) {
             ranAnyTests = true;
-             
+
             // In Chrome <= 40, if you ask about Widevine-encrypted audio
             // support, you get a false-negative when you specify codec
             // information. Work around this by stripping codec info for audio
-            // types. 
+            // types.
             const contentType = cap.contentType.split(';')[0];
             if (tmpVideo.canPlayType(contentType, this.internalKeySystem_)) {
               newCfg.audioCapabilities.push(cap);
@@ -219,7 +239,8 @@ export class MediaKeySystemAccess implements MediaKeySystemAccess {
         for (const cap of cfg.videoCapabilities) {
           if (cap.contentType) {
             ranAnyTests = true;
-            if (tmpVideo.canPlayType(cap.contentType, this.internalKeySystem_)) {
+            if (tmpVideo.canPlayType(
+                    cap.contentType, this.internalKeySystem_)) {
               newCfg.videoCapabilities.push(cap);
               success = true;
             }
@@ -227,10 +248,10 @@ export class MediaKeySystemAccess implements MediaKeySystemAccess {
         }
       }
       if (!ranAnyTests) {
-         
         // If no specific types were requested, we check all common types to
-        // find out if the key system is present at all. 
-        success = tmpVideo.canPlayType('video/mp4', this.internalKeySystem_) || tmpVideo.canPlayType('video/webm', this.internalKeySystem_);
+        // find out if the key system is present at all.
+        success = tmpVideo.canPlayType('video/mp4', this.internalKeySystem_) ||
+            tmpVideo.canPlayType('video/webm', this.internalKeySystem_);
       }
       if (cfg.persistentState == 'required') {
         if (allowPersistentState) {
@@ -245,127 +266,138 @@ export class MediaKeySystemAccess implements MediaKeySystemAccess {
         return;
       }
     }
-     
-    // for each cfg in supportedConfigurations 
+
+    // for each cfg in supportedConfigurations
     let message = 'Unsupported keySystem';
     if (keySystem == 'org.w3.clearkey' || keySystem == 'com.widevine.alpha') {
       message = 'None of the requested configurations were supported.';
     }
-     
+
     // According to the spec, this should be a DOMException, but there is not a
-    // public constructor for that.  So we make this look-alike instead. 
+    // public constructor for that.  So we make this look-alike instead.
     const unsupportedError = new Error(message);
     unsupportedError.name = 'NotSupportedError';
     unsupportedError['code'] = DOMException.NOT_SUPPORTED_ERR;
     throw unsupportedError;
   }
-   
-  /** @override */ 
+
+  /** @override */
   createMediaKeys() {
     log.debug('PatchedMediaKeysWebkit.MediaKeySystemAccess.createMediaKeys');
-     
-    // Alias. 
+
+    // Alias.
     const PatchedMediaKeysWebkit = PatchedMediaKeysWebkit;
-    const mediaKeys = new PatchedMediaKeysWebkit.MediaKeys(this.internalKeySystem_);
+    const mediaKeys =
+        new PatchedMediaKeysWebkit.MediaKeys(this.internalKeySystem_);
     return Promise.resolve((mediaKeys as MediaKeys));
   }
-   
-  /** @override */ 
+
+  /** @override */
   getConfiguration() {
     log.debug('PatchedMediaKeysWebkit.MediaKeySystemAccess.getConfiguration');
     return this.configuration_;
   }
 }
- 
+
 /**
  * An implementation of MediaKeys.
  *
- */ 
+ */
 export class MediaKeys implements MediaKeys {
   private keySystem_: string;
   private media_: HTMLMediaElement = null;
   private eventManager_: EventManager;
   private newSessions_: MediaKeySession[] = [];
-   
+
   /**
-       * {!Map.<string,
-       *                 !shaka.polyfill.PatchedMediaKeysWebkit.MediaKeySession>}
-       */ 
+   * {!Map.<string,
+   *                 !shaka.polyfill.PatchedMediaKeysWebkit.MediaKeySession>}
+   */
   private sessionMap_: Map<string, MediaKeySession>;
-   
+
   constructor(keySystem: string) {
     log.debug('PatchedMediaKeysWebkit.MediaKeys');
     this.keySystem_ = keySystem;
     this.eventManager_ = new EventManager();
     this.sessionMap_ = new Map();
   }
-   
+
   protected setMedia(media: HTMLMediaElement) {
     this.media_ = media;
-     
-    // Remove any old listeners. 
+
+    // Remove any old listeners.
     this.eventManager_.removeAll();
     const prefix = prefix_;
     if (media) {
-       
-      // Intercept and translate these prefixed EME events. 
-      this.eventManager_.listen(media, prefix + 'needkey', ( 
-      (event) => this.onWebkitNeedKey_(event) as EventManagerExports.ListenerType));
-      this.eventManager_.listen(media, prefix + 'keymessage', ( 
-      (event) => this.onWebkitKeyMessage_(event) as EventManagerExports.ListenerType));
-      this.eventManager_.listen(media, prefix + 'keyadded', ( 
-      (event) => this.onWebkitKeyAdded_(event) as EventManagerExports.ListenerType));
-      this.eventManager_.listen(media, prefix + 'keyerror', ( 
-      (event) => this.onWebkitKeyError_(event) as EventManagerExports.ListenerType));
+      // Intercept and translate these prefixed EME events.
+      this.eventManager_.listen(
+          media, prefix + 'needkey',
+          ((event) => this.onWebkitNeedKey_(event) as
+               EventManagerExports.ListenerType));
+      this.eventManager_.listen(
+          media, prefix + 'keymessage',
+          ((event) => this.onWebkitKeyMessage_(event) as
+               EventManagerExports.ListenerType));
+      this.eventManager_.listen(
+          media, prefix + 'keyadded',
+          ((event) => this.onWebkitKeyAdded_(event) as
+               EventManagerExports.ListenerType));
+      this.eventManager_.listen(
+          media, prefix + 'keyerror',
+          ((event) => this.onWebkitKeyError_(event) as
+               EventManagerExports.ListenerType));
     }
   }
-   
-  /** @override */ 
+
+  /** @override */
   createSession(sessionType) {
     log.debug('PatchedMediaKeysWebkit.MediaKeys.createSession');
     sessionType = sessionType || 'temporary';
     if (sessionType != 'temporary' && sessionType != 'persistent-license') {
-      throw new TypeError('Session type ' + sessionType + ' is unsupported on this platform.');
+      throw new TypeError(
+          'Session type ' + sessionType + ' is unsupported on this platform.');
     }
-     
-    // Alias. 
+
+    // Alias.
     const PatchedMediaKeysWebkit = PatchedMediaKeysWebkit;
-     
+
     // Unprefixed EME allows for session creation without a video tag or src.
-    // Prefixed EME requires both a valid HTMLMediaElement and a src. 
-    const media = this.media_ || (document.createElement('video') as HTMLMediaElement);
+    // Prefixed EME requires both a valid HTMLMediaElement and a src.
+    const media =
+        this.media_ || (document.createElement('video') as HTMLMediaElement);
     if (!media.src) {
       media.src = 'about:blank';
     }
-    const session = new PatchedMediaKeysWebkit.MediaKeySession(media, this.keySystem_, sessionType);
+    const session = new PatchedMediaKeysWebkit.MediaKeySession(
+        media, this.keySystem_, sessionType);
     this.newSessions_.push(session);
     return session;
   }
-   
-  /** @override */ 
+
+  /** @override */
   setServerCertificate(serverCertificate) {
     log.debug('PatchedMediaKeysWebkit.MediaKeys.setServerCertificate');
-     
-    // There is no equivalent in v0.1b, so return failure. 
+
+    // There is no equivalent in v0.1b, so return failure.
     return Promise.resolve(false);
   }
-   
+
   /**
-     * @suppress {constantProperty} We reassign what would be const on a real
-     *   MediaEncryptedEvent, but in our look-alike event.
-     */ 
+   * @suppress {constantProperty} We reassign what would be const on a real
+   *   MediaEncryptedEvent, but in our look-alike event.
+   */
   private onWebkitNeedKey_(event: MediaKeyEvent) {
     log.debug('PatchedMediaKeysWebkit.onWebkitNeedKey_', event);
     asserts.assert(this.media_, 'media_ not set in onWebkitNeedKey_');
     const event2 = new CustomEvent('encrypted');
     const encryptedEvent = ((event2 as any) as MediaEncryptedEvent);
-     
-    // initDataType is not used by v0.1b EME, so any valid value is fine here. 
+
+    // initDataType is not used by v0.1b EME, so any valid value is fine here.
     encryptedEvent.initDataType = 'cenc';
     encryptedEvent.initData = BufferUtils.toArrayBuffer(event.initData);
     this.media_.dispatchEvent(event2);
   }
-   
+
   private onWebkitKeyMessage_(event: MediaKeyEvent) {
     log.debug('PatchedMediaKeysWebkit.onWebkitKeyMessage_', event);
     const session = this.findSession_(event.sessionId);
@@ -374,12 +406,15 @@ export class MediaKeys implements MediaKeys {
       return;
     }
     const isNew = session.keyStatuses.getStatus() == undefined;
-    const data = (new Map()).set('messageType', isNew ? 'licenserequest' : 'licenserenewal').set('message', event.message);
+    const data =
+        (new Map())
+            .set('messageType', isNew ? 'licenserequest' : 'licenserenewal')
+            .set('message', event.message);
     const event2 = new FakeEvent('message', data);
     session.generated();
     session.dispatchEvent(event2);
   }
-   
+
   private onWebkitKeyAdded_(event: MediaKeyEvent) {
     log.debug('PatchedMediaKeysWebkit.onWebkitKeyAdded_', event);
     const session = this.findSession_(event.sessionId);
@@ -388,7 +423,7 @@ export class MediaKeys implements MediaKeys {
       session.ready();
     }
   }
-   
+
   private onWebkitKeyError_(event: MediaKeyEvent) {
     log.debug('PatchedMediaKeysWebkit.onWebkitKeyError_', event);
     const session = this.findSession_(event.sessionId);
@@ -397,7 +432,7 @@ export class MediaKeys implements MediaKeys {
       session.handleError(event);
     }
   }
-   
+
   private findSession_(sessionId: string): MediaKeySession {
     let session = this.sessionMap_.get(sessionId);
     if (session) {
@@ -414,12 +449,13 @@ export class MediaKeys implements MediaKeys {
     return null;
   }
 }
- 
+
 /**
  * An implementation of MediaKeySession.
  *
- */ 
-export class MediaKeySession extends FakeEventTarget implements MediaKeySession {
+ */
+export class MediaKeySession extends FakeEventTarget implements
+    MediaKeySession {
   private media_: HTMLMediaElement;
   private initialized_: boolean = false;
   private generatePromise_: PublicPromise = null;
@@ -430,7 +466,7 @@ export class MediaKeySession extends FakeEventTarget implements MediaKeySession 
   expiration: number = NaN;
   closed: PublicPromise;
   keyStatuses: MediaKeyStatusMap;
-   
+
   constructor(media: HTMLMediaElement, keySystem: string, sessionType: string) {
     log.debug('PatchedMediaKeysWebkit.MediaKeySession');
     super();
@@ -440,12 +476,12 @@ export class MediaKeySession extends FakeEventTarget implements MediaKeySession 
     this.closed = new PublicPromise();
     this.keyStatuses = new MediaKeyStatusMap();
   }
-   
+
   /**
-     * Signals that the license request has been generated.  This resolves the
-     * 'generateRequest' promise.
-     *
-     */ 
+   * Signals that the license request has been generated.  This resolves the
+   * 'generateRequest' promise.
+   *
+   */
   protected generated() {
     log.debug('PatchedMediaKeysWebkit.MediaKeySession.generated');
     if (this.generatePromise_) {
@@ -453,13 +489,13 @@ export class MediaKeySession extends FakeEventTarget implements MediaKeySession 
       this.generatePromise_ = null;
     }
   }
-   
+
   /**
-     * Signals that the session is 'ready', which is the terminology used in older
-     * versions of EME.  The new signal is to resolve the 'update' promise.  This
-     * translates between the two.
-     *
-     */ 
+   * Signals that the session is 'ready', which is the terminology used in older
+   * versions of EME.  The new signal is to resolve the 'update' promise.  This
+   * translates between the two.
+   *
+   */
   protected ready() {
     log.debug('PatchedMediaKeysWebkit.MediaKeySession.ready');
     this.updateKeyStatus_('usable');
@@ -468,24 +504,24 @@ export class MediaKeySession extends FakeEventTarget implements MediaKeySession 
     }
     this.updatePromise_ = null;
   }
-   
+
   /**
-     * Either rejects a promise, or dispatches an error event, as appropriate.
-     *
-     */ 
+   * Either rejects a promise, or dispatches an error event, as appropriate.
+   *
+   */
   handleError(event: MediaKeyEvent) {
     log.debug('PatchedMediaKeysWebkit.MediaKeySession.handleError', event);
-     
+
     // This does not match the DOMException we get in current WD EME, but it
     // will at least provide some information which can be used to look into the
-    // problem. 
+    // problem.
     const error = new Error('EME v0.1b key error');
     const errorCode = event.errorCode;
     errorCode.systemCode = event.systemCode;
     error['errorCode'] = errorCode;
-     
+
     // The presence or absence of sessionId indicates whether this corresponds
-    // to generateRequest() or update(). 
+    // to generateRequest() or update().
     if (!event.sessionId && this.generatePromise_) {
       if (event.systemCode == 45) {
         error.message = 'Unsupported session type.';
@@ -497,8 +533,7 @@ export class MediaKeySession extends FakeEventTarget implements MediaKeySession 
         this.updatePromise_.reject(error);
         this.updatePromise_ = null;
       } else {
-         
-        // This mapping of key statuses is imperfect at best. 
+        // This mapping of key statuses is imperfect at best.
         const code = event.errorCode.code;
         const systemCode = event.systemCode;
         if (code == MediaKeyError['MEDIA_KEYERR_OUTPUT']) {
@@ -513,13 +548,14 @@ export class MediaKeySession extends FakeEventTarget implements MediaKeySession 
       }
     }
   }
-   
+
   /**
-     * Logic which is shared between generateRequest() and load(), both of which
-     * are ultimately implemented with webkitGenerateKeyRequest in prefixed EME.
-     *
-     */ 
-  private generate_(initData: BufferSource | null, offlineSessionId: string | null): Promise {
+   * Logic which is shared between generateRequest() and load(), both of which
+   * are ultimately implemented with webkitGenerateKeyRequest in prefixed EME.
+   *
+   */
+  private generate_(initData: BufferSource|null, offlineSessionId: string|null):
+      Promise {
     const PatchedMediaKeysWebkit = PatchedMediaKeysWebkit;
     if (this.initialized_) {
       const error = new Error('The session is already initialized.');
@@ -532,21 +568,20 @@ export class MediaKeySession extends FakeEventTarget implements MediaKeySession 
         const StringUtils = StringUtils;
         if (!offlineSessionId) {
           asserts.assert(initData, 'expecting init data');
-           
+
           // Persisting the initial license.
-          // Prefix the init data with a tag to indicate persistence. 
+          // Prefix the init data with a tag to indicate persistence.
           const prefix = StringUtils.toUTF8('PERSISTENT|');
           mangledInitData = Uint8ArrayUtils.concat(prefix, initData);
         } else {
-           
           // Loading a stored license.
           // Prefix the init data (which is really a session ID) with a tag to
-          // indicate that we are loading a persisted session. 
-          mangledInitData = BufferUtils.toUint8(StringUtils.toUTF8('LOAD_SESSION|' + offlineSessionId));
+          // indicate that we are loading a persisted session.
+          mangledInitData = BufferUtils.toUint8(
+              StringUtils.toUTF8('LOAD_SESSION|' + offlineSessionId));
         }
       } else {
-         
-        // Streaming. 
+        // Streaming.
         asserts.assert(this.type_ == 'temporary', 'expected temporary session');
         asserts.assert(!offlineSessionId, 'unexpected offline session ID');
         asserts.assert(initData, 'expecting init data');
@@ -556,17 +591,19 @@ export class MediaKeySession extends FakeEventTarget implements MediaKeySession 
     } catch (exception) {
       return Promise.reject(exception);
     }
-    asserts.assert(this.generatePromise_ == null, 'generatePromise_ should be null');
+    asserts.assert(
+        this.generatePromise_ == null, 'generatePromise_ should be null');
     this.generatePromise_ = new PublicPromise();
-     
+
     // Because we are hacking media.src in createSession to better emulate
     // unprefixed EME's ability to create sessions and license requests without
     // a video tag, we can get ourselves into trouble.  It seems that sometimes,
     // the setting of media.src hasn't been processed by some other thread, and
     // GKR can throw an exception.  If this occurs, wait 10 ms and try again at
     // most once.  This situation should only occur when init data is available
-    // ahead of the 'needkey' event. 
-    const generateKeyRequestName = PatchedMediaKeysWebkit.prefixApi_('generateKeyRequest');
+    // ahead of the 'needkey' event.
+    const generateKeyRequestName =
+        PatchedMediaKeysWebkit.prefixApi_('generateKeyRequest');
     try {
       this.media_[generateKeyRequestName](this.keySystem_, mangledInitData);
     } catch (exception) {
@@ -574,8 +611,7 @@ export class MediaKeySession extends FakeEventTarget implements MediaKeySession 
         this.generatePromise_ = null;
         return Promise.reject(exception);
       }
-      const timer = new Timer( 
-      () => {
+      const timer = new Timer(() => {
         try {
           this.media_[generateKeyRequestName](this.keySystem_, mangledInitData);
         } catch (exception2) {
@@ -583,56 +619,52 @@ export class MediaKeySession extends FakeEventTarget implements MediaKeySession 
           this.generatePromise_ = null;
         }
       });
-      timer.tickAfter( 
-      /* seconds= */ 
-      0.01);
+      timer.tickAfter(
+          /* seconds= */
+          0.01);
     }
     return this.generatePromise_;
   }
-   
+
   /**
-     * An internal version of update which defers new calls while old ones are in
-     * progress.
-     *
-     * @param promise  The promise associated with
-     *   this call.
-     */ 
+   * An internal version of update which defers new calls while old ones are in
+   * progress.
+   *
+   * @param promise  The promise associated with
+   *   this call.
+   */
   private update_(promise: PublicPromise, response: BufferSource) {
     const PatchedMediaKeysWebkit = PatchedMediaKeysWebkit;
     if (this.updatePromise_) {
-       
       // We already have an update in-progress, so defer this one until after
       // the old one is resolved.  Execute this whether the original one
-      // succeeds or fails. 
-      this.updatePromise_.then( 
-      () => this.update_(promise, response)).catch( 
-      () => this.update_(promise, response));
+      // succeeds or fails.
+      this.updatePromise_.then(() => this.update_(promise, response))
+          .catch(() => this.update_(promise, response));
       return;
     }
     this.updatePromise_ = promise;
     let key;
     let keyId;
     if (this.keySystem_ == 'webkit-org.w3.clearkey') {
-       
       // The current EME version of clearkey wants a structured JSON response.
       // The v0.1b version wants just a raw key.  Parse the JSON response and
-      // extract the key and key ID. 
+      // extract the key and key ID.
       const StringUtils = StringUtils;
       const Uint8ArrayUtils = Uint8ArrayUtils;
       const licenseString = StringUtils.fromUTF8(response);
       const jwkSet = (JSON.parse(licenseString) as JWKSet);
       const kty = jwkSet.keys[0].kty;
       if (kty != 'oct') {
-         
-        // Reject the promise. 
-        this.updatePromise_.reject(new Error('Response is not a valid JSON Web Key Set.'));
+        // Reject the promise.
+        this.updatePromise_.reject(
+            new Error('Response is not a valid JSON Web Key Set.'));
         this.updatePromise_ = null;
       }
       key = Uint8ArrayUtils.fromBase64(jwkSet.keys[0].k);
       keyId = Uint8ArrayUtils.fromBase64(jwkSet.keys[0].kid);
     } else {
-       
-      // The key ID is not required. 
+      // The key ID is not required.
       key = BufferUtils.toUint8(response);
       keyId = null;
     }
@@ -640,30 +672,29 @@ export class MediaKeySession extends FakeEventTarget implements MediaKeySession 
     try {
       this.media_[addKeyName](this.keySystem_, key, keyId, this.sessionId);
     } catch (exception) {
-       
-      // Reject the promise. 
+      // Reject the promise.
       this.updatePromise_.reject(exception);
       this.updatePromise_ = null;
     }
   }
-   
+
   /**
-     * Update key status and dispatch a 'keystatuseschange' event.
-     *
-     */ 
+   * Update key status and dispatch a 'keystatuseschange' event.
+   *
+   */
   private updateKeyStatus_(status: string) {
     this.keyStatuses.setStatus(status);
     const event = new FakeEvent('keystatuseschange');
     this.dispatchEvent(event);
   }
-   
-  /** @override */ 
+
+  /** @override */
   generateRequest(initDataType, initData) {
     log.debug('PatchedMediaKeysWebkit.MediaKeySession.generateRequest');
     return this.generate_(initData, null);
   }
-   
-  /** @override */ 
+
+  /** @override */
   load(sessionId) {
     log.debug('PatchedMediaKeysWebkit.MediaKeySession.load');
     if (this.type_ == 'persistent-license') {
@@ -672,8 +703,8 @@ export class MediaKeySession extends FakeEventTarget implements MediaKeySession 
       return Promise.reject(new Error('Not a persistent session.'));
     }
   }
-   
-  /** @override */ 
+
+  /** @override */
   update(response) {
     log.debug('PatchedMediaKeysWebkit.MediaKeySession.update', response);
     asserts.assert(this.sessionId, 'update without session ID');
@@ -681,42 +712,42 @@ export class MediaKeySession extends FakeEventTarget implements MediaKeySession 
     this.update_(nextUpdatePromise, response);
     return nextUpdatePromise;
   }
-   
-  /** @override */ 
+
+  /** @override */
   close() {
     const PatchedMediaKeysWebkit = PatchedMediaKeysWebkit;
     log.debug('PatchedMediaKeysWebkit.MediaKeySession.close');
-     
+
     // This will remove a persistent session, but it's also the only way to free
-    // CDM resources on v0.1b. 
+    // CDM resources on v0.1b.
     if (this.type_ != 'persistent-license') {
-       
       // sessionId may reasonably be null if no key request has been generated
       // yet.  Unprefixed EME will return a rejected promise in this case.  We
       // will use the same error message that Chrome 41 uses in its EME
-      // implementation. 
+      // implementation.
       if (!this.sessionId) {
         this.closed.reject(new Error('The session is not callable.'));
         return this.closed;
       }
-       
+
       // This may throw an exception, but we ignore it because we are only using
       // it to clean up resources in v0.1b.  We still consider the session
       // closed. We can't let the exception propagate because
-      // MediaKeySession.close() should not throw. 
-      const cancelKeyRequestName = PatchedMediaKeysWebkit.prefixApi_('cancelKeyRequest');
+      // MediaKeySession.close() should not throw.
+      const cancelKeyRequestName =
+          PatchedMediaKeysWebkit.prefixApi_('cancelKeyRequest');
       try {
         this.media_[cancelKeyRequestName](this.keySystem_, this.sessionId);
       } catch (exception) {
       }
     }
-     
-    // Resolve the 'closed' promise and return it. 
+
+    // Resolve the 'closed' promise and return it.
     this.closed.resolve();
     return this.closed;
   }
-   
-  /** @override */ 
+
+  /** @override */
   remove() {
     log.debug('PatchedMediaKeysWebkit.MediaKeySession.remove');
     if (this.type_ != 'persistent-license') {
@@ -725,48 +756,48 @@ export class MediaKeySession extends FakeEventTarget implements MediaKeySession 
     return this.close();
   }
 }
- 
+
 /**
  * An implementation of MediaKeyStatusMap.
  * This fakes a map with a single key ID.
  *
  * @todo Consolidate the MediaKeyStatusMap types in these polyfills.
- */ 
+ */
 export class MediaKeyStatusMap implements MediaKeyStatusMap {
   size: number = 0;
-  private status_: string | undefined = undefined;
-   
+  private status_: string|undefined = undefined;
+
   /**
-     * An internal method used by the session to set key status.
-     */ 
-  setStatus(status: string | undefined) {
+   * An internal method used by the session to set key status.
+   */
+  setStatus(status: string|undefined) {
     this.size = status == undefined ? 0 : 1;
     this.status_ = status;
   }
-   
+
   /**
-     * An internal method used by the session to get key status.
-     */ 
-  getStatus(): string | undefined {
+   * An internal method used by the session to get key status.
+   */
+  getStatus(): string|undefined {
     return this.status_;
   }
-   
-  /** @override */ 
+
+  /** @override */
   forEach(fn) {
     if (this.status_) {
       fn(this.status_, DrmEngineExports.DUMMY_KEY_ID.value());
     }
   }
-   
-  /** @override */ 
+
+  /** @override */
   get(keyId) {
     if (this.has(keyId)) {
       return this.status_;
     }
     return undefined;
   }
-   
-  /** @override */ 
+
+  /** @override */
   has(keyId) {
     const fakeKeyId = DrmEngineExports.DUMMY_KEY_ID.value();
     if (this.status_ && BufferUtils.equal(keyId, fakeKeyId)) {
@@ -774,35 +805,35 @@ export class MediaKeyStatusMap implements MediaKeyStatusMap {
     }
     return false;
   }
-   
+
   /**
-     * @suppress {missingReturn}
-     * @override
-     */ 
+   * @suppress {missingReturn}
+   * @override
+   */
   entries() {
     asserts.assert(false, 'Not used!  Provided only for compiler.');
   }
-   
+
   /**
-     * @suppress {missingReturn}
-     * @override
-     */ 
+   * @suppress {missingReturn}
+   * @override
+   */
   keys() {
     asserts.assert(false, 'Not used!  Provided only for compiler.');
   }
-   
+
   /**
-     * @suppress {missingReturn}
-     * @override
-     */ 
+   * @suppress {missingReturn}
+   * @override
+   */
   values() {
     asserts.assert(false, 'Not used!  Provided only for compiler.');
   }
 }
- 
+
 /**
  * Store api prefix.
  *
- */ 
+ */
 export const prefix_: string = '';
-shaka.polyfill.register(PatchedMediaKeysWebkit.install);
+polyfill.register(PatchedMediaKeysWebkit.install);

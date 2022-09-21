@@ -2,35 +2,36 @@
  * Shaka Player
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
- */ 
-import{asserts}from './asserts';
-import*as assertsExports from './asserts';
-import{AdManager}from './ad_manager';
-import*as AdManagerExports from './ad_manager';
-import{Element}from './element';
+ */
+import * as AdManagerExports from './ads___ad_manager';
+import {AdManager} from './ads___ad_manager';
+import * as assertsExports from './debug___asserts';
+import {asserts} from './debug___asserts';
+import {Element} from './ui___element';
+
 goog.require('shaka.ui.Locales');
-import{Localization}from './localization';
-import*as LocalizationExports from './localization';
-import{Utils}from './ui_utils';
-import{Dom}from './dom_utils';
-import{Timer}from './timer';
-import{Controls}from './controls';
- 
+import {Localization} from './ui___localization';
+import * as LocalizationExports from './ui___localization';
+import {Utils} from './ui___ui_utils';
+import {Dom} from './util___dom_utils';
+import {Timer} from './util___timer';
+import {Controls} from './ui___controls';
+
 /**
  * @final
  * @export
- */ 
+ */
 export class SkipAdButton extends Element {
   private container_: HTMLElement;
   private counter_: HTMLElement;
   private button_: HTMLButtonElement;
-   
+
   /**
-       * The timer that tracks down the ad progress until it can be skipped.
-       *
-       */ 
+   * The timer that tracks down the ad progress until it can be skipped.
+   *
+   */
   private timer_: Timer;
-   
+
   constructor(parent: HTMLElement, controls: Controls) {
     super(parent, controls);
     this.container_ = Dom.createHTMLElement('div');
@@ -48,61 +49,57 @@ export class SkipAdButton extends Element {
     this.container_.appendChild(this.button_);
     this.updateAriaLabel_();
     this.updateLocalizedStrings_();
-    this.timer_ = new Timer( 
-    () => {
+    this.timer_ = new Timer(() => {
       this.onTimerTick_();
     });
-    this.eventManager.listen(this.localization, LocalizationExports.LOCALE_UPDATED,  
-    () => {
-      this.updateAriaLabel_();
-      this.updateLocalizedStrings_();
-    });
-    this.eventManager.listen(this.localization, LocalizationExports.LOCALE_CHANGED,  
-    () => {
-      this.updateAriaLabel_();
-      this.updateLocalizedStrings_();
-    });
-    this.eventManager.listen(this.adManager, AdManagerExports.AD_STARTED,  
-    () => {
-      this.onAdStarted_();
-    });
-    this.eventManager.listen(this.adManager, AdManagerExports.AD_SKIP_STATE_CHANGED,  
-    () => {
-      this.onSkipStateChanged_();
-    });
-    this.eventManager.listen(this.adManager, AdManagerExports.AD_STOPPED,  
-    () => {
-      this.reset_();
-    });
-    this.eventManager.listen(this.button_, 'click',  
-    () => {
+    this.eventManager.listen(
+        this.localization, LocalizationExports.LOCALE_UPDATED, () => {
+          this.updateAriaLabel_();
+          this.updateLocalizedStrings_();
+        });
+    this.eventManager.listen(
+        this.localization, LocalizationExports.LOCALE_CHANGED, () => {
+          this.updateAriaLabel_();
+          this.updateLocalizedStrings_();
+        });
+    this.eventManager.listen(
+        this.adManager, AdManagerExports.AD_STARTED, () => {
+          this.onAdStarted_();
+        });
+    this.eventManager.listen(
+        this.adManager, AdManagerExports.AD_SKIP_STATE_CHANGED, () => {
+          this.onSkipStateChanged_();
+        });
+    this.eventManager.listen(
+        this.adManager, AdManagerExports.AD_STOPPED, () => {
+          this.reset_();
+        });
+    this.eventManager.listen(this.button_, 'click', () => {
       this.ad.skip();
     });
     if (this.ad) {
-       
-      // There was already an ad. 
+      // There was already an ad.
       this.onAdStarted_();
     }
   }
-   
+
   /**
-     * @override
-     */ 
+   * @override
+   */
   release() {
     this.timer_.stop();
     this.timer_ = null;
     super.release();
   }
-   
+
   private updateLocalizedStrings_() {
     const LocIds = shaka.ui.Locales.Ids;
     this.button_.textContent = this.localization.resolve(LocIds.SKIP_AD);
   }
-   
-  private updateAriaLabel_() {
-  }
-   
-  // TODO 
+
+  private updateAriaLabel_() {}
+
+  // TODO
   private onAdStarted_() {
     if (this.ad.isSkippable()) {
       Utils.setDisplay(this.button_, true);
@@ -112,33 +109,31 @@ export class SkipAdButton extends Element {
       this.timer_.tickEvery(0.5);
     }
   }
-   
+
   private onTimerTick_() {
     asserts.assert(this.ad != null, 'this.ad should exist at this point');
     const secondsLeft = Math.round(this.ad.getTimeUntilSkippable());
     if (secondsLeft > 0) {
       this.counter_.textContent = secondsLeft;
     } else {
-       
       // The ad should now be skippable. OnSkipStateChanged() is
       // listening for a SKIP_STATE_CHANGED event and will take care
       // of the button. Here we just stop the timer and hide the counter.
-      // NOTE: onSkipStateChanged_() also hides the counter. 
+      // NOTE: onSkipStateChanged_() also hides the counter.
       this.timer_.stop();
       Utils.setDisplay(this.counter_, false);
     }
   }
-   
+
   private onSkipStateChanged_() {
-     
-    // Double-check that the ad is now skippable 
+    // Double-check that the ad is now skippable
     if (this.ad.canSkipNow()) {
       this.button_.disabled = false;
       this.timer_.stop();
       Utils.setDisplay(this.counter_, false);
     }
   }
-   
+
   private reset_() {
     this.timer_.stop();
     this.button_.disabled = true;
