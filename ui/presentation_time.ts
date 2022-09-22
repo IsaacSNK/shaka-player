@@ -3,11 +3,11 @@
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-import {Controls} from './dev-workspace.shaka-player-fork.ui.controls';
-import {Element} from './dev-workspace.shaka-player-fork.ui.element';
+import {Controls} from './/controls';
+import {Element} from './/element';
 goog.require('shaka.ui.Locales');
-import {Utils} from './dev-workspace.shaka-player-fork.ui.ui_utils';
-import {Dom} from './dev-workspace.shaka-player-fork.lib.util.dom_utils';
+import {Utils} from './/ui_utils';
+import {Dom} from './lib/dom_utils';
 
 /**
  * @final

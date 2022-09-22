@@ -4,8 +4,8 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 goog.require('shaka.ui.Locales');
-import {PlayButton} from './dev-workspace.shaka-player-fork.ui.play_button';
-import {Controls} from './dev-workspace.shaka-player-fork.ui.controls';
+import {PlayButton} from './/play_button';
+import {Controls} from './/controls';
 
 /**
  * @final

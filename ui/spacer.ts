@@ -3,9 +3,9 @@
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-import {Dom} from './dev-workspace.shaka-player-fork.lib.util.dom_utils';
-import {Controls} from './dev-workspace.shaka-player-fork.ui.controls';
-import {Element} from './dev-workspace.shaka-player-fork.ui.element';
+import {Dom} from './lib/dom_utils';
+import {Controls} from './/controls';
+import {Element} from './/element';
 
 /**
  * @final

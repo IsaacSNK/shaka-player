@@ -3,36 +3,36 @@
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-import * as AdManagerExports from './dev-workspace.shaka-player-fork.lib.ads.ad_manager';
-import {AdManager} from './dev-workspace.shaka-player-fork.lib.ads.ad_manager';
-import {CastProxy} from './dev-workspace.shaka-player-fork.lib.cast.cast_proxy';
-import * as assertsExports from './dev-workspace.shaka-player-fork.lib.debug.asserts';
-import {asserts} from './dev-workspace.shaka-player-fork.lib.debug.asserts';
-import * as logExports from './dev-workspace.shaka-player-fork.lib.debug.log';
-import {log} from './dev-workspace.shaka-player-fork.lib.debug.log';
-import {AdCounter} from './dev-workspace.shaka-player-fork.ui.ad_counter';
-import {AdPosition} from './dev-workspace.shaka-player-fork.ui.ad_position';
-import {BigPlayButton} from './dev-workspace.shaka-player-fork.ui.big_play_button';
-import * as ContextMenuExports from './dev-workspace.shaka-player-fork.ui.context_menu';
-import {ContextMenu} from './dev-workspace.shaka-player-fork.ui.context_menu';
+import * as AdManagerExports from './lib/ad_manager';
+import {AdManager} from './lib/ad_manager';
+import {CastProxy} from './lib/cast_proxy';
+import * as assertsExports from './lib/asserts';
+import {asserts} from './lib/asserts';
+import * as logExports from './lib/log';
+import {log} from './lib/log';
+import {AdCounter} from './/ad_counter';
+import {AdPosition} from './/ad_position';
+import {BigPlayButton} from './/big_play_button';
+import * as ContextMenuExports from './/context_menu';
+import {ContextMenu} from './/context_menu';
 
 goog.require('shaka.ui.Locales');
-import {Localization} from './dev-workspace.shaka-player-fork.ui.localization';
-import * as LocalizationExports from './dev-workspace.shaka-player-fork.ui.localization';
-import {SeekBar} from './dev-workspace.shaka-player-fork.ui.seek_bar';
-import * as SeekBarExports from './dev-workspace.shaka-player-fork.ui.seek_bar';
-import {Utils} from './dev-workspace.shaka-player-fork.ui.ui_utils';
-import {Dom} from './dev-workspace.shaka-player-fork.lib.util.dom_utils';
-import {EventManager} from './dev-workspace.shaka-player-fork.lib.util.event_manager';
-import * as EventManagerExports from './dev-workspace.shaka-player-fork.lib.util.event_manager';
-import {FakeEvent} from './dev-workspace.shaka-player-fork.lib.util.fake_event';
-import * as FakeEventExports from './dev-workspace.shaka-player-fork.lib.util.fake_event';
-import {FakeEventTarget} from './dev-workspace.shaka-player-fork.lib.util.fake_event_target';
-import * as FakeEventTargetExports from './dev-workspace.shaka-player-fork.lib.util.fake_event_target';
-import {IDestroyable} from './dev-workspace.shaka-player-fork.lib.util.i_destroyable';
-import {Timer} from './dev-workspace.shaka-player-fork.lib.util.timer';
-import {Player} from './dev-workspace.shaka-player-fork.lib.player';
-import * as PlayerExports from './dev-workspace.shaka-player-fork.lib.player';
+import {Localization} from './/localization';
+import * as LocalizationExports from './/localization';
+import {SeekBar} from './/seek_bar';
+import * as SeekBarExports from './/seek_bar';
+import {Utils} from './/ui_utils';
+import {Dom} from './lib/dom_utils';
+import {EventManager} from './lib/event_manager';
+import * as EventManagerExports from './lib/event_manager';
+import {FakeEvent} from './lib/fake_event';
+import * as FakeEventExports from './lib/fake_event';
+import {FakeEventTarget} from './lib/fake_event_target';
+import * as FakeEventTargetExports from './lib/fake_event_target';
+import {IDestroyable} from './lib/i_destroyable';
+import {Timer} from './lib/timer';
+import {Player} from './lib/player';
+import * as PlayerExports from './lib/player';
 
 /**
  * A container for custom video controls.

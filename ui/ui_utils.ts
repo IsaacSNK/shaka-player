@@ -3,10 +3,10 @@
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-import * as assertsExports from './dev-workspace.shaka-player-fork.lib.debug.asserts';
-import {asserts} from './dev-workspace.shaka-player-fork.lib.debug.asserts';
-import {Dom} from './dev-workspace.shaka-player-fork.lib.util.dom_utils';
-import * as Enums from './dev-workspace.shaka-player-fork.ui.enums';
+import * as assertsExports from './lib/asserts';
+import {asserts} from './lib/asserts';
+import {Dom} from './lib/dom_utils';
+import * as Enums from './/enums';
 
 export class Utils {
   static getFirstDescendantWithClassName(

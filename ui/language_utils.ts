@@ -4,16 +4,16 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 goog.require('mozilla.LanguageMapping');
-import {log} from './dev-workspace.shaka-player-fork.lib.debug.log';
-import * as logExports from './dev-workspace.shaka-player-fork.lib.debug.log';
+import {log} from './lib/log';
+import * as logExports from './lib/log';
 goog.require('shaka.ui.Locales');
-import {TrackLabelFormat} from './dev-workspace.shaka-player-fork.ui.ui';
-import {Utils} from './dev-workspace.shaka-player-fork.ui.ui_utils';
-import {Dom} from './dev-workspace.shaka-player-fork.lib.util.dom_utils';
-import {LanguageUtils} from './dev-workspace.shaka-player-fork.lib.util.language_utils';
-import * as LanguageUtilsExports from './dev-workspace.shaka-player-fork.lib.util.language_utils';
-import {Localization} from './dev-workspace.shaka-player-fork.ui.localization';
-import * as LocalizationExports from './dev-workspace.shaka-player-fork.ui.localization';
+import {TrackLabelFormat} from './/ui';
+import {Utils} from './/ui_utils';
+import {Dom} from './lib/dom_utils';
+import {LanguageUtils} from './lib/language_utils';
+import * as LanguageUtilsExports from './lib/language_utils';
+import {Localization} from './/localization';
+import * as LocalizationExports from './/localization';
 
 export class LanguageUtils {
   static updateTracks(

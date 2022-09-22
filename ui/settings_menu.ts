@@ -3,13 +3,13 @@
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-import {Dom} from './dev-workspace.shaka-player-fork.lib.util.dom_utils';
-import * as FakeEventExports from './dev-workspace.shaka-player-fork.lib.util.fake_event';
-import {FakeEvent} from './dev-workspace.shaka-player-fork.lib.util.fake_event';
-import {Controls} from './dev-workspace.shaka-player-fork.ui.controls';
-import {Element} from './dev-workspace.shaka-player-fork.ui.element';
-import * as Enums from './dev-workspace.shaka-player-fork.ui.enums';
-import {Utils} from './dev-workspace.shaka-player-fork.ui.ui_utils';
+import {Dom} from './lib/dom_utils';
+import * as FakeEventExports from './lib/fake_event';
+import {FakeEvent} from './lib/fake_event';
+import {Controls} from './/controls';
+import {Element} from './/element';
+import * as Enums from './/enums';
+import {Utils} from './/ui_utils';
 
 /**
  * @export
