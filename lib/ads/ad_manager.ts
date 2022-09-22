@@ -17,6 +17,8 @@ import {FakeEvent} from './../util/fake_event';
 import * as FakeEventTargetExports from './../util/fake_event_target';
 import {FakeEventTarget} from './../util/fake_event_target';
 import {IReleasable} from './../util/i_releasable';
+import { AdCuePoint, IAdManager } from '../../externs/shaka/ads';
+import { google } from '../../externs/ima';
 
 /**
  * @event shaka.ads.AdManager.ADS_LOADED
@@ -331,8 +333,7 @@ import {IReleasable} from './../util/i_releasable';
  * A class responsible for ad-related interactions.
  * @export
  */
-export class AdManager extends FakeEventTarget implements shaka.
-extern.IAdManager, IReleasable {
+export class AdManager extends FakeEventTarget implements IAdManager, IReleasable {
   private csAdManager_: ClientSideAdManager | null = null;
   private ssAdManager_: ServerSideAdManager | null = null;
   private stats_: AdsStats;
@@ -540,7 +541,7 @@ extern.IAdManager, IReleasable {
    * @override
    * @export
    */
-  getServerSideCuePoints(): shaka.extern.AdCuePoint[] {
+  getServerSideCuePoints(): AdCuePoint[] {
     if (!this.ssAdManager_) {
       throw new Error(
           ErrorExports.Severity.RECOVERABLE, ErrorExports.Category.ADS,
@@ -553,7 +554,7 @@ extern.IAdManager, IReleasable {
    * @override
    * @export
    */
-  getStats(): shaka.extern.AdsStats {
+  getStats(): AdsStats {
     return this.stats_.getBlob();
   }
 

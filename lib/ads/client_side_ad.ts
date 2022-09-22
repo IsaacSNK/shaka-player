@@ -3,14 +3,15 @@
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
+import { google } from '../../externs/ima';
+import { IAd } from '../../externs/shaka/ads';
 import * as EventManagerExports from './../util/event_manager';
 import {EventManager} from './../util/event_manager';
 
 /**
  * @export
  */
-export class ClientSideAd implements shaka.
-extern.IAd {
+export class ClientSideAd implements IAd {
   private ad_: google.ima.Ad;
   private manager_: google.ima.AdsManager;
   private video_: HTMLMediaElement;

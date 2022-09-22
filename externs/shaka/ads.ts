@@ -62,45 +62,45 @@ type Factory = () => shaka.extern.IAdManager;
  *
  * @exportDoc
  */
-export class IAd {
-  getDuration(): number {}
+export interface IAd {
+  getDuration(): number;
 
   /**
    * Gets the minimum suggested duration.  Defaults to being equivalent to
    * getDuration() for server-side ads.
    * @see http://bit.ly/3q3U6hI
    */
-  getMinSuggestedDuration(): number {}
+  getMinSuggestedDuration(): number ;
 
-  getRemainingTime(): number {}
+  getRemainingTime(): number ;
 
-  getTimeUntilSkippable(): number {}
+  getTimeUntilSkippable(): number ;
 
-  isPaused(): boolean {}
+  isPaused(): boolean ;
 
-  isSkippable(): boolean {}
+  isSkippable(): boolean ;
 
-  canSkipNow(): boolean {}
+  canSkipNow(): boolean ;
 
-  skip() {}
+  skip() ;
 
-  play() {}
+  play();
 
-  pause() {}
+  pause() ;
 
-  getVolume(): number {}
+  getVolume(): number ;
 
-  setVolume(volume: number) {}
+  setVolume(volume: number) ;
 
-  isMuted(): boolean {}
+  isMuted(): boolean ;
 
-  setMuted(muted: boolean) {}
+  setMuted(muted: boolean) ;
 
-  isLinear(): boolean {}
+  isLinear(): boolean ;
 
-  resize(width: number, height: number) {}
+  resize(width: number, height: number) ;
 
-  getSequenceLength(): number {}
+  getSequenceLength(): number ;
 
-  getPositionInSequence(): number {}
+  getPositionInSequence(): number ;
 };

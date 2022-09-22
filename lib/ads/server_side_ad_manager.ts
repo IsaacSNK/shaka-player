@@ -18,6 +18,8 @@ import {FakeEvent} from './../util/fake_event';
 import {IReleasable} from './../util/i_releasable';
 import { ADS_LOADED, AD_COMPLETE, AD_FIRST_QUARTILE, AD_MIDPOINT, AD_SKIPPED, AD_STARTED, AD_STOPPED, AD_THIRD_QUARTILE, CUEPOINTS_CHANGED, IMA_STREAM_MANAGER_LOADED } from './ad_manager';
 import { Category, Severity ,Code,Error} from '../util/error';
+import { google } from '../../externs/ima';
+import { AdCuePoint } from '../../externs/shaka/ads';
 
 /**
  * A class responsible for server-side ad interactions.
@@ -213,7 +215,7 @@ export class ServerSideAdManager implements IReleasable {
     }
   }
 
-  getCuePoints(): shaka.extern.AdCuePoint[] {
+  getCuePoints(): AdCuePoint[] {
     return this.currentCuePoints_;
   }
 
@@ -320,7 +322,7 @@ export class ServerSideAdManager implements IReleasable {
     const cuePoints: shaka.extern.AdCuePoint[] = [];
     for (const point of streamData.cuepoints) {
       const shakaCuePoint:
-          shaka.extern.AdCuePoint = {start: point.start, end: point.end};
+          AdCuePoint = {start: point.start, end: point.end};
       cuePoints.push(shakaCuePoint);
     }
     this.currentCuePoints_ = cuePoints;

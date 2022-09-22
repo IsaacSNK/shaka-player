@@ -4,11 +4,13 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+import { google } from "../../externs/ima";
+import { IAd } from "../../externs/shaka/ads";
+
 /**
  * @export
  */
-export class ServerSideAd implements shaka.
-extern.IAd {
+export class ServerSideAd implements IAd {
   private ad_: google.ima.dai.api.Ad;
   private adProgressData_: google.ima.dai.api.AdProgressData|null = null;
   private video_: HTMLMediaElement|null;
@@ -59,7 +61,7 @@ extern.IAd {
    * @export
    */
   isPaused() {
-    return this.video_!==null? this.video_.paused:undefined;
+    return this.video_!==null? this.video_.paused:false;
   }
 
   /**
@@ -119,7 +121,7 @@ extern.IAd {
    * @export
    */
   getVolume() {
-    return this.video_!==null?this.video_.volume:undefined;
+    return this.video_!==null?this.video_.volume:0;
   }
 
   /**
@@ -137,7 +139,7 @@ extern.IAd {
    * @export
    */
   isMuted() {
-    return this.video_!==null?this.video_.muted:undefined;
+    return this.video_!==null?this.video_.muted:false;
   }
 
   /**

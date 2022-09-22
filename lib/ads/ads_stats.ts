@@ -50,7 +50,7 @@ export class AdsStats {
    * reference any internal data.
    *
    */
-  getBlob(): shaka.extern.AdsStats {
+  getBlob(): any {
     return {
       loadTimes: this.loadTimes_,
       started: this.started_,

@@ -18,6 +18,8 @@ import { log } from '../debug/log';
 import { AdManager, ADS_LOADED, AD_BREAK_READY, AD_BUFFERING, AD_CLICKED, AD_CLOSED, AD_COMPLETE, AD_DURATION_CHANGED, AD_FIRST_QUARTILE, AD_IMPRESSION, AD_INTERACTION, AD_LINEAR_CHANGED, AD_LOADED, AD_METADATA, AD_MIDPOINT, AD_MUTED, AD_PAUSED, AD_PROGRESS, AD_RECOVERABLE_ERROR, AD_RESUMED, AD_SKIPPED, AD_SKIP_STATE_CHANGED, AD_STARTED, AD_STOPPED, AD_THIRD_QUARTILE, AD_VOLUME_CHANGED, ALL_ADS_COMPLETED, CUEPOINTS_CHANGED, IMA_AD_MANAGER_LOADED } from './ad_manager';
 import { version } from '../player';
 import { Dom } from '../util/dom_utils';
+import { google } from '../../externs/ima';
+import { AdCuePoint } from '../../externs/shaka/ads';
 
 /**
  * A class responsible for client-side ad interactions.
@@ -132,10 +134,10 @@ export class ClientSideAdManager implements IReleasable {
         (new Map()).set('imaAdManager', this.imaAdsManager_)));
     const cuePointStarts = this.imaAdsManager_.getCuePoints();
     if (cuePointStarts.length) {
-      const cuePoints: shaka.extern.AdCuePoint[] = [];
+      const cuePoints: AdCuePoint[] = [];
       for (const start of cuePointStarts) {
         const shakaCuePoint:
-            shaka.extern.AdCuePoint = {start: start, end: null};
+            AdCuePoint = {start: start, end: null};
         cuePoints.push(shakaCuePoint);
       }
       this.onEvent_(new FakeEvent(
