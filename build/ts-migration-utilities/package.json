@@ -1,0 +1,21 @@
+{
+  "name": "ts-migration-utilities",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "build": "tsc -b",
+    "build:watch": "tsc -b -w",
+    "start": "node dist/FileChangeTracker.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "chalk": "^5.0.1",
+    "colors.ts": "^1.0.20",
+    "colorts": "^0.1.63",
+    "md5-file": "^5.0.0"
+  }
+}
