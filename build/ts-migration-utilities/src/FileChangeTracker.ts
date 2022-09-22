@@ -31,6 +31,7 @@ const generateChangeControlFile = async (options: string[] = []) => {
             md5File(jsFile).then(hash => {
                 resolve({ [jsFile.replace(repoPath, '')]: hash });
             }).catch(err => {
+                console.log(err);
                 reject(err);
             }); 
         }));
@@ -46,7 +47,7 @@ const generateChangeControlFile = async (options: string[] = []) => {
 }
 
 const writeChangeControlFile = async (options: string[] = []) => {
-    const changeControlMap = generateChangeControlFile(options);
+    const changeControlMap = await generateChangeControlFile(options);
     if (fs.existsSync(OUTPUT_FILE) && !options.includes('-f')) {
         console.log(chalk.red("Change control file already exists. Use: 'npm generate -- -f' to overwrite"));
         process.exit(1);
