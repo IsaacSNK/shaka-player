@@ -11,6 +11,9 @@ import {log} from './../debug/log';
 import * as StreamUtilsExports from './../util/stream_utils';
 import {StreamUtils} from './../util/stream_utils';
 import {Timer} from './../util/timer';
+import { AbrManager, SwitchCallback } from '../../externs/shaka/abr_manager';
+import { Variant } from '../../externs/shaka/manifest';
+import { AbrConfiguration, Restrictions } from '../../externs/shaka/player';
 
 /**
  * @summary
@@ -32,16 +35,15 @@ import {Timer} from './../util/timer';
  *
  * @export
  */
-export class SimpleAbrManager implements shaka.
-extern.AbrManager {
-  private switch_: shaka.extern.AbrManager.SwitchCallback|null = null;
+export class SimpleAbrManager implements AbrManager {
+  private switch_: SwitchCallback|null = null;
   private enabled_: boolean = false;
   private bandwidthEstimator_: EwmaBandwidthEstimator;
 
   /**
    * A filtered list of Variants to choose from.
    */
-  private variants_: shaka.extern.Variant[] = [];
+  private variants_: Variant[] = [];
   private playbackRate_: number = 1;
   private startupComplete_: boolean = false;
 
@@ -50,7 +52,7 @@ extern.AbrManager {
    *
    */
   private lastTimeChosenMs_: number|null = null;
-  private config_: shaka.extern.AbrConfiguration|null = null;
+  private config_: AbrConfiguration ;
   private mediaElement_: HTMLMediaElement|null = null;
   private resizeObserver_: ResizeObserver |null= null;
   private resizeObserverTimer_: Timer;
@@ -73,7 +75,9 @@ extern.AbrManager {
           }
           const chosenVariant = this.chooseVariant();
           if (chosenVariant) {
-            this.switch_(chosenVariant);
+            if(this.switch_!==null){
+              this.switch_(chosenVariant);
+            }
           }
         }
       });
@@ -82,7 +86,9 @@ extern.AbrManager {
       if (this.config_.restrictToElementSize) {
         const chosenVariant = this.chooseVariant();
         if (chosenVariant) {
+          if(this.switch_!==null){
           this.switch_(chosenVariant);
+          }
         }
       }
     });
@@ -314,7 +320,9 @@ extern.AbrManager {
 
       // If any of these chosen streams are already chosen, Player will filter
       // them out before passing the choices on to StreamingEngine.
+      if(this.switch_!==null){
       this.switch_(chosenVariant);
+      }
     }
   }
 
@@ -340,9 +348,9 @@ extern.AbrManager {
    *   |restrictions| and sorted in ascending order of bandwidth.
    */
   private static filterAndSortVariants_(
-      restrictions: shaka.extern.Restrictions|null,
-      variants: shaka.extern.Variant[], maxHeight: number,
-      maxWidth: number): shaka.extern.Variant[] {
+      restrictions: Restrictions|null,
+      variants: Variant[], maxHeight: number,
+      maxWidth: number): Variant[] {
     if (restrictions) {
       variants = variants.filter((variant) => {
         // This was already checked in another scope, but the compiler doesn't

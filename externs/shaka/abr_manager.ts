@@ -4,6 +4,9 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+import { Variant } from "./manifest";
+import { AbrConfiguration } from "./player";
+
 /**
  * An object which selects Streams from a set of possible choices.  This also
  * watches for system changes to automatically adapt for the current streaming
@@ -24,7 +27,7 @@ export class AbrManager {
    *
    * @exportDoc
    */
-  init(switchCallback: shaka.extern.AbrManager.SwitchCallback) {}
+  init(switchCallback: SwitchCallback) {}
 
   /**
    * Stops any background timers and frees any objects held by this instance.
@@ -39,13 +42,13 @@ export class AbrManager {
    *
    * @exportDoc
    */
-  setVariants(variants: shaka.extern.Variant[]) {}
+  setVariants(variants: Variant[]) {}
 
   /**
    * Chooses one variant to switch to.  Called by the Player.
    * @exportDoc
    */
-  chooseVariant(): shaka.extern.Variant {}
+  chooseVariant(): Variant {}
 
   /**
    * Enables automatic Variant choices from the last ones passed to setVariants.
@@ -104,8 +107,8 @@ export class AbrManager {
    *
    * @exportDoc
    */
-  configure(config: shaka.extern.AbrConfiguration) {}
+  configure(config: AbrConfiguration) {}
 };
-type SwitchCallback = (p1: shaka.extern.Variant, p2?: boolean, p3?: number) =>
+export type SwitchCallback = (p1: Variant, p2?: boolean, p3?: number) =>
     any;
-type Factory = () => shaka.extern.AbrManager;
+export type Factory = () => AbrManager;

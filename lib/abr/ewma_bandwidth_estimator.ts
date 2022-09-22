@@ -3,6 +3,7 @@
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
+import { AdvancedAbrConfiguration } from '../../externs/shaka/player';
 import {Ewma} from './ewma';
 
 /**
@@ -64,7 +65,7 @@ export class EwmaBandwidthEstimator {
    * Must be called at least once before init().
    *
    */
-  configure(config: shaka.extern.AdvancedAbrConfiguration) {
+  configure(config: AdvancedAbrConfiguration) {
     this.minTotalBytes_ = config.minTotalBytes;
     this.minBytes_ = config.minBytes;
     this.fast_.updateAlpha(config.fastHalfLife);
