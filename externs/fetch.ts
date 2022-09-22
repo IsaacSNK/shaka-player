@@ -10,4 +10,5 @@
  *
  *
  */
+//@ts-ignore
 Headers.prototype.forEach = function(apply: (p1: string, p2: string) => any) {};

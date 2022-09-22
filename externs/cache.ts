@@ -10,4 +10,5 @@
  *
  *
  */
+//@ts-ignore
 let caches: CacheStorage;

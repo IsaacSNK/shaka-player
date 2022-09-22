@@ -11,7 +11,9 @@
  *
  */
 const WebKitPlaybackTargetAvailabilityEvent = {};
+//@ts-ignore
 HTMLMediaElement.prototype.webkitCurrentPlaybackTargetIsWireless;
+//@ts-ignore
 HTMLMediaElement.prototype.webkitShowPlaybackTargetPicker = function() {};
 
 class AirPlayEvent extends Event {

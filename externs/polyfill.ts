@@ -9,4 +9,5 @@
  *
  *
  */
+//@ts-ignore
 window.shakaMediaKeysPolyfill;

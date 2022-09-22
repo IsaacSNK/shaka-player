@@ -29,4 +29,5 @@ interface AudioTrackList extends IArrayLike<AudioTrack>, EventTarget {
   /** @override */
   dispatchEvent(event);
 }
+//@ts-ignore
 HTMLMediaElement.prototype.audioTracks;

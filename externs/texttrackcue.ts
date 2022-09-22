@@ -10,10 +10,17 @@
  *
  *
  */
+//@ts-ignore
 TextTrackCue.prototype.positionAlign;
+//@ts-ignore
 TextTrackCue.prototype.lineAlign;
+//@ts-ignore
 TextTrackCue.prototype.line;
+//@ts-ignore
 TextTrackCue.prototype.vertical;
+//@ts-ignore
 TextTrackCue.prototype.snapToLines;
+//@ts-ignore
 TextTrackCue.prototype.type;
+//@ts-ignore
 TextTrackCue.prototype.value;

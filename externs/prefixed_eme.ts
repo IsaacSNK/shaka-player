@@ -8,17 +8,21 @@
  * @fileoverview Externs for prefixed EME v0.1b.
  *
  */
+//@ts-ignore
 HTMLMediaElement.prototype.webkitAddKey = function(
     keySystem: string, key: Uint8Array, keyId: Uint8Array,
     sessionId: string) {};
+    //@ts-ignore
 HTMLMediaElement.prototype.webkitCancelKeyRequest = function(
     keySystem: string, sessionId: string) {};
+    //@ts-ignore
 HTMLMediaElement.prototype.webkitGenerateKeyRequest = function(
     keySystem: string, initData: Uint8Array) {};
 
 /**
  * An unprefixed variant of the webkit-prefixed API from EME v0.1b.
  */
+//@ts-ignore
 HTMLMediaElement.prototype.generateKeyRequest = function(
     keySystem: string, initData: Uint8Array) {};
 
@@ -26,6 +30,7 @@ HTMLMediaElement.prototype.generateKeyRequest = function(
  * @return '', 'maybe', or 'probably'
  * @override the standard one-argument version
  */
+//@ts-ignore
 HTMLVideoElement.prototype.canPlayType = function(
     mimeType: string, keySystem?: string): string {};
 

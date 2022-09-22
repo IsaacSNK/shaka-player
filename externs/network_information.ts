@@ -10,6 +10,8 @@
  *
  *
  */
+//@ts-ignore
 NetworkInformation.prototype.saveData;
+//@ts-ignore
 NetworkInformation.prototype.addEventListener = function(
     type: string, listener: Function) {};

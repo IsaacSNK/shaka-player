@@ -19,4 +19,5 @@ MediaError.prototype.message;
 /**
  * A Microsoft Edge and IE extension to add a Windows error code.
  */
+//@ts-ignore
 MediaError.prototype.msExtendedCode;

@@ -33,8 +33,10 @@ interface WebKitMediaKeySession extends EventTarget {
   /** @override */
   dispatchEvent(evt);
 }
+//@ts-ignore
 HTMLMediaElement.prototype.webkitSetMediaKeys = function(
     mediaKeys: WebKitMediaKeys) {};
+    //@ts-ignore
 HTMLMediaElement.prototype.webkitKeys;
 
 class WebKitMediaKeyError {

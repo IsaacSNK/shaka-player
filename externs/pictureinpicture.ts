@@ -8,13 +8,17 @@
  * @fileoverview Externs for picture-in-picture methods.
  *
  */
-HTMLDocument.prototype.exitPictureInPicture = function(): Promise {};
+//@ts-ignore
+HTMLDocument.prototype.exitPictureInPicture = function(): Promise<any> {};
 HTMLDocument.prototype.pictureInPictureElement;
 HTMLDocument.prototype.pictureInPictureEnabled;
+//@ts-ignore
 HTMLMediaElement.prototype.requestPictureInPicture = function(): Promise {};
+//@ts-ignore
 HTMLMediaElement.prototype.disablePictureInPicture;
-HTMLMediaElement.prototype.webkitSetPresentationMode = function(mode: string):
-    boolean {};
-HTMLMediaElement.prototype.webkitSupportsPresentationMode = function(
-    mode: string): boolean {};
+//@ts-ignore
+HTMLMediaElement.prototype.webkitSetPresentationMode = function(mode: string):boolean {};
+//@ts-ignore
+HTMLMediaElement.prototype.webkitSupportsPresentationMode = function(mode: string): boolean {};
+//@ts-ignore
 HTMLMediaElement.prototype.webkitPresentationMode;
