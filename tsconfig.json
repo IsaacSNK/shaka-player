@@ -4,7 +4,6 @@
     "module": "CommonJS",
     "moduleResolution": "node",
     "outDir": "./dist-ts",
-    "rootDir": "./lib",
     "noImplicitAny": false,
     "strictNullChecks": true,
     "esModuleInterop": true,
@@ -13,9 +12,10 @@
     "sourceMap": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
-    "strict": false
+    "strict": false,
+    "lib": ["DOM"]
   },
-  "include": ["./lib/**/*.ts"],
+  "include": ["./lib/**/*.ts", "./externs/**/*.ts"],
   "exclude": [
     "node_modules",
     "**/*.spec.ts"
