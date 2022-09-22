@@ -3,10 +3,10 @@
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-import * as logExports from './dev-workspace.shaka-player-fork.lib.debug.log';
-import {log} from './dev-workspace.shaka-player-fork.lib.debug.log';
-import * as polyfillExports from './dev-workspace.shaka-player-fork.lib.polyfill.all';
-import {polyfill} from './dev-workspace.shaka-player-fork.lib.polyfill.all';
+import * as logExports from './../debug/log';
+import {log} from './../debug/log';
+import * as polyfillExports from './/all';
+import {polyfill} from './/all';
 
 /**
  * @summary A polyfill to silence the play() Promise in HTML5 video.

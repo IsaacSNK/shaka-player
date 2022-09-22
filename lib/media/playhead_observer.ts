@@ -3,8 +3,8 @@
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-import {IReleasable} from './dev-workspace.shaka-player-fork.lib.util.i_releasable';
-import {Timer} from './dev-workspace.shaka-player-fork.lib.util.timer';
+import {IReleasable} from './../util/i_releasable';
+import {Timer} from './../util/timer';
 
 /**
  * A playhead observer is a system that watches for meaningful changes in state

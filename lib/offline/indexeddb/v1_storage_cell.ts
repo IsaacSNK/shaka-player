@@ -3,18 +3,18 @@
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-import * as assertsExports from './dev-workspace.shaka-player-fork.lib.debug.asserts';
-import {asserts} from './dev-workspace.shaka-player-fork.lib.debug.asserts';
-import * as logExports from './dev-workspace.shaka-player-fork.lib.debug.log';
-import {log} from './dev-workspace.shaka-player-fork.lib.debug.log';
-import {BaseStorageCell} from './dev-workspace.shaka-player-fork.lib.offline.indexeddb.base_storage_cell';
-import * as ErrorExports from './dev-workspace.shaka-player-fork.lib.util.error';
-import {Error} from './dev-workspace.shaka-player-fork.lib.util.error';
-import * as ManifestParserUtilsExports from './dev-workspace.shaka-player-fork.lib.util.manifest_parser_utils';
-import {ManifestParserUtils} from './dev-workspace.shaka-player-fork.lib.util.manifest_parser_utils';
-import * as PeriodCombinerExports from './dev-workspace.shaka-player-fork.lib.util.periods';
-import {PeriodCombiner} from './dev-workspace.shaka-player-fork.lib.util.periods';
-import {PublicPromise} from './dev-workspace.shaka-player-fork.lib.util.public_promise';
+import * as assertsExports from './../debug/asserts/asserts';
+import {asserts} from './../debug/asserts/asserts';
+import * as logExports from './../debug/log/log';
+import {log} from './../debug/log/log';
+import {BaseStorageCell} from './/base_storage_cell';
+import * as ErrorExports from './../util/error/error';
+import {Error} from './../util/error/error';
+import * as ManifestParserUtilsExports from './../util/manifest_parser_utils/manifest_parser_utils';
+import {ManifestParserUtils} from './../util/manifest_parser_utils/manifest_parser_utils';
+import * as PeriodCombinerExports from './../util/periods/periods';
+import {PeriodCombiner} from './../util/periods/periods';
+import {PublicPromise} from './../util/public_promise/public_promise';
 
 /**
  * The V1StorageCell is for all stores that follow the shaka.externs V1 offline

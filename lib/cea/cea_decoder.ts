@@ -3,20 +3,20 @@
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-import * as Cea608DataChannelExports from './dev-workspace.shaka-player-fork.lib.cea.cea608_data_channel';
-import {Cea608DataChannel} from './dev-workspace.shaka-player-fork.lib.cea.cea608_data_channel';
-import * as Cea708ServiceExports from './dev-workspace.shaka-player-fork.lib.cea.cea708_service';
-import {Cea708Service} from './dev-workspace.shaka-player-fork.lib.cea.cea708_service';
-import * as DtvccPacketBuilderExports from './dev-workspace.shaka-player-fork.lib.cea.dtvcc_packet_builder';
-import {DtvccPacket, DtvccPacketBuilder} from './dev-workspace.shaka-player-fork.lib.cea.dtvcc_packet_builder';
-import * as ICaptionDecoderExports from './dev-workspace.shaka-player-fork.lib.cea.i_caption_decoder';
-import {ICaptionDecoder} from './dev-workspace.shaka-player-fork.lib.cea.i_caption_decoder';
-import * as logExports from './dev-workspace.shaka-player-fork.lib.debug.log';
-import {log} from './dev-workspace.shaka-player-fork.lib.debug.log';
-import * as DataViewReaderExports from './dev-workspace.shaka-player-fork.lib.util.data_view_reader';
-import {DataViewReader} from './dev-workspace.shaka-player-fork.lib.util.data_view_reader';
-import * as ErrorExports from './dev-workspace.shaka-player-fork.lib.util.error';
-import {Error} from './dev-workspace.shaka-player-fork.lib.util.error';
+import * as Cea608DataChannelExports from './/cea608_data_channel';
+import {Cea608DataChannel} from './/cea608_data_channel';
+import * as Cea708ServiceExports from './/cea708_service';
+import {Cea708Service} from './/cea708_service';
+import * as DtvccPacketBuilderExports from './/dtvcc_packet_builder';
+import {DtvccPacket, DtvccPacketBuilder} from './/dtvcc_packet_builder';
+import * as ICaptionDecoderExports from './/i_caption_decoder';
+import {ICaptionDecoder} from './/i_caption_decoder';
+import * as logExports from './../debug/log';
+import {log} from './../debug/log';
+import * as DataViewReaderExports from './../util/data_view_reader';
+import {DataViewReader} from './../util/data_view_reader';
+import * as ErrorExports from './../util/error';
+import {Error} from './../util/error';
 
 /**
  * CEA-X08 captions decoder. Currently only CEA-608 supported.

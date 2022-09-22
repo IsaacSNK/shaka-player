@@ -3,14 +3,14 @@
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-import * as assertsExports from './dev-workspace.shaka-player-fork.lib.debug.asserts';
-import {asserts} from './dev-workspace.shaka-player-fork.lib.debug.asserts';
-import {HttpPluginUtils} from './dev-workspace.shaka-player-fork.lib.net.http_plugin_utils';
-import * as NetworkingEngineExports from './dev-workspace.shaka-player-fork.lib.net.networking_engine';
-import {NetworkingEngine} from './dev-workspace.shaka-player-fork.lib.net.networking_engine';
-import {AbortableOperation} from './dev-workspace.shaka-player-fork.lib.util.abortable_operation';
-import * as ErrorExports from './dev-workspace.shaka-player-fork.lib.util.error';
-import {Error} from './dev-workspace.shaka-player-fork.lib.util.error';
+import * as assertsExports from './../debug/asserts';
+import {asserts} from './../debug/asserts';
+import {HttpPluginUtils} from './/http_plugin_utils';
+import * as NetworkingEngineExports from './/networking_engine';
+import {NetworkingEngine} from './/networking_engine';
+import {AbortableOperation} from './../util/abortable_operation';
+import * as ErrorExports from './../util/error';
+import {Error} from './../util/error';
 
 /**
  * @summary A networking plugin to handle http and https URIs via XHR.

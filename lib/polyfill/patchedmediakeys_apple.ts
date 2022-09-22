@@ -3,26 +3,26 @@
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-import * as assertsExports from './dev-workspace.shaka-player-fork.lib.debug.asserts';
-import {asserts} from './dev-workspace.shaka-player-fork.lib.debug.asserts';
-import * as logExports from './dev-workspace.shaka-player-fork.lib.debug.log';
-import {log} from './dev-workspace.shaka-player-fork.lib.debug.log';
-import * as DrmEngineExports from './dev-workspace.shaka-player-fork.lib.media.drm_engine';
-import {DrmEngine} from './dev-workspace.shaka-player-fork.lib.media.drm_engine';
-import * as polyfillExports from './dev-workspace.shaka-player-fork.lib.polyfill.all';
-import {polyfill} from './dev-workspace.shaka-player-fork.lib.polyfill.all';
-import {BufferUtils} from './dev-workspace.shaka-player-fork.lib.util.buffer_utils';
-import * as EventManagerExports from './dev-workspace.shaka-player-fork.lib.util.event_manager';
-import {EventManager} from './dev-workspace.shaka-player-fork.lib.util.event_manager';
-import * as FakeEventExports from './dev-workspace.shaka-player-fork.lib.util.fake_event';
-import {FakeEvent} from './dev-workspace.shaka-player-fork.lib.util.fake_event';
-import * as FakeEventTargetExports from './dev-workspace.shaka-player-fork.lib.util.fake_event_target';
-import {FakeEventTarget} from './dev-workspace.shaka-player-fork.lib.util.fake_event_target';
-import * as MediaReadyStateExports from './dev-workspace.shaka-player-fork.lib.util.media_ready_state_utils';
-import {MediaReadyState} from './dev-workspace.shaka-player-fork.lib.util.media_ready_state_utils';
-import {PublicPromise} from './dev-workspace.shaka-player-fork.lib.util.public_promise';
-import * as StringUtilsExports from './dev-workspace.shaka-player-fork.lib.util.string_utils';
-import {StringUtils} from './dev-workspace.shaka-player-fork.lib.util.string_utils';
+import * as assertsExports from './../debug/asserts';
+import {asserts} from './../debug/asserts';
+import * as logExports from './../debug/log';
+import {log} from './../debug/log';
+import * as DrmEngineExports from './../media/drm_engine';
+import {DrmEngine} from './../media/drm_engine';
+import * as polyfillExports from './/all';
+import {polyfill} from './/all';
+import {BufferUtils} from './../util/buffer_utils';
+import * as EventManagerExports from './../util/event_manager';
+import {EventManager} from './../util/event_manager';
+import * as FakeEventExports from './../util/fake_event';
+import {FakeEvent} from './../util/fake_event';
+import * as FakeEventTargetExports from './../util/fake_event_target';
+import {FakeEventTarget} from './../util/fake_event_target';
+import * as MediaReadyStateExports from './../util/media_ready_state_utils';
+import {MediaReadyState} from './../util/media_ready_state_utils';
+import {PublicPromise} from './../util/public_promise';
+import * as StringUtilsExports from './../util/string_utils';
+import {StringUtils} from './../util/string_utils';
 
 /**
  * @summary A polyfill to implement modern, standardized EME on top of Apple's

@@ -3,19 +3,19 @@
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-import * as assertsExports from './dev-workspace.shaka-player-fork.lib.debug.asserts';
-import {asserts} from './dev-workspace.shaka-player-fork.lib.debug.asserts';
-import * as logExports from './dev-workspace.shaka-player-fork.lib.debug.log';
-import {log} from './dev-workspace.shaka-player-fork.lib.debug.log';
-import {BufferUtils} from './dev-workspace.shaka-player-fork.lib.util.buffer_utils';
-import * as ErrorExports from './dev-workspace.shaka-player-fork.lib.util.error';
-import {Error} from './dev-workspace.shaka-player-fork.lib.util.error';
-import {Lazy} from './dev-workspace.shaka-player-fork.lib.util.lazy';
-import * as Mp4ParserExports from './dev-workspace.shaka-player-fork.lib.util.mp4_parser';
-import {Mp4Parser} from './dev-workspace.shaka-player-fork.lib.util.mp4_parser';
-import * as PlatformExports from './dev-workspace.shaka-player-fork.lib.util.platform';
-import {Platform} from './dev-workspace.shaka-player-fork.lib.util.platform';
-import {Uint8ArrayUtils} from './dev-workspace.shaka-player-fork.lib.util.uint8array_utils';
+import * as assertsExports from './../debug/asserts';
+import {asserts} from './../debug/asserts';
+import * as logExports from './../debug/log';
+import {log} from './../debug/log';
+import {BufferUtils} from './../util/buffer_utils';
+import * as ErrorExports from './../util/error';
+import {Error} from './../util/error';
+import {Lazy} from './../util/lazy';
+import * as Mp4ParserExports from './../util/mp4_parser';
+import {Mp4Parser} from './../util/mp4_parser';
+import * as PlatformExports from './../util/platform';
+import {Platform} from './../util/platform';
+import {Uint8ArrayUtils} from './../util/uint8array_utils';
 
 /**
  * @summary

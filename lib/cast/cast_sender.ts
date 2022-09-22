@@ -3,19 +3,19 @@
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-import * as CastUtilsExports from './dev-workspace.shaka-player-fork.lib.cast.cast_utils';
-import {CastUtils} from './dev-workspace.shaka-player-fork.lib.cast.cast_utils';
-import * as assertsExports from './dev-workspace.shaka-player-fork.lib.debug.asserts';
-import {asserts} from './dev-workspace.shaka-player-fork.lib.debug.asserts';
-import * as logExports from './dev-workspace.shaka-player-fork.lib.debug.log';
-import {log} from './dev-workspace.shaka-player-fork.lib.debug.log';
-import * as ErrorExports from './dev-workspace.shaka-player-fork.lib.util.error';
-import {Error} from './dev-workspace.shaka-player-fork.lib.util.error';
-import * as FakeEventExports from './dev-workspace.shaka-player-fork.lib.util.fake_event';
-import {FakeEvent} from './dev-workspace.shaka-player-fork.lib.util.fake_event';
-import {IDestroyable} from './dev-workspace.shaka-player-fork.lib.util.i_destroyable';
-import {PublicPromise} from './dev-workspace.shaka-player-fork.lib.util.public_promise';
-import {Timer} from './dev-workspace.shaka-player-fork.lib.util.timer';
+import * as CastUtilsExports from './/cast_utils';
+import {CastUtils} from './/cast_utils';
+import * as assertsExports from './../debug/asserts';
+import {asserts} from './../debug/asserts';
+import * as logExports from './../debug/log';
+import {log} from './../debug/log';
+import * as ErrorExports from './../util/error';
+import {Error} from './../util/error';
+import * as FakeEventExports from './../util/fake_event';
+import {FakeEvent} from './../util/fake_event';
+import {IDestroyable} from './../util/i_destroyable';
+import {PublicPromise} from './../util/public_promise';
+import {Timer} from './../util/timer';
 
 export class CastSender implements IDestroyable {
   private receiverAppId_: string;

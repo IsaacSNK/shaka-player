@@ -3,11 +3,11 @@
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-import * as logExports from './dev-workspace.shaka-player-fork.lib.debug.log';
-import {log} from './dev-workspace.shaka-player-fork.lib.debug.log';
-import * as ErrorExports from './dev-workspace.shaka-player-fork.lib.util.error';
-import {Error} from './dev-workspace.shaka-player-fork.lib.util.error';
-import {IDestroyable} from './dev-workspace.shaka-player-fork.lib.util.i_destroyable';
+import * as logExports from './../debug/log';
+import {log} from './../debug/log';
+import * as ErrorExports from './../util/error';
+import {Error} from './../util/error';
+import {IDestroyable} from './../util/i_destroyable';
 
 type StorageCellPath = {
   mechanism: string,

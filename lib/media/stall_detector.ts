@@ -3,10 +3,10 @@
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-import {TimeRangesUtils} from './dev-workspace.shaka-player-fork.lib.media.time_ranges_utils';
-import * as FakeEventExports from './dev-workspace.shaka-player-fork.lib.util.fake_event';
-import {FakeEvent} from './dev-workspace.shaka-player-fork.lib.util.fake_event';
-import {IReleasable} from './dev-workspace.shaka-player-fork.lib.util.i_releasable';
+import {TimeRangesUtils} from './/time_ranges_utils';
+import * as FakeEventExports from './../util/fake_event';
+import {FakeEvent} from './../util/fake_event';
+import {IReleasable} from './../util/i_releasable';
 
 /**
  * Some platforms/browsers can get stuck in the middle of a buffered range (e.g.

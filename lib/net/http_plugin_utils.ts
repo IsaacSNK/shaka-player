@@ -3,14 +3,14 @@
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-import * as logExports from './dev-workspace.shaka-player-fork.lib.debug.log';
-import {log} from './dev-workspace.shaka-player-fork.lib.debug.log';
-import * as NetworkingEngineExports from './dev-workspace.shaka-player-fork.lib.net.networking_engine';
-import {NetworkingEngine} from './dev-workspace.shaka-player-fork.lib.net.networking_engine';
-import * as ErrorExports from './dev-workspace.shaka-player-fork.lib.util.error';
-import {Error} from './dev-workspace.shaka-player-fork.lib.util.error';
-import * as StringUtilsExports from './dev-workspace.shaka-player-fork.lib.util.string_utils';
-import {StringUtils} from './dev-workspace.shaka-player-fork.lib.util.string_utils';
+import * as logExports from './../debug/log';
+import {log} from './../debug/log';
+import * as NetworkingEngineExports from './/networking_engine';
+import {NetworkingEngine} from './/networking_engine';
+import * as ErrorExports from './../util/error';
+import {Error} from './../util/error';
+import * as StringUtilsExports from './../util/string_utils';
+import {StringUtils} from './../util/string_utils';
 
 /**
  * @summary A set of http networking utility functions.

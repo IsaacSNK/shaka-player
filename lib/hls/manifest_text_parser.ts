@@ -3,13 +3,13 @@
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-import {Attribute, Playlist, PlaylistType, Segment, Tag} from './dev-workspace.shaka-player-fork.lib.hls.hls_classes';
-import {Utils} from './dev-workspace.shaka-player-fork.lib.hls.hls_utils';
-import * as ErrorExports from './dev-workspace.shaka-player-fork.lib.util.error';
-import {Error} from './dev-workspace.shaka-player-fork.lib.util.error';
-import * as StringUtilsExports from './dev-workspace.shaka-player-fork.lib.util.string_utils';
-import {StringUtils} from './dev-workspace.shaka-player-fork.lib.util.string_utils';
-import {TextParser} from './dev-workspace.shaka-player-fork.lib.util.text_parser';
+import {Attribute, Playlist, PlaylistType, Segment, Tag} from './/hls_classes';
+import {Utils} from './/hls_utils';
+import * as ErrorExports from './../util/error';
+import {Error} from './../util/error';
+import * as StringUtilsExports from './../util/string_utils';
+import {StringUtils} from './../util/string_utils';
+import {TextParser} from './../util/text_parser';
 
 /**
  * HlS manifest text parser.

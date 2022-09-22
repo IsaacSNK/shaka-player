@@ -3,21 +3,21 @@
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-import * as assertsExports from './dev-workspace.shaka-player-fork.lib.debug.asserts';
-import {asserts} from './dev-workspace.shaka-player-fork.lib.debug.asserts';
-import * as logExports from './dev-workspace.shaka-player-fork.lib.debug.log';
-import {log} from './dev-workspace.shaka-player-fork.lib.debug.log';
-import {EmeSessionStorageCell} from './dev-workspace.shaka-player-fork.lib.offline.indexeddb.eme_session_storage_cell';
-import {V1StorageCell} from './dev-workspace.shaka-player-fork.lib.offline.indexeddb.v1_storage_cell';
-import {V2StorageCell} from './dev-workspace.shaka-player-fork.lib.offline.indexeddb.v2_storage_cell';
-import {V5StorageCell} from './dev-workspace.shaka-player-fork.lib.offline.indexeddb.v5_storage_cell';
-import * as StorageMuxerExports from './dev-workspace.shaka-player-fork.lib.offline.storage_muxer';
-import {StorageMuxer} from './dev-workspace.shaka-player-fork.lib.offline.storage_muxer';
-import * as ErrorExports from './dev-workspace.shaka-player-fork.lib.util.error';
-import {Error} from './dev-workspace.shaka-player-fork.lib.util.error';
-import * as PlatformExports from './dev-workspace.shaka-player-fork.lib.util.platform';
-import {Platform} from './dev-workspace.shaka-player-fork.lib.util.platform';
-import {PublicPromise} from './dev-workspace.shaka-player-fork.lib.util.public_promise';
+import * as assertsExports from './../debug/asserts/asserts';
+import {asserts} from './../debug/asserts/asserts';
+import * as logExports from './../debug/log/log';
+import {log} from './../debug/log/log';
+import {EmeSessionStorageCell} from './/eme_session_storage_cell';
+import {V1StorageCell} from './/v1_storage_cell';
+import {V2StorageCell} from './/v2_storage_cell';
+import {V5StorageCell} from './/v5_storage_cell';
+import * as StorageMuxerExports from './../../storage_muxer/storage_muxer';
+import {StorageMuxer} from './../../storage_muxer/storage_muxer';
+import * as ErrorExports from './../util/error/error';
+import {Error} from './../util/error/error';
+import * as PlatformExports from './../util/platform/platform';
+import {Platform} from './../util/platform/platform';
+import {PublicPromise} from './../util/public_promise/public_promise';
 
 /**
  * A storage mechanism to manage storage cells for an indexed db instance.

@@ -3,16 +3,16 @@
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-import * as NetworkingEngineExports from './dev-workspace.shaka-player-fork.lib.net.networking_engine';
-import {NetworkingEngine} from './dev-workspace.shaka-player-fork.lib.net.networking_engine';
-import {DownloadProgressEstimator} from './dev-workspace.shaka-player-fork.lib.offline.download_progress_estimator';
-import {ArrayUtils} from './dev-workspace.shaka-player-fork.lib.util.array_utils';
-import {BufferUtils} from './dev-workspace.shaka-player-fork.lib.util.buffer_utils';
-import {Destroyer} from './dev-workspace.shaka-player-fork.lib.util.destroyer';
-import * as ErrorExports from './dev-workspace.shaka-player-fork.lib.util.error';
-import {Error} from './dev-workspace.shaka-player-fork.lib.util.error';
-import {IDestroyable} from './dev-workspace.shaka-player-fork.lib.util.i_destroyable';
-import {Pssh} from './dev-workspace.shaka-player-fork.lib.util.pssh';
+import * as NetworkingEngineExports from './../net/networking_engine';
+import {NetworkingEngine} from './../net/networking_engine';
+import {DownloadProgressEstimator} from './/download_progress_estimator';
+import {ArrayUtils} from './../util/array_utils';
+import {BufferUtils} from './../util/buffer_utils';
+import {Destroyer} from './../util/destroyer';
+import * as ErrorExports from './../util/error';
+import {Error} from './../util/error';
+import {IDestroyable} from './../util/i_destroyable';
+import {Pssh} from './../util/pssh';
 
 /**
  * This manages downloading segments.

@@ -3,7 +3,7 @@
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-import {PublicPromise} from './dev-workspace.shaka-player-fork.lib.util.public_promise';
+import {PublicPromise} from './../util/public_promise/public_promise';
 
 /**
  * A DBOperation wraps an IndexedDB transaction in a promise.

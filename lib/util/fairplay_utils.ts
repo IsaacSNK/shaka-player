@@ -4,16 +4,16 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 goog.require('goog.Uri');
-import {asserts} from './dev-workspace.shaka-player-fork.lib.debug.asserts';
-import * as assertsExports from './dev-workspace.shaka-player-fork.lib.debug.asserts';
-import {NetworkingEngine} from './dev-workspace.shaka-player-fork.lib.net.networking_engine';
-import * as NetworkingEngineExports from './dev-workspace.shaka-player-fork.lib.net.networking_engine';
-import {BufferUtils} from './dev-workspace.shaka-player-fork.lib.util.buffer_utils';
-import {Error} from './dev-workspace.shaka-player-fork.lib.util.error';
-import * as ErrorExports from './dev-workspace.shaka-player-fork.lib.util.error';
-import {StringUtils} from './dev-workspace.shaka-player-fork.lib.util.string_utils';
-import * as StringUtilsExports from './dev-workspace.shaka-player-fork.lib.util.string_utils';
-import {Uint8ArrayUtils} from './dev-workspace.shaka-player-fork.lib.util.uint8array_utils';
+import {asserts} from './../debug/asserts';
+import * as assertsExports from './../debug/asserts';
+import {NetworkingEngine} from './../net/networking_engine';
+import * as NetworkingEngineExports from './../net/networking_engine';
+import {BufferUtils} from './/buffer_utils';
+import {Error} from './/error';
+import * as ErrorExports from './/error';
+import {StringUtils} from './/string_utils';
+import * as StringUtilsExports from './/string_utils';
+import {Uint8ArrayUtils} from './/uint8array_utils';
 
 /**
  * @summary A set of FairPlay utility functions.

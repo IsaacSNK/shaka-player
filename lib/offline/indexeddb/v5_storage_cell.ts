@@ -3,7 +3,7 @@
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-import {BaseStorageCell} from './dev-workspace.shaka-player-fork.lib.offline.indexeddb.base_storage_cell';
+import {BaseStorageCell} from './/base_storage_cell';
 
 /**
  * The V5StorageCell is for all stores that follow the shaka.externs V5 offline

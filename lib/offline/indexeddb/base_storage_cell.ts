@@ -3,10 +3,10 @@
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-import {DBConnection} from './dev-workspace.shaka-player-fork.lib.offline.indexeddb.db_connection';
-import {DBOperation} from './dev-workspace.shaka-player-fork.lib.offline.indexeddb.db_operation';
-import * as ErrorExports from './dev-workspace.shaka-player-fork.lib.util.error';
-import {Error} from './dev-workspace.shaka-player-fork.lib.util.error';
+import {DBConnection} from './/db_connection';
+import {DBOperation} from './/db_operation';
+import * as ErrorExports from './../util/error/error';
+import {Error} from './../util/error/error';
 
 /**
  * indexeddb.StorageCellBase is a base class for all stores that use IndexedDB.

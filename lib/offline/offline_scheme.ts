@@ -3,16 +3,16 @@
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-import * as assertsExports from './dev-workspace.shaka-player-fork.lib.debug.asserts';
-import {asserts} from './dev-workspace.shaka-player-fork.lib.debug.asserts';
-import * as NetworkingEngineExports from './dev-workspace.shaka-player-fork.lib.net.networking_engine';
-import {NetworkingEngine} from './dev-workspace.shaka-player-fork.lib.net.networking_engine';
-import {OfflineUri} from './dev-workspace.shaka-player-fork.lib.offline.offline_uri';
-import * as StorageMuxerExports from './dev-workspace.shaka-player-fork.lib.offline.storage_muxer';
-import {StorageMuxer} from './dev-workspace.shaka-player-fork.lib.offline.storage_muxer';
-import {AbortableOperation} from './dev-workspace.shaka-player-fork.lib.util.abortable_operation';
-import * as ErrorExports from './dev-workspace.shaka-player-fork.lib.util.error';
-import {Error} from './dev-workspace.shaka-player-fork.lib.util.error';
+import * as assertsExports from './../debug/asserts';
+import {asserts} from './../debug/asserts';
+import * as NetworkingEngineExports from './../net/networking_engine';
+import {NetworkingEngine} from './../net/networking_engine';
+import {OfflineUri} from './/offline_uri';
+import * as StorageMuxerExports from './/storage_muxer';
+import {StorageMuxer} from './/storage_muxer';
+import {AbortableOperation} from './../util/abortable_operation';
+import * as ErrorExports from './../util/error';
+import {Error} from './../util/error';
 
 /**
  * @summary A plugin that handles requests for offline content.

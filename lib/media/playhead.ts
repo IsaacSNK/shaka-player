@@ -3,24 +3,24 @@
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-import * as assertsExports from './dev-workspace.shaka-player-fork.lib.debug.asserts';
-import {asserts} from './dev-workspace.shaka-player-fork.lib.debug.asserts';
-import * as logExports from './dev-workspace.shaka-player-fork.lib.debug.log';
-import {log} from './dev-workspace.shaka-player-fork.lib.debug.log';
-import * as GapJumpingControllerExports from './dev-workspace.shaka-player-fork.lib.media.gap_jumping_controller';
-import {GapJumpingController} from './dev-workspace.shaka-player-fork.lib.media.gap_jumping_controller';
-import {PresentationTimeline} from './dev-workspace.shaka-player-fork.lib.media.presentation_timeline';
-import * as StallDetectorExports from './dev-workspace.shaka-player-fork.lib.media.stall_detector';
-import {MediaElementImplementation, StallDetector} from './dev-workspace.shaka-player-fork.lib.media.stall_detector';
-import {TimeRangesUtils} from './dev-workspace.shaka-player-fork.lib.media.time_ranges_utils';
-import * as VideoWrapperExports from './dev-workspace.shaka-player-fork.lib.media.video_wrapper';
-import {VideoWrapper} from './dev-workspace.shaka-player-fork.lib.media.video_wrapper';
-import * as EventManagerExports from './dev-workspace.shaka-player-fork.lib.util.event_manager';
-import {EventManager} from './dev-workspace.shaka-player-fork.lib.util.event_manager';
-import {IReleasable} from './dev-workspace.shaka-player-fork.lib.util.i_releasable';
-import * as MediaReadyStateExports from './dev-workspace.shaka-player-fork.lib.util.media_ready_state_utils';
-import {MediaReadyState} from './dev-workspace.shaka-player-fork.lib.util.media_ready_state_utils';
-import {Timer} from './dev-workspace.shaka-player-fork.lib.util.timer';
+import * as assertsExports from './../debug/asserts';
+import {asserts} from './../debug/asserts';
+import * as logExports from './../debug/log';
+import {log} from './../debug/log';
+import * as GapJumpingControllerExports from './/gap_jumping_controller';
+import {GapJumpingController} from './/gap_jumping_controller';
+import {PresentationTimeline} from './/presentation_timeline';
+import * as StallDetectorExports from './/stall_detector';
+import {MediaElementImplementation, StallDetector} from './/stall_detector';
+import {TimeRangesUtils} from './/time_ranges_utils';
+import * as VideoWrapperExports from './/video_wrapper';
+import {VideoWrapper} from './/video_wrapper';
+import * as EventManagerExports from './../util/event_manager';
+import {EventManager} from './../util/event_manager';
+import {IReleasable} from './../util/i_releasable';
+import * as MediaReadyStateExports from './../util/media_ready_state_utils';
+import {MediaReadyState} from './../util/media_ready_state_utils';
+import {Timer} from './../util/timer';
 
 /**
  * Creates a Playhead, which manages the video's current time.

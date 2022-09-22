@@ -8,33 +8,33 @@
  * @fileoverview
  * @suppress {missingRequire} TODO(b/152540451): this shouldn't be needed
  */
-import * as assertsExports from './dev-workspace.shaka-player-fork.lib.debug.asserts';
-import {asserts} from './dev-workspace.shaka-player-fork.lib.debug.asserts';
-import * as logExports from './dev-workspace.shaka-player-fork.lib.debug.log';
-import {log} from './dev-workspace.shaka-player-fork.lib.debug.log';
-import * as MediaSourceEngineExports from './dev-workspace.shaka-player-fork.lib.media.media_source_engine';
-import {MediaSourceEngine} from './dev-workspace.shaka-player-fork.lib.media.media_source_engine';
-import {SegmentIterator} from './dev-workspace.shaka-player-fork.lib.media.segment_index';
-import * as SegmentReferenceExports from './dev-workspace.shaka-player-fork.lib.media.segment_reference';
-import {InitSegmentReference, SegmentReference} from './dev-workspace.shaka-player-fork.lib.media.segment_reference';
-import {Backoff} from './dev-workspace.shaka-player-fork.lib.net.backoff';
-import * as NetworkingEngineExports from './dev-workspace.shaka-player-fork.lib.net.networking_engine';
-import {NetworkingEngine} from './dev-workspace.shaka-player-fork.lib.net.networking_engine';
-import {SegmentInfo} from './dev-workspace.shaka-player-fork.lib.util.cmcd_manager';
-import {DelayedTick} from './dev-workspace.shaka-player-fork.lib.util.delayed_tick';
-import {Destroyer} from './dev-workspace.shaka-player-fork.lib.util.destroyer';
-import * as ErrorExports from './dev-workspace.shaka-player-fork.lib.util.error';
-import {Error} from './dev-workspace.shaka-player-fork.lib.util.error';
-import * as FakeEventExports from './dev-workspace.shaka-player-fork.lib.util.fake_event';
-import {FakeEvent} from './dev-workspace.shaka-player-fork.lib.util.fake_event';
-import {IDestroyable} from './dev-workspace.shaka-player-fork.lib.util.i_destroyable';
-import * as ManifestParserUtilsExports from './dev-workspace.shaka-player-fork.lib.util.manifest_parser_utils';
-import {ManifestParserUtils} from './dev-workspace.shaka-player-fork.lib.util.manifest_parser_utils';
-import * as MimeUtilsExports from './dev-workspace.shaka-player-fork.lib.util.mime_utils';
-import {MimeUtils} from './dev-workspace.shaka-player-fork.lib.util.mime_utils';
-import * as Mp4ParserExports from './dev-workspace.shaka-player-fork.lib.util.mp4_parser';
-import {Mp4Parser} from './dev-workspace.shaka-player-fork.lib.util.mp4_parser';
-import {Networking} from './dev-workspace.shaka-player-fork.lib.util.networking';
+import * as assertsExports from './../debug/asserts';
+import {asserts} from './../debug/asserts';
+import * as logExports from './../debug/log';
+import {log} from './../debug/log';
+import * as MediaSourceEngineExports from './/media_source_engine';
+import {MediaSourceEngine} from './/media_source_engine';
+import {SegmentIterator} from './/segment_index';
+import * as SegmentReferenceExports from './/segment_reference';
+import {InitSegmentReference, SegmentReference} from './/segment_reference';
+import {Backoff} from './../net/backoff';
+import * as NetworkingEngineExports from './../net/networking_engine';
+import {NetworkingEngine} from './../net/networking_engine';
+import {SegmentInfo} from './../util/cmcd_manager';
+import {DelayedTick} from './../util/delayed_tick';
+import {Destroyer} from './../util/destroyer';
+import * as ErrorExports from './../util/error';
+import {Error} from './../util/error';
+import * as FakeEventExports from './../util/fake_event';
+import {FakeEvent} from './../util/fake_event';
+import {IDestroyable} from './../util/i_destroyable';
+import * as ManifestParserUtilsExports from './../util/manifest_parser_utils';
+import {ManifestParserUtils} from './../util/manifest_parser_utils';
+import * as MimeUtilsExports from './../util/mime_utils';
+import {MimeUtils} from './../util/mime_utils';
+import * as Mp4ParserExports from './../util/mp4_parser';
+import {Mp4Parser} from './../util/mp4_parser';
+import {Networking} from './../util/networking';
 
 /**
  * @summary Creates a Streaming Engine.

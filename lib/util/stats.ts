@@ -3,8 +3,8 @@
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-import {StateHistory} from './dev-workspace.shaka-player-fork.lib.util.state_history';
-import {SwitchHistory} from './dev-workspace.shaka-player-fork.lib.util.switch_history';
+import {StateHistory} from './/state_history';
+import {SwitchHistory} from './/switch_history';
 
 /**
  * This class tracks all the various components (some optional) that are used to

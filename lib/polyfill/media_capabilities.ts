@@ -3,12 +3,12 @@
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-import * as logExports from './dev-workspace.shaka-player-fork.lib.debug.log';
-import {log} from './dev-workspace.shaka-player-fork.lib.debug.log';
-import * as polyfillExports from './dev-workspace.shaka-player-fork.lib.polyfill.all';
-import {polyfill} from './dev-workspace.shaka-player-fork.lib.polyfill.all';
-import * as PlatformExports from './dev-workspace.shaka-player-fork.lib.util.platform';
-import {Platform} from './dev-workspace.shaka-player-fork.lib.util.platform';
+import * as logExports from './../debug/log';
+import {log} from './../debug/log';
+import * as polyfillExports from './/all';
+import {polyfill} from './/all';
+import * as PlatformExports from './../util/platform';
+import {Platform} from './../util/platform';
 
 /**
  * @summary A polyfill to provide navigator.mediaCapabilities on all browsers.

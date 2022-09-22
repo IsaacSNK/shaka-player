@@ -3,12 +3,12 @@
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-import * as assertsExports from './dev-workspace.shaka-player-fork.lib.debug.asserts';
-import {asserts} from './dev-workspace.shaka-player-fork.lib.debug.asserts';
-import * as logExports from './dev-workspace.shaka-player-fork.lib.debug.log';
-import {log} from './dev-workspace.shaka-player-fork.lib.debug.log';
-import * as MimeUtilsExports from './dev-workspace.shaka-player-fork.lib.util.mime_utils';
-import {MimeUtils} from './dev-workspace.shaka-player-fork.lib.util.mime_utils';
+import * as assertsExports from './../debug/asserts';
+import {asserts} from './../debug/asserts';
+import * as logExports from './../debug/log';
+import {log} from './../debug/log';
+import * as MimeUtilsExports from './../util/mime_utils';
+import {MimeUtils} from './../util/mime_utils';
 
 /**
  * A set of variants that we want to adapt between.

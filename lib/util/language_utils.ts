@@ -3,10 +3,10 @@
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-import * as assertsExports from './dev-workspace.shaka-player-fork.lib.debug.asserts';
-import {asserts} from './dev-workspace.shaka-player-fork.lib.debug.asserts';
-import * as ManifestParserUtilsExports from './dev-workspace.shaka-player-fork.lib.util.manifest_parser_utils';
-import {ManifestParserUtils} from './dev-workspace.shaka-player-fork.lib.util.manifest_parser_utils';
+import * as assertsExports from './../debug/asserts';
+import {asserts} from './../debug/asserts';
+import * as ManifestParserUtilsExports from './/manifest_parser_utils';
+import {ManifestParserUtils} from './/manifest_parser_utils';
 
 /**
  * @summary A set of language utility functions.

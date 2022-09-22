@@ -3,24 +3,24 @@
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-import * as assertsExports from './dev-workspace.shaka-player-fork.lib.debug.asserts';
-import {asserts} from './dev-workspace.shaka-player-fork.lib.debug.asserts';
-import * as logExports from './dev-workspace.shaka-player-fork.lib.debug.log';
-import {log} from './dev-workspace.shaka-player-fork.lib.debug.log';
-import * as DrmEngineExports from './dev-workspace.shaka-player-fork.lib.media.drm_engine';
-import {DrmEngine} from './dev-workspace.shaka-player-fork.lib.media.drm_engine';
-import {MetaSegmentIndex, SegmentIndex} from './dev-workspace.shaka-player-fork.lib.media.segment_index';
-import {ArrayUtils} from './dev-workspace.shaka-player-fork.lib.util.array_utils';
-import * as ErrorExports from './dev-workspace.shaka-player-fork.lib.util.error';
-import {Error} from './dev-workspace.shaka-player-fork.lib.util.error';
-import {IReleasable} from './dev-workspace.shaka-player-fork.lib.util.i_releasable';
-import * as LanguageUtilsExports from './dev-workspace.shaka-player-fork.lib.util.language_utils';
-import {LanguageUtils} from './dev-workspace.shaka-player-fork.lib.util.language_utils';
-import * as ManifestParserUtilsExports from './dev-workspace.shaka-player-fork.lib.util.manifest_parser_utils';
-import {ManifestParserUtils} from './dev-workspace.shaka-player-fork.lib.util.manifest_parser_utils';
-import {MapUtils} from './dev-workspace.shaka-player-fork.lib.util.map_utils';
-import * as MimeUtilsExports from './dev-workspace.shaka-player-fork.lib.util.mime_utils';
-import {MimeUtils} from './dev-workspace.shaka-player-fork.lib.util.mime_utils';
+import * as assertsExports from './../debug/asserts';
+import {asserts} from './../debug/asserts';
+import * as logExports from './../debug/log';
+import {log} from './../debug/log';
+import * as DrmEngineExports from './../media/drm_engine';
+import {DrmEngine} from './../media/drm_engine';
+import {MetaSegmentIndex, SegmentIndex} from './../media/segment_index';
+import {ArrayUtils} from './/array_utils';
+import * as ErrorExports from './/error';
+import {Error} from './/error';
+import {IReleasable} from './/i_releasable';
+import * as LanguageUtilsExports from './/language_utils';
+import {LanguageUtils} from './/language_utils';
+import * as ManifestParserUtilsExports from './/manifest_parser_utils';
+import {ManifestParserUtils} from './/manifest_parser_utils';
+import {MapUtils} from './/map_utils';
+import * as MimeUtilsExports from './/mime_utils';
+import {MimeUtils} from './/mime_utils';
 
 /**
  * A utility to combine streams across periods.

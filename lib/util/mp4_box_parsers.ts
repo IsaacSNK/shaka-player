@@ -3,8 +3,8 @@
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-import * as DataViewReaderExports from './dev-workspace.shaka-player-fork.lib.util.data_view_reader';
-import {DataViewReader} from './dev-workspace.shaka-player-fork.lib.util.data_view_reader';
+import * as DataViewReaderExports from './/data_view_reader';
+import {DataViewReader} from './/data_view_reader';
 
 export class Mp4BoxParsers {
   /**

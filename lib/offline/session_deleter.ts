@@ -3,13 +3,13 @@
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-import * as logExports from './dev-workspace.shaka-player-fork.lib.debug.log';
-import {log} from './dev-workspace.shaka-player-fork.lib.debug.log';
-import * as DrmEngineExports from './dev-workspace.shaka-player-fork.lib.media.drm_engine';
-import {DrmEngine} from './dev-workspace.shaka-player-fork.lib.media.drm_engine';
-import * as NetworkingEngineExports from './dev-workspace.shaka-player-fork.lib.net.networking_engine';
-import {NetworkingEngine} from './dev-workspace.shaka-player-fork.lib.net.networking_engine';
-import {ArrayUtils} from './dev-workspace.shaka-player-fork.lib.util.array_utils';
+import * as logExports from './../debug/log';
+import {log} from './../debug/log';
+import * as DrmEngineExports from './../media/drm_engine';
+import {DrmEngine} from './../media/drm_engine';
+import * as NetworkingEngineExports from './../net/networking_engine';
+import {NetworkingEngine} from './../net/networking_engine';
+import {ArrayUtils} from './../util/array_utils';
 
 /**
  * Contains a utility method to delete persistent EME sessions.

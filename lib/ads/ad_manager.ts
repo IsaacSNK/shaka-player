@@ -3,20 +3,20 @@
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-import {AdsStats} from './dev-workspace.shaka-player-fork.lib.ads.ads_stats';
-import {ClientSideAdManager} from './dev-workspace.shaka-player-fork.lib.ads.client_side_ad_manager';
-import {ServerSideAdManager} from './dev-workspace.shaka-player-fork.lib.ads.server_side_ad_manager';
-import * as logExports from './dev-workspace.shaka-player-fork.lib.debug.log';
-import {log} from './dev-workspace.shaka-player-fork.lib.debug.log';
-import * as PlayerExports from './dev-workspace.shaka-player-fork.lib.player';
-import {Player} from './dev-workspace.shaka-player-fork.lib.player';
-import * as ErrorExports from './dev-workspace.shaka-player-fork.lib.util.error';
-import {Error} from './dev-workspace.shaka-player-fork.lib.util.error';
-import * as FakeEventExports from './dev-workspace.shaka-player-fork.lib.util.fake_event';
-import {FakeEvent} from './dev-workspace.shaka-player-fork.lib.util.fake_event';
-import * as FakeEventTargetExports from './dev-workspace.shaka-player-fork.lib.util.fake_event_target';
-import {FakeEventTarget} from './dev-workspace.shaka-player-fork.lib.util.fake_event_target';
-import {IReleasable} from './dev-workspace.shaka-player-fork.lib.util.i_releasable';
+import {AdsStats} from './/ads_stats';
+import {ClientSideAdManager} from './/client_side_ad_manager';
+import {ServerSideAdManager} from './/server_side_ad_manager';
+import * as logExports from './../debug/log';
+import {log} from './../debug/log';
+import * as PlayerExports from './../player/player';
+import {Player} from './../player/player';
+import * as ErrorExports from './../util/error';
+import {Error} from './../util/error';
+import * as FakeEventExports from './../util/fake_event';
+import {FakeEvent} from './../util/fake_event';
+import * as FakeEventTargetExports from './../util/fake_event_target';
+import {FakeEventTarget} from './../util/fake_event_target';
+import {IReleasable} from './../util/i_releasable';
 
 /**
  * @event shaka.ads.AdManager.ADS_LOADED

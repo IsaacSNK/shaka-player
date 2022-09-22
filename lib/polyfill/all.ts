@@ -3,8 +3,8 @@
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-import * as logExports from './dev-workspace.shaka-player-fork.lib.debug.log';
-import {log} from './dev-workspace.shaka-player-fork.lib.debug.log';
+import * as logExports from './../debug/log';
+import {log} from './../debug/log';
 
 /**
  * @summary A one-stop installer for all polyfills.

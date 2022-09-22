@@ -3,24 +3,24 @@
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-import * as DashParserExports from './dev-workspace.shaka-player-fork.lib.dash.dash_parser';
-import {DashParser} from './dev-workspace.shaka-player-fork.lib.dash.dash_parser';
-import * as MpdUtilsExports from './dev-workspace.shaka-player-fork.lib.dash.mpd_utils';
-import {MpdUtils} from './dev-workspace.shaka-player-fork.lib.dash.mpd_utils';
-import {SegmentBase} from './dev-workspace.shaka-player-fork.lib.dash.segment_base';
-import * as assertsExports from './dev-workspace.shaka-player-fork.lib.debug.asserts';
-import {asserts} from './dev-workspace.shaka-player-fork.lib.debug.asserts';
-import * as logExports from './dev-workspace.shaka-player-fork.lib.debug.log';
-import {log} from './dev-workspace.shaka-player-fork.lib.debug.log';
-import {SegmentIndex} from './dev-workspace.shaka-player-fork.lib.media.segment_index';
-import * as SegmentReferenceExports from './dev-workspace.shaka-player-fork.lib.media.segment_reference';
-import {InitSegmentReference, SegmentReference} from './dev-workspace.shaka-player-fork.lib.media.segment_reference';
-import * as ErrorExports from './dev-workspace.shaka-player-fork.lib.util.error';
-import {Error} from './dev-workspace.shaka-player-fork.lib.util.error';
-import {Functional} from './dev-workspace.shaka-player-fork.lib.util.functional';
-import * as ManifestParserUtilsExports from './dev-workspace.shaka-player-fork.lib.util.manifest_parser_utils';
-import {ManifestParserUtils} from './dev-workspace.shaka-player-fork.lib.util.manifest_parser_utils';
-import {XmlUtils} from './dev-workspace.shaka-player-fork.lib.util.xml_utils';
+import * as DashParserExports from './/dash_parser';
+import {DashParser} from './/dash_parser';
+import * as MpdUtilsExports from './/mpd_utils';
+import {MpdUtils} from './/mpd_utils';
+import {SegmentBase} from './/segment_base';
+import * as assertsExports from './../debug/asserts';
+import {asserts} from './../debug/asserts';
+import * as logExports from './../debug/log';
+import {log} from './../debug/log';
+import {SegmentIndex} from './../media/segment_index';
+import * as SegmentReferenceExports from './../media/segment_reference';
+import {InitSegmentReference, SegmentReference} from './../media/segment_reference';
+import * as ErrorExports from './../util/error';
+import {Error} from './../util/error';
+import {Functional} from './../util/functional';
+import * as ManifestParserUtilsExports from './../util/manifest_parser_utils';
+import {ManifestParserUtils} from './../util/manifest_parser_utils';
+import {XmlUtils} from './../util/xml_utils';
 
 /**
  * @summary A set of functions for parsing SegmentList elements.

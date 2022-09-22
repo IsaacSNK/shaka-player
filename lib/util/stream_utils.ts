@@ -3,24 +3,24 @@
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-import * as assertsExports from './dev-workspace.shaka-player-fork.lib.debug.asserts';
-import {asserts} from './dev-workspace.shaka-player-fork.lib.debug.asserts';
-import * as logExports from './dev-workspace.shaka-player-fork.lib.debug.log';
-import {log} from './dev-workspace.shaka-player-fork.lib.debug.log';
-import * as DrmEngineExports from './dev-workspace.shaka-player-fork.lib.media.drm_engine';
-import {DrmEngine} from './dev-workspace.shaka-player-fork.lib.media.drm_engine';
-import * as TextEngineExports from './dev-workspace.shaka-player-fork.lib.text.text_engine';
-import {TextEngine} from './dev-workspace.shaka-player-fork.lib.text.text_engine';
-import {Functional} from './dev-workspace.shaka-player-fork.lib.util.functional';
-import * as LanguageUtilsExports from './dev-workspace.shaka-player-fork.lib.util.language_utils';
-import {LanguageUtils} from './dev-workspace.shaka-player-fork.lib.util.language_utils';
-import * as ManifestParserUtilsExports from './dev-workspace.shaka-player-fork.lib.util.manifest_parser_utils';
-import {ManifestParserUtils} from './dev-workspace.shaka-player-fork.lib.util.manifest_parser_utils';
-import * as MimeUtilsExports from './dev-workspace.shaka-player-fork.lib.util.mime_utils';
-import {MimeUtils} from './dev-workspace.shaka-player-fork.lib.util.mime_utils';
-import {MultiMap} from './dev-workspace.shaka-player-fork.lib.util.multi_map';
-import * as PlatformExports from './dev-workspace.shaka-player-fork.lib.util.platform';
-import {Platform} from './dev-workspace.shaka-player-fork.lib.util.platform';
+import * as assertsExports from './../debug/asserts';
+import {asserts} from './../debug/asserts';
+import * as logExports from './../debug/log';
+import {log} from './../debug/log';
+import * as DrmEngineExports from './../media/drm_engine';
+import {DrmEngine} from './../media/drm_engine';
+import * as TextEngineExports from './../text/text_engine';
+import {TextEngine} from './../text/text_engine';
+import {Functional} from './/functional';
+import * as LanguageUtilsExports from './/language_utils';
+import {LanguageUtils} from './/language_utils';
+import * as ManifestParserUtilsExports from './/manifest_parser_utils';
+import {ManifestParserUtils} from './/manifest_parser_utils';
+import * as MimeUtilsExports from './/mime_utils';
+import {MimeUtils} from './/mime_utils';
+import {MultiMap} from './/multi_map';
+import * as PlatformExports from './/platform';
+import {Platform} from './/platform';
 
 /**
  * @summary A set of utility functions for dealing with Streams and Manifests.

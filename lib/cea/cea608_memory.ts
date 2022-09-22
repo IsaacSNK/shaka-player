@@ -3,12 +3,12 @@
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-import * as CeaUtilsExports from './dev-workspace.shaka-player-fork.lib.cea.cea_utils';
-import {CeaUtils} from './dev-workspace.shaka-player-fork.lib.cea.cea_utils';
-import * as ICaptionDecoderExports from './dev-workspace.shaka-player-fork.lib.cea.i_caption_decoder';
-import {ICaptionDecoder} from './dev-workspace.shaka-player-fork.lib.cea.i_caption_decoder';
-import * as CueExports from './dev-workspace.shaka-player-fork.lib.text.cue';
-import {Cue} from './dev-workspace.shaka-player-fork.lib.text.cue';
+import * as CeaUtilsExports from './/cea_utils';
+import {CeaUtils} from './/cea_utils';
+import * as ICaptionDecoderExports from './/i_caption_decoder';
+import {ICaptionDecoder} from './/i_caption_decoder';
+import * as CueExports from './../text/cue';
+import {Cue} from './../text/cue';
 
 /**
  * CEA-608 captions memory/buffer.

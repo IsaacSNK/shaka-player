@@ -3,16 +3,16 @@
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-import * as assertsExports from './dev-workspace.shaka-player-fork.lib.debug.asserts';
-import {asserts} from './dev-workspace.shaka-player-fork.lib.debug.asserts';
-import {Node} from './dev-workspace.shaka-player-fork.lib.routing.node';
-import {Payload} from './dev-workspace.shaka-player-fork.lib.routing.payload';
-import {AbortableOperation} from './dev-workspace.shaka-player-fork.lib.util.abortable_operation';
-import {Destroyer} from './dev-workspace.shaka-player-fork.lib.util.destroyer';
-import * as ErrorExports from './dev-workspace.shaka-player-fork.lib.util.error';
-import {Error} from './dev-workspace.shaka-player-fork.lib.util.error';
-import {IDestroyable} from './dev-workspace.shaka-player-fork.lib.util.i_destroyable';
-import {PublicPromise} from './dev-workspace.shaka-player-fork.lib.util.public_promise';
+import * as assertsExports from './../debug/asserts';
+import {asserts} from './../debug/asserts';
+import {Node} from './/node';
+import {Payload} from './/payload';
+import {AbortableOperation} from './../util/abortable_operation';
+import {Destroyer} from './../util/destroyer';
+import * as ErrorExports from './../util/error';
+import {Error} from './../util/error';
+import {IDestroyable} from './../util/i_destroyable';
+import {PublicPromise} from './../util/public_promise';
 
 /**
  * The walker moves through a graph node-by-node executing asynchronous work

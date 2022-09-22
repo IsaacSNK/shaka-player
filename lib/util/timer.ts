@@ -3,7 +3,7 @@
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-import {DelayedTick} from './dev-workspace.shaka-player-fork.lib.util.delayed_tick';
+import {DelayedTick} from './/delayed_tick';
 
 /**
  * A timer allows a single function to be executed at a later time or at

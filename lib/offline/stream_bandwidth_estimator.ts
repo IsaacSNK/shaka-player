@@ -3,10 +3,10 @@
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-import * as logExports from './dev-workspace.shaka-player-fork.lib.debug.log';
-import {log} from './dev-workspace.shaka-player-fork.lib.debug.log';
-import * as SegmentReferenceExports from './dev-workspace.shaka-player-fork.lib.media.segment_reference';
-import {SegmentReference} from './dev-workspace.shaka-player-fork.lib.media.segment_reference';
+import * as logExports from './../debug/log';
+import {log} from './../debug/log';
+import * as SegmentReferenceExports from './../media/segment_reference';
+import {SegmentReference} from './../media/segment_reference';
 
 /**
  * A utility class to help estimate the size of streams based on stream and

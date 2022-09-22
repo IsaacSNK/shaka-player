@@ -3,17 +3,17 @@
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-import * as assertsExports from './dev-workspace.shaka-player-fork.lib.debug.asserts';
-import {asserts} from './dev-workspace.shaka-player-fork.lib.debug.asserts';
-import * as CueExports from './dev-workspace.shaka-player-fork.lib.text.cue';
-import {Cue} from './dev-workspace.shaka-player-fork.lib.text.cue';
-import * as TextEngineExports from './dev-workspace.shaka-player-fork.lib.text.text_engine';
-import {TextEngine} from './dev-workspace.shaka-player-fork.lib.text.text_engine';
-import * as ErrorExports from './dev-workspace.shaka-player-fork.lib.util.error';
-import {Error} from './dev-workspace.shaka-player-fork.lib.util.error';
-import * as StringUtilsExports from './dev-workspace.shaka-player-fork.lib.util.string_utils';
-import {StringUtils} from './dev-workspace.shaka-player-fork.lib.util.string_utils';
-import {TextParser} from './dev-workspace.shaka-player-fork.lib.util.text_parser';
+import * as assertsExports from './../debug/asserts';
+import {asserts} from './../debug/asserts';
+import * as CueExports from './/cue';
+import {Cue} from './/cue';
+import * as TextEngineExports from './/text_engine';
+import {TextEngine} from './/text_engine';
+import * as ErrorExports from './../util/error';
+import {Error} from './../util/error';
+import * as StringUtilsExports from './../util/string_utils';
+import {StringUtils} from './../util/string_utils';
+import {TextParser} from './../util/text_parser';
 
 /**
  * @export

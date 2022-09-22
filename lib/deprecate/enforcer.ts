@@ -3,7 +3,7 @@
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-import {Version} from './dev-workspace.shaka-player-fork.lib.deprecate.version';
+import {Version} from './/version';
 
 /**
  * The enforcer's job is to call the correct callback when a feature will need

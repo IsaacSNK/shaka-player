@@ -3,36 +3,36 @@
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-import * as assertsExports from './dev-workspace.shaka-player-fork.lib.debug.asserts';
-import {asserts} from './dev-workspace.shaka-player-fork.lib.debug.asserts';
-import * as logExports from './dev-workspace.shaka-player-fork.lib.debug.log';
-import {log} from './dev-workspace.shaka-player-fork.lib.debug.log';
-import {Transmuxer} from './dev-workspace.shaka-player-fork.lib.media.transmuxer';
-import * as NetworkingEngineExports from './dev-workspace.shaka-player-fork.lib.net.networking_engine';
-import {NetworkingEngine} from './dev-workspace.shaka-player-fork.lib.net.networking_engine';
-import {BufferUtils} from './dev-workspace.shaka-player-fork.lib.util.buffer_utils';
-import {Destroyer} from './dev-workspace.shaka-player-fork.lib.util.destroyer';
-import * as ErrorExports from './dev-workspace.shaka-player-fork.lib.util.error';
-import {Error} from './dev-workspace.shaka-player-fork.lib.util.error';
-import * as EventManagerExports from './dev-workspace.shaka-player-fork.lib.util.event_manager';
-import {EventManager} from './dev-workspace.shaka-player-fork.lib.util.event_manager';
-import * as FakeEventExports from './dev-workspace.shaka-player-fork.lib.util.fake_event';
-import {FakeEvent} from './dev-workspace.shaka-player-fork.lib.util.fake_event';
-import {IDestroyable} from './dev-workspace.shaka-player-fork.lib.util.i_destroyable';
-import {Iterables} from './dev-workspace.shaka-player-fork.lib.util.iterables';
-import {Lazy} from './dev-workspace.shaka-player-fork.lib.util.lazy';
-import {MapUtils} from './dev-workspace.shaka-player-fork.lib.util.map_utils';
-import * as MimeUtilsExports from './dev-workspace.shaka-player-fork.lib.util.mime_utils';
-import {MimeUtils} from './dev-workspace.shaka-player-fork.lib.util.mime_utils';
-import * as PlatformExports from './dev-workspace.shaka-player-fork.lib.util.platform';
-import {Platform} from './dev-workspace.shaka-player-fork.lib.util.platform';
-import {PublicPromise} from './dev-workspace.shaka-player-fork.lib.util.public_promise';
-import * as StreamUtilsExports from './dev-workspace.shaka-player-fork.lib.util.stream_utils';
-import {StreamUtils} from './dev-workspace.shaka-player-fork.lib.util.stream_utils';
-import * as StringUtilsExports from './dev-workspace.shaka-player-fork.lib.util.string_utils';
-import {StringUtils} from './dev-workspace.shaka-player-fork.lib.util.string_utils';
-import {Timer} from './dev-workspace.shaka-player-fork.lib.util.timer';
-import {Uint8ArrayUtils} from './dev-workspace.shaka-player-fork.lib.util.uint8array_utils';
+import * as assertsExports from './../debug/asserts';
+import {asserts} from './../debug/asserts';
+import * as logExports from './../debug/log';
+import {log} from './../debug/log';
+import {Transmuxer} from './/transmuxer';
+import * as NetworkingEngineExports from './../net/networking_engine';
+import {NetworkingEngine} from './../net/networking_engine';
+import {BufferUtils} from './../util/buffer_utils';
+import {Destroyer} from './../util/destroyer';
+import * as ErrorExports from './../util/error';
+import {Error} from './../util/error';
+import * as EventManagerExports from './../util/event_manager';
+import {EventManager} from './../util/event_manager';
+import * as FakeEventExports from './../util/fake_event';
+import {FakeEvent} from './../util/fake_event';
+import {IDestroyable} from './../util/i_destroyable';
+import {Iterables} from './../util/iterables';
+import {Lazy} from './../util/lazy';
+import {MapUtils} from './../util/map_utils';
+import * as MimeUtilsExports from './../util/mime_utils';
+import {MimeUtils} from './../util/mime_utils';
+import * as PlatformExports from './../util/platform';
+import {Platform} from './../util/platform';
+import {PublicPromise} from './../util/public_promise';
+import * as StreamUtilsExports from './../util/stream_utils';
+import {StreamUtils} from './../util/stream_utils';
+import * as StringUtilsExports from './../util/string_utils';
+import {StringUtils} from './../util/string_utils';
+import {Timer} from './../util/timer';
+import {Uint8ArrayUtils} from './../util/uint8array_utils';
 
 export class DrmEngine implements IDestroyable {
   private playerInterface_: PlayerInterface|null;

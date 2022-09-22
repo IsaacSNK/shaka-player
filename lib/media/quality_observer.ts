@@ -3,13 +3,13 @@
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-import * as logExports from './dev-workspace.shaka-player-fork.lib.debug.log';
-import {log} from './dev-workspace.shaka-player-fork.lib.debug.log';
-import {IPlayheadObserver} from './dev-workspace.shaka-player-fork.lib.media.playhead_observer';
-import * as FakeEventExports from './dev-workspace.shaka-player-fork.lib.util.fake_event';
-import {FakeEvent} from './dev-workspace.shaka-player-fork.lib.util.fake_event';
-import * as FakeEventTargetExports from './dev-workspace.shaka-player-fork.lib.util.fake_event_target';
-import {FakeEventTarget} from './dev-workspace.shaka-player-fork.lib.util.fake_event_target';
+import * as logExports from './../debug/log';
+import {log} from './../debug/log';
+import {IPlayheadObserver} from './/playhead_observer';
+import * as FakeEventExports from './../util/fake_event';
+import {FakeEvent} from './../util/fake_event';
+import * as FakeEventTargetExports from './../util/fake_event_target';
+import {FakeEventTarget} from './../util/fake_event_target';
 
 /**
  * Monitors the quality of content being appended to the source buffers and

@@ -3,14 +3,14 @@
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-import * as CeaDecoderExports from './dev-workspace.shaka-player-fork.lib.cea.cea_decoder';
-import {CeaDecoder} from './dev-workspace.shaka-player-fork.lib.cea.cea_decoder';
-import * as ICaptionDecoderExports from './dev-workspace.shaka-player-fork.lib.cea.i_caption_decoder';
-import {ICaptionDecoder} from './dev-workspace.shaka-player-fork.lib.cea.i_caption_decoder';
-import * as ICeaParserExports from './dev-workspace.shaka-player-fork.lib.cea.i_cea_parser';
-import {ICeaParser} from './dev-workspace.shaka-player-fork.lib.cea.i_cea_parser';
-import {Mp4CeaParser} from './dev-workspace.shaka-player-fork.lib.cea.mp4_cea_parser';
-import {BufferUtils} from './dev-workspace.shaka-player-fork.lib.util.buffer_utils';
+import * as CeaDecoderExports from './../cea/cea_decoder';
+import {CeaDecoder} from './../cea/cea_decoder';
+import * as ICaptionDecoderExports from './../cea/i_caption_decoder';
+import {ICaptionDecoder} from './../cea/i_caption_decoder';
+import * as ICeaParserExports from './../cea/i_cea_parser';
+import {ICeaParser} from './../cea/i_cea_parser';
+import {Mp4CeaParser} from './../cea/mp4_cea_parser';
+import {BufferUtils} from './../util/buffer_utils';
 
 /**
  * The IClosedCaptionParser defines the interface to provide all operations for

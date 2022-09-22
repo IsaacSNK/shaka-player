@@ -3,15 +3,15 @@
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-import * as assertsExports from './dev-workspace.shaka-player-fork.lib.debug.asserts';
-import {asserts} from './dev-workspace.shaka-player-fork.lib.debug.asserts';
-import * as CueRegionExports from './dev-workspace.shaka-player-fork.lib.text.cue';
-import * as CueExports from './dev-workspace.shaka-player-fork.lib.text.cue';
-import {Cue, CueRegion} from './dev-workspace.shaka-player-fork.lib.text.cue';
-import {Dom} from './dev-workspace.shaka-player-fork.lib.util.dom_utils';
-import * as EventManagerExports from './dev-workspace.shaka-player-fork.lib.util.event_manager';
-import {EventManager} from './dev-workspace.shaka-player-fork.lib.util.event_manager';
-import {Timer} from './dev-workspace.shaka-player-fork.lib.util.timer';
+import * as assertsExports from './../debug/asserts';
+import {asserts} from './../debug/asserts';
+import * as CueRegionExports from './/cue';
+import * as CueExports from './/cue';
+import {Cue, CueRegion} from './/cue';
+import {Dom} from './../util/dom_utils';
+import * as EventManagerExports from './../util/event_manager';
+import {EventManager} from './../util/event_manager';
+import {Timer} from './../util/timer';
 
 /**
  * The text displayer plugin for the Shaka Player UI.  Can also be used directly

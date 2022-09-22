@@ -4,8 +4,8 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 goog.require('goog.Uri');
-import {log} from './dev-workspace.shaka-player-fork.lib.debug.log';
-import * as logExports from './dev-workspace.shaka-player-fork.lib.debug.log';
+import {log} from './../debug/log';
+import * as logExports from './../debug/log';
 
 /**
  * @summary

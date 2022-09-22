@@ -3,25 +3,25 @@
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-import * as CastSenderExports from './dev-workspace.shaka-player-fork.lib.cast.cast_sender';
-import {CastSender} from './dev-workspace.shaka-player-fork.lib.cast.cast_sender';
-import * as CastUtilsExports from './dev-workspace.shaka-player-fork.lib.cast.cast_utils';
-import {CastUtils} from './dev-workspace.shaka-player-fork.lib.cast.cast_utils';
-import * as assertsExports from './dev-workspace.shaka-player-fork.lib.debug.asserts';
-import {asserts} from './dev-workspace.shaka-player-fork.lib.debug.asserts';
-import * as logExports from './dev-workspace.shaka-player-fork.lib.debug.log';
-import {log} from './dev-workspace.shaka-player-fork.lib.debug.log';
-import * as PlayerExports from './dev-workspace.shaka-player-fork.lib.player';
-import {Player} from './dev-workspace.shaka-player-fork.lib.player';
-import * as ErrorExports from './dev-workspace.shaka-player-fork.lib.util.error';
-import {Error} from './dev-workspace.shaka-player-fork.lib.util.error';
-import * as EventManagerExports from './dev-workspace.shaka-player-fork.lib.util.event_manager';
-import {EventManager} from './dev-workspace.shaka-player-fork.lib.util.event_manager';
-import * as FakeEventExports from './dev-workspace.shaka-player-fork.lib.util.fake_event';
-import {FakeEvent} from './dev-workspace.shaka-player-fork.lib.util.fake_event';
-import * as FakeEventTargetExports from './dev-workspace.shaka-player-fork.lib.util.fake_event_target';
-import {FakeEventTarget} from './dev-workspace.shaka-player-fork.lib.util.fake_event_target';
-import {IDestroyable} from './dev-workspace.shaka-player-fork.lib.util.i_destroyable';
+import * as CastSenderExports from './/cast_sender';
+import {CastSender} from './/cast_sender';
+import * as CastUtilsExports from './/cast_utils';
+import {CastUtils} from './/cast_utils';
+import * as assertsExports from './../debug/asserts';
+import {asserts} from './../debug/asserts';
+import * as logExports from './../debug/log';
+import {log} from './../debug/log';
+import * as PlayerExports from './../player/player';
+import {Player} from './../player/player';
+import * as ErrorExports from './../util/error';
+import {Error} from './../util/error';
+import * as EventManagerExports from './../util/event_manager';
+import {EventManager} from './../util/event_manager';
+import * as FakeEventExports from './../util/fake_event';
+import {FakeEvent} from './../util/fake_event';
+import * as FakeEventTargetExports from './../util/fake_event_target';
+import {FakeEventTarget} from './../util/fake_event_target';
+import {IDestroyable} from './../util/i_destroyable';
 
 /**
  * @event shaka.cast.CastProxy.CastStatusChangedEvent
