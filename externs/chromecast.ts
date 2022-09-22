@@ -17,7 +17,7 @@ cast.receiver.system.SystemVolumeData = class {
   level: number;
   muted: boolean;
 };
-cast.receiver.CastMessageBus = class {
+export class CastMessageBus{
   onMessage: Function;
 
   broadcast(message: any) {}
@@ -32,10 +32,10 @@ cast.receiver.CastMessageBus.Event = class {
   data: any;
   senderId: string;
 };
-cast.receiver.CastChannel = class {
+export  class CastChannel{
   send(message: any) {}
 };
-cast.receiver.CastReceiverManager = class {
+export class CastReceiverManager{
   onSenderConnected: Function;
   onSenderDisconnected: Function;
   onSystemVolumeChanged: Function;
@@ -67,7 +67,7 @@ cast.receiver.media.MetadataType = {
   'MUSIC_TRACK': 3,
   'PHOTO': 4
 };
-cast.__platform__ = class {
+export class __platform__{
   static canDisplayType(type: string): boolean {}
 };
 const chrome = {};
@@ -100,7 +100,7 @@ chrome.cast.Error = class {
 chrome.cast.Receiver = class {
   friendlyName: string;
 };
-chrome.cast.Session = class {
+export class  Session{
   sessionId: string;
   status: string;
   receiver: chrome.cast.Receiver;
@@ -121,7 +121,7 @@ chrome.cast.Session = class {
 
   stop(successCallback: Function, errorCallback: Function) {}
 };
-chrome.cast.SessionRequest = class {
+export class SessionRequest {
   constructor(
       appId: string, capabilities: Object[], timeout: number|null,
       androidReceiverCompatible: boolean, credentialsData: Object) {}

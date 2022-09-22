@@ -12,7 +12,7 @@
  * @template T
  * @exportDoc
  */
-shaka.extern.IAbortableOperation = interface {
+export  interface IAbortableOperation<T> {
   /**
    * A Promise which represents the underlying operation.  It is resolved when
    * the operation is complete, and rejected if the operation fails or is
@@ -32,7 +32,7 @@ shaka.extern.IAbortableOperation = interface {
    *
    * @exportDoc
    */
-  abort(): Promise;
+  abort(): Promise<any>;
 
   /**
    * @param onFinal A callback to be invoked after the

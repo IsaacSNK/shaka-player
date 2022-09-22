@@ -21,7 +21,7 @@ export interface AdCuePoint {
  *
  * @exportDoc
  */
-shaka.extern.IAdManager = class extends EventTarget {
+export class IAdManager extends EventTarget {
   setLocale(locale: string) {}
 
   release() {}
@@ -62,7 +62,7 @@ type Factory = () => shaka.extern.IAdManager;
  *
  * @exportDoc
  */
-shaka.extern.IAd = class {
+export class IAd {
   getDuration(): number {}
 
   /**

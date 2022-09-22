@@ -7,7 +7,7 @@
 /**
  * @exportDoc
  */
-shaka.extern.CueRegion = class {
+export class CueRegion {
   /**
    * Region identifier.
    * @exportDoc
@@ -336,7 +336,7 @@ shaka.extern.Cue = class {
  *
  * @exportDoc
  */
-shaka.extern.TextParser = class {
+export  class TextParser{
   /**
    * Parse an initialization segment. Some formats do not have init
    * segments so this won't always be called.
@@ -394,7 +394,7 @@ type TextParserPlugin = () => shaka.extern.TextParser;
  *
  * @exportDoc
  */
-shaka.extern.TextDisplayer = class {
+export class TextDisplayer{
   /**
    * @override
    * @exportDoc

@@ -32,7 +32,7 @@
  *
  * @exportDoc
  */
-shaka.extern.ManifestParser = class {
+export  class ManifestParser{
   /**
    * Called by the Player to provide an updated configuration any time the
    * configuration changes.  Will be called at least once before start().

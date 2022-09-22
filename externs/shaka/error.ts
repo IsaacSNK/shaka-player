@@ -12,7 +12,7 @@ export interface RestrictionInfo {
 /**
  * @exportDoc
  */
-shaka.extern.Error = class {
+export class Error{
   /**
    * @exportDoc
    */

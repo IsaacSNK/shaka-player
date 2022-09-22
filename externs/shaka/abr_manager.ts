@@ -18,7 +18,7 @@
  *
  * @exportDoc
  */
-shaka.extern.AbrManager = class {
+export class AbrManager {
   /**
    * Initializes the AbrManager.
    *

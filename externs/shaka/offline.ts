@@ -98,7 +98,7 @@ export interface EmeSessionDB {
  * structures.
  *
  */
-shaka.extern.StorageCell = class {
+export class StorageCell{
   /**
    * Free all resources used by this cell. This should not affect the stored
    * content.
@@ -194,7 +194,7 @@ shaka.extern.StorageCell = class {
  * the license itself.  The license itself is stored using EME.
  *
  */
-shaka.extern.EmeSessionStorageCell = class {
+export class EmeSessionStorageCell{
   /**
    * Free all resources used by this cell. This won't affect the stored content.
    */
@@ -227,7 +227,7 @@ shaka.extern.EmeSessionStorageCell = class {
  * connection.
  *
  */
-shaka.extern.StorageMechanism = class {
+export  class StorageMechanism{
   /**
    * Initialize the storage mechanism for first use. This should only be called
    * once. Calling |init| multiple times has an undefined behaviour.
