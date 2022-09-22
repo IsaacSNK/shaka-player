@@ -3,8 +3,8 @@
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-import * as Cea708ServiceExports from './/cea708_service';
-import {Cea708Service} from './/cea708_service';
+import * as Cea708ServiceExports from './cea708_service';
+import {Cea708Service} from './cea708_service';
 import * as ErrorExports from './../util/error';
 import {Error} from './../util/error';
 

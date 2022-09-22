@@ -3,14 +3,24 @@
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-import * as CeaUtilsExports from './/cea_utils';
-import {CeaUtils, StyledChar} from './/cea_utils';
-import * as ICaptionDecoderExports from './/i_caption_decoder';
-import {ICaptionDecoder} from './/i_caption_decoder';
+import * as CeaUtilsExports from './cea_utils';
+import {CeaUtils, StyledChar} from './cea_utils';
+import * as ICaptionDecoderExports from './i_caption_decoder';
+import {ICaptionDecoder} from './i_caption_decoder';
 import * as CueExports from './../text/cue';
 import {Cue} from './../text/cue';
 import {Functional} from './../util/functional';
 
+
+/**
+ * Caption type.
+ *  */
+ export enum TextJustification {
+  LEFT,
+  RIGHT,
+  CENTER,
+  FULL
+}
 /**
  * CEA-708 Window. Each CEA-708 service owns 8 of these.
  */
@@ -147,7 +157,7 @@ export class Cea708Window {
    * Allocates and returns a new row.
    */
   private createNewRow_(): (StyledChar|null)[] {
-    const row = [];
+    const row:any = [];
     for (let j = 0; j < MAX_COLS; j++) {
       row.push(null);
     }
@@ -252,7 +262,6 @@ export class Cea708Window {
   forceEmit(endTime: number, serviceNumber: number):
       ICaptionDecoderExports.ClosedCaption|null {
     const stream = `svc${serviceNumber}`;
-    const TextJustification = TextJustification;
     const topLevelCue = new Cue(
         this.startTime_, endTime,
         /* payload= */
@@ -342,16 +351,6 @@ export class Cea708Window {
   setStartTime(pts: number) {
     this.startTime_ = pts;
   }
-}
-
-/**
- * Caption type.
- *  */
-export enum TextJustification {
-  LEFT,
-  RIGHT,
-  CENTER,
-  FULL
 }
 
 /**

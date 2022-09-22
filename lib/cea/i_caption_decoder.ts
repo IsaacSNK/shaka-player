@@ -9,7 +9,7 @@ import {Cue} from './../text/cue';
 /**
  * Interface for decoding inband closed captions from packets.
  */
-export class ICaptionDecoder {
+export interface ICaptionDecoder {
   /**
    * Extracts packets and prepares them for decoding. In a given media fragment,
    * all the caption packets found in its SEI messages should be extracted by
@@ -19,20 +19,20 @@ export class ICaptionDecoder {
    * It is described in sections D.1.6 and D.2.6 of Rec. ITU-T H.264 (06/2019).
    * @param pts PTS when this packet was received, in seconds.
    */
-  extract(userDataSeiMessage: Uint8Array, pts: number) {}
+  extract(userDataSeiMessage: Uint8Array, pts: number);
 
   /**
    * Decodes all currently extracted packets and then clears them.
    * This should be called once for a set of extracts (see comment on extract).
    */
-  decode(): ClosedCaption[] {}
+  decode(): ClosedCaption[];
 
   /**
    * Clears the decoder state completely.
    * Should be used when an action renders the decoder state invalid,
    * e.g. unbuffered seeks.
    */
-  clear() {}
+  clear();
 }
 type ClosedCaption = {
   cue: Cue,

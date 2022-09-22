@@ -159,7 +159,7 @@ export class Cea708Service {
       return null;
     }
     const window = this.currentWindow_;
-    let parsedClosedCaption = null;
+    let parsedClosedCaption:any = null;
 
     // Note: This decoder ignores the "ETX" (end of text) control code. Since
     // this is JavaScript, a '\0' is not needed to terminate a string.
@@ -326,7 +326,7 @@ export class Cea708Service {
 
   private clearWindows_(windowsBitmap: number, pts: number):
       ICaptionDecoderExports.ClosedCaption|null {
-    let parsedClosedCaption = null;
+    let parsedClosedCaption:any = null;
 
     // Clears windows from the 8 bit bitmap.
     for (const windowId of this.getSpecifiedWindowIds_(windowsBitmap)) {
@@ -354,7 +354,7 @@ export class Cea708Service {
 
   private hideWindows_(windowsBitmap: number, pts: number):
       ICaptionDecoderExports.ClosedCaption|null {
-    let parsedClosedCaption = null;
+    let parsedClosedCaption:any = null;
 
     // Hides windows from the 8 bit bitmap.
     for (const windowId of this.getSpecifiedWindowIds_(windowsBitmap)) {
@@ -389,7 +389,7 @@ export class Cea708Service {
 
   private deleteWindows_(windowsBitmap: number, pts: number):
       ICaptionDecoderExports.ClosedCaption|null {
-    let parsedClosedCaption = null;
+    let parsedClosedCaption:any = null;
 
     // Deletes windows from the 8 bit bitmap.
     for (const windowId of this.getSpecifiedWindowIds_(windowsBitmap)) {

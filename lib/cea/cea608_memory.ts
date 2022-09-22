@@ -3,10 +3,10 @@
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-import * as CeaUtilsExports from './/cea_utils';
-import {CeaUtils} from './/cea_utils';
-import * as ICaptionDecoderExports from './/i_caption_decoder';
-import {ICaptionDecoder} from './/i_caption_decoder';
+import * as CeaUtilsExports from './cea_utils';
+import {CeaUtils} from './cea_utils';
+import * as ICaptionDecoderExports from './i_caption_decoder';
+import {ICaptionDecoder} from './i_caption_decoder';
 import * as CueExports from './../text/cue';
 import {Cue} from './../text/cue';
 
@@ -105,28 +105,28 @@ export class Cea608Memory {
     if (b < 32 || b > 127) {
       return;
     }
-    let char = '';
+    let char :any= '';
     switch (set) {
       case CharSet.BASIC_NORTH_AMERICAN:
-        if (CharSet.BasicNorthAmericanChars.has(b)) {
-          char = CharSet.BasicNorthAmericanChars.get(b);
+        if (BasicNorthAmericanChars.has(b)) {
+          char = BasicNorthAmericanChars.get(b);
         } else {
           // Regular ASCII
           char = String.fromCharCode(b);
         }
         break;
       case CharSet.SPECIAL_NORTH_AMERICAN:
-        char = CharSet.SpecialNorthAmericanChars.get(b);
+        char = SpecialNorthAmericanChars.get(b);
         break;
       case CharSet.SPANISH_FRENCH:
 
         // Extended charset does a BS over preceding char, 6.4.2 EIA-608-B.
         this.eraseChar();
-        char = CharSet.ExtendedSpanishFrench.get(b);
+        char = ExtendedSpanishFrench.get(b);
         break;
       case CharSet.PORTUGUESE_GERMAN:
         this.eraseChar();
-        char = CharSet.ExtendedPortugueseGerman.get(b);
+        char =ExtendedPortugueseGerman.get(b);
         break;
     }
     if (char) {
@@ -224,7 +224,7 @@ export enum CharSet {
 /**
  * Basic North American char set deviates from ASCII with these exceptions.
  *  */
-CharSet.BasicNorthAmericanChars = new Map([
+const BasicNorthAmericanChars = new Map([
   [39, '\u2019'], [42, '\u00e1'], [92, '\u00e9'], [92, '\u00e9'],
   [94, '\u00ed'], [95, '\u00f3'], [96, '\u00fa'], [123, '\u00e7'],
   [124, '\u00f7'], [125, '\u00d1'], [126, '\u00f1'], [127, '\u2588']
@@ -234,7 +234,7 @@ CharSet.BasicNorthAmericanChars = new Map([
  * Special North American char set.
  * Note: Transparent Space is currently implemented as a regular space.
  *  */
-CharSet.SpecialNorthAmericanChars = new Map([
+const SpecialNorthAmericanChars = new Map([
   [48, '\u00ae'], [49, '\u00b0'], [50, '\u00bd'], [51, '\u00bf'],
   [52, '\u2122'], [53, '\u00a2'], [54, '\u00a3'], [55, '\u266a'],
   [56, '\u00e0'], [57, '\u2800'], [58, '\u00e8'], [59, '\u00e2'],
@@ -244,7 +244,7 @@ CharSet.SpecialNorthAmericanChars = new Map([
 /**
  * Extended Spanish/Misc/French char set.
  *  */
-CharSet.ExtendedSpanishFrench = new Map([
+const ExtendedSpanishFrench = new Map([
   [32, '\u00c1'], [33, '\u00c9'], [34, '\u00d3'], [35, '\u00da'],
   [36, '\u00dc'], [37, '\u00fc'], [38, '\u2018'], [39, '\u00a1'],
   [40, '*'],      [41, '\''],     [42, '\u2500'], [43, '\u00a9'],
@@ -258,7 +258,7 @@ CharSet.ExtendedSpanishFrench = new Map([
 /**
  * Extended Portuguese/German/Danish char set.
  *  */
-CharSet.ExtendedPortugueseGerman = new Map([
+const ExtendedPortugueseGerman = new Map([
   [32, '\u00c3'], [33, '\u00e3'], [34, '\u00cd'], [35, '\u00cc'],
   [36, '\u00ec'], [37, '\u00d2'], [38, '\u00f2'], [39, '\u00d5'],
   [40, '\u00f5'], [41, '{'],      [42, '}'],      [43, '\\'],

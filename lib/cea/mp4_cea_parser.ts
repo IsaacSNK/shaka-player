@@ -3,9 +3,9 @@
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-import * as ICeaParserExports from './/i_cea_parser';
-import {ICeaParser} from './/i_cea_parser';
-import {SeiProcessor} from './/sei_processor';
+import * as ICeaParserExports from './i_cea_parser';
+import {ICeaParser} from './i_cea_parser';
+import {SeiProcessor} from './sei_processor';
 import * as assertsExports from './../debug/asserts';
 import {asserts} from './../debug/asserts';
 import * as DataViewReaderExports from './../util/data_view_reader';
@@ -53,9 +53,8 @@ export class Mp4CeaParser implements ICeaParser {
    * @override
    */
   init(initSegment) {
-    const Mp4Parser = Mp4Parser;
-    const trackIds = [];
-    const timescales = [];
+    const trackIds:any= [];
+    const timescales:any = [];
     (new Mp4Parser())
         .box('moov', Mp4Parser.children)
         .box('mvex', Mp4Parser.children)
@@ -117,15 +116,14 @@ export class Mp4CeaParser implements ICeaParser {
    * @override
    */
   parse(mediaSegment) {
-    const Mp4Parser = Mp4Parser;
     const captionPackets: ICeaParserExports.CaptionPacket[] = [];
 
     // Fields that are found in MOOF boxes
     let defaultSampleDuration = this.defaultSampleDuration_;
     let defaultSampleSize = this.defaultSampleSize_;
-    let sampleData = [];
-    let baseMediaDecodeTime = null;
-    let timescale = ICeaParserExports.DEFAULT_TIMESCALE_VALUE;
+    let sampleData:any = [];
+    let baseMediaDecodeTime:any = null;
+    let timescale :any= ICeaParserExports.DEFAULT_TIMESCALE_VALUE;
     (new Mp4Parser())
         .box('moof', Mp4Parser.children)
         .box('traf', Mp4Parser.children)

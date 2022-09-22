@@ -7,18 +7,18 @@
 /**
  * Interface for parsing inband closed caption data from MP4 streams.
  */
-export class ICeaParser {
+export interface ICeaParser {
   /**
    * Initializes the parser with init segment data.
    * @param initSegment init segment to parse.
    */
-  init(initSegment: BufferSource) {}
+  init(initSegment: BufferSource);
 
   /**
    * Parses the stream and extracts closed captions packets.
    * @param mediaSegment media segment to parse.
    */
-  parse(mediaSegment: BufferSource): CaptionPacket[] {}
+  parse(mediaSegment: BufferSource): CaptionPacket[] ;
 }
 
 /**

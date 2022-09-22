@@ -3,12 +3,12 @@
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-import * as Cea608MemoryExports from './/cea608_memory';
-import {Cea608Memory} from './/cea608_memory';
-import * as CeaUtilsExports from './/cea_utils';
-import {CeaUtils} from './/cea_utils';
-import * as ICaptionDecoderExports from './/i_caption_decoder';
-import {ICaptionDecoder} from './/i_caption_decoder';
+import * as Cea608MemoryExports from './cea608_memory';
+import {Cea608Memory} from './cea608_memory';
+import * as CeaUtilsExports from './cea_utils';
+import {CeaUtils} from './cea_utils';
+import * as ICaptionDecoderExports from './i_caption_decoder';
+import {ICaptionDecoder} from './i_caption_decoder';
 import * as logExports from './../debug/log';
 import {log} from './../debug/log';
 
@@ -217,7 +217,7 @@ export class Cea608DataChannel {
     const MiscCmd = MiscCmd_;
     const b2 = ccPacket.ccData2;
     const pts = ccPacket.pts;
-    let parsedClosedCaption = null;
+    let parsedClosedCaption:any;
     switch (b2) {
       case MiscCmd.RCL:
         this.controlRcl_();
@@ -316,7 +316,7 @@ export class Cea608DataChannel {
 
     // Point to displayed memory
     const buf = this.curbuf_;
-    let parsedClosedCaption = null;
+    let parsedClosedCaption:any = null;
 
     // For any type except rollup and text mode, it should be emitted,
     // and memories cleared.
@@ -352,7 +352,7 @@ export class Cea608DataChannel {
    */
   private controlEdm_(pts: number): ICaptionDecoderExports.ClosedCaption|null {
     const buf = this.displayedMemory_;
-    let parsedClosedCaption = null;
+    let parsedClosedCaption:any = null;
     if (this.type_ !== CaptionType.TEXT) {
       // Clearing displayed memory means we now know how long
       // its contents were displayed, so force it out.
@@ -392,7 +392,7 @@ export class Cea608DataChannel {
    * This forces Pop-On mode, and swaps the displayed and nondisplayed memories.
    */
   private controlEoc_(pts: number): ICaptionDecoderExports.ClosedCaption|null {
-    let parsedClosedCaption = null;
+    let parsedClosedCaption:any = null;
     if (this.type_ !== CaptionType.TEXT) {
       parsedClosedCaption =
           this.displayedMemory_.forceEmit(this.prevEndTime_, pts);

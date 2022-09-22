@@ -127,7 +127,7 @@ export class CastUtils {
       'start': [],
       'end': []
     };
-    const TimeRangesUtils = TimeRangesUtils;
+    
     for (const {start, end} of TimeRangesUtils.getBufferedInfo(ranges)) {
       obj['start'].push(start);
       obj['end'].push(end);

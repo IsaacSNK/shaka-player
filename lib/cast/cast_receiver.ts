@@ -3,14 +3,14 @@
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-import * as CastUtilsExports from './/cast_utils';
-import {CastUtils} from './/cast_utils';
+import * as CastUtilsExports from './cast_utils';
+import {CastUtils} from './cast_utils';
 import * as assertsExports from './../debug/asserts';
 import {asserts} from './../debug/asserts';
 import * as logExports from './../debug/log';
 import {log} from './../debug/log';
-import * as PlayerExports from './../player/player';
-import {Player} from './../player/player';
+import * as PlayerExports from './../player';
+import {Player} from './../player';
 import * as ErrorExports from './../util/error';
 import {Error} from './../util/error';
 import * as EventManagerExports from './../util/event_manager';

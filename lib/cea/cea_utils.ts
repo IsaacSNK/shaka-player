@@ -3,8 +3,8 @@
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-import * as ICaptionDecoderExports from './/i_caption_decoder';
-import {ICaptionDecoder} from './/i_caption_decoder';
+import * as ICaptionDecoderExports from './i_caption_decoder';
+import {ICaptionDecoder} from './i_caption_decoder';
 import * as CueExports from './../text/cue';
 import {Cue} from './../text/cue';
 
@@ -63,13 +63,13 @@ export class CeaUtils {
       let firstNonEmptyCol = -1;
       let lastNonEmptyCol = -1;
       for (let j = 0; j < row.length; j++) {
-        if (row[j] != null && row[j].getChar().trim() !== '') {
+        if (row[j] != null && row[j]?.getChar().trim() !== '') {
           firstNonEmptyCol = j;
           break;
         }
       }
       for (let j = row.length - 1; j >= 0; j--) {
-        if (row[j] != null && row[j].getChar().trim() !== '') {
+        if (row[j] != null && row[j]?.getChar().trim() !== '') {
           lastNonEmptyCol = j;
           break;
         }

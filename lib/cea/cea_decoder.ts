@@ -3,14 +3,14 @@
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-import * as Cea608DataChannelExports from './/cea608_data_channel';
-import {Cea608DataChannel} from './/cea608_data_channel';
-import * as Cea708ServiceExports from './/cea708_service';
-import {Cea708Service} from './/cea708_service';
-import * as DtvccPacketBuilderExports from './/dtvcc_packet_builder';
-import {DtvccPacket, DtvccPacketBuilder} from './/dtvcc_packet_builder';
-import * as ICaptionDecoderExports from './/i_caption_decoder';
-import {ICaptionDecoder} from './/i_caption_decoder';
+import * as Cea608DataChannelExports from './cea608_data_channel';
+import {Cea608DataChannel} from './cea608_data_channel';
+import * as Cea708ServiceExports from './cea708_service';
+import {Cea708Service} from './cea708_service';
+import * as DtvccPacketBuilderExports from './dtvcc_packet_builder';
+import {DtvccPacket, DtvccPacketBuilder} from './dtvcc_packet_builder';
+import * as ICaptionDecoderExports from './i_caption_decoder';
+import {ICaptionDecoder} from './i_caption_decoder';
 import * as logExports from './../debug/log';
 import {log} from './../debug/log';
 import * as DataViewReaderExports from './../util/data_view_reader';
@@ -281,12 +281,12 @@ export class CeaDecoder implements ICaptionDecoder {
     }
 
     // Process the clean CC data pair.
-    let parsedClosedCaption = null;
+    let parsedClosedCaption;
     if (Cea608DataChannel.isControlCode(ccPacket.ccData1)) {
-      parsedClosedCaption = selectedStream.handleControlCode(ccPacket);
+      parsedClosedCaption = selectedStream?.handleControlCode(ccPacket);
     } else {
       // Handle as a Basic North American Character.
-      selectedStream.handleBasicNorthAmericanChar(
+      selectedStream?.handleBasicNorthAmericanChar(
           ccPacket.ccData1, ccPacket.ccData2);
     }
     return parsedClosedCaption;
@@ -335,8 +335,8 @@ export class CeaDecoder implements ICaptionDecoder {
 
           // Execute this loop `blockSize` times, to decode the control codes.
           while (dtvccPacket.getPosition() - startPos < blockSize) {
-            const closedCaption = service.handleCea708ControlCode(dtvccPacket);
-            if (closedCaption) {
+            const closedCaption = service?.handleCea708ControlCode(dtvccPacket);
+            if (closedCaption ) {
               parsedClosedCaptions.push(closedCaption);
             }
           }

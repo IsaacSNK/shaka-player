@@ -3,16 +3,16 @@
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-import * as CastSenderExports from './/cast_sender';
-import {CastSender} from './/cast_sender';
-import * as CastUtilsExports from './/cast_utils';
-import {CastUtils} from './/cast_utils';
+import * as CastSenderExports from './cast_sender';
+import {CastSender} from './cast_sender';
+import * as CastUtilsExports from './cast_utils';
+import {CastUtils} from './cast_utils';
 import * as assertsExports from './../debug/asserts';
 import {asserts} from './../debug/asserts';
 import * as logExports from './../debug/log';
 import {log} from './../debug/log';
-import * as PlayerExports from './../player/player';
-import {Player} from './../player/player';
+import * as PlayerExports from './../player';
+import {Player} from './../player';
 import * as ErrorExports from './../util/error';
 import {Error} from './../util/error';
 import * as EventManagerExports from './../util/event_manager';
@@ -39,17 +39,17 @@ import {IDestroyable} from './../util/i_destroyable';
  * @export
  */
 export class CastProxy extends FakeEventTarget implements IDestroyable {
-  private localVideo_: HTMLMediaElement;
+  private localVideo_: HTMLMediaElement | null;
   private localPlayer_: Player;
-  private videoProxy_: Object = null;
-  private playerProxy_: Object = null;
-  private videoEventTarget_: FakeEventTarget = null;
-  private playerEventTarget_: FakeEventTarget = null;
-  private eventManager_: EventManager = null;
+  private videoProxy_: Object | null= null;
+  private playerProxy_: Object | null = null;
+  private videoEventTarget_: FakeEventTarget | null= null;
+  private playerEventTarget_: FakeEventTarget | null = null;
+  private eventManager_: EventManager | null= null;
   private receiverAppId_: string;
   private androidReceiverCompatible_: boolean;
   private compiledToExternNames_: Map;
-  private sender_: CastSender;
+  private sender_: CastSender | null;
 
   /**
    * @param video The local video element associated with
@@ -89,7 +89,7 @@ export class CastProxy extends FakeEventTarget implements IDestroyable {
    */
   destroy(forceDisconnect?: boolean) {
     if (forceDisconnect) {
-      this.sender_.forceDisconnect();
+      this.sender_?.forceDisconnect();
     }
     if (this.eventManager_) {
       this.eventManager_.release();
@@ -101,7 +101,7 @@ export class CastProxy extends FakeEventTarget implements IDestroyable {
       this.localPlayer_ = null;
     }
     if (this.sender_) {
-      waitFor.push(this.sender_.destroy());
+      waitFor.push(this.sender_?.destroy());
       this.sender_ = null;
     }
     this.localVideo_ = null;
@@ -141,7 +141,7 @@ export class CastProxy extends FakeEventTarget implements IDestroyable {
    * @export
    */
   canCast(): boolean {
-    return this.sender_.apiReady() && this.sender_.hasReceivers();
+    return this.sender_!==null? this.sender_.apiReady() && this.sender_.hasReceivers():false;
   }
 
   /**
@@ -149,7 +149,7 @@ export class CastProxy extends FakeEventTarget implements IDestroyable {
    * @export
    */
   isCasting(): boolean {
-    return this.sender_.isCasting();
+    return this.sender_!==null?this.sender_.isCasting():false;
   }
 
   /**
@@ -157,7 +157,7 @@ export class CastProxy extends FakeEventTarget implements IDestroyable {
    * @export
    */
   receiverName(): string {
-    return this.sender_.receiverName();
+    return this.sender_!==null? this.sender_.receiverName():'';
   }
 
   /**
@@ -165,12 +165,12 @@ export class CastProxy extends FakeEventTarget implements IDestroyable {
    *   connection fails or is canceled by the user.
    * @export
    */
-  async cast(): Promise {
+  async cast(): Promise<any> {
     const initState = this.getInitState_();
 
     // TODO: transfer manually-selected tracks?
     // TODO: transfer side-loaded text tracks?
-    await this.sender_.cast(initState);
+    await this.sender_?.cast(initState);
     if (!this.localPlayer_) {
       // We've already been destroyed.
       return;
@@ -187,7 +187,7 @@ export class CastProxy extends FakeEventTarget implements IDestroyable {
    * @export
    */
   setAppData(appData: Object) {
-    this.sender_.setAppData(appData);
+    this.sender_?.setAppData(appData);
   }
 
   /**
@@ -195,7 +195,7 @@ export class CastProxy extends FakeEventTarget implements IDestroyable {
    * @export
    */
   suggestDisconnect() {
-    this.sender_.showDisconnectDialog();
+    this.sender_?.showDisconnectDialog();
   }
 
   /**
@@ -203,7 +203,7 @@ export class CastProxy extends FakeEventTarget implements IDestroyable {
    * @export
    */
   forceDisconnect() {
-    this.sender_.forceDisconnect();
+    this.sender_?.forceDisconnect();
   }
 
   /**
@@ -220,8 +220,8 @@ export class CastProxy extends FakeEventTarget implements IDestroyable {
     this.androidReceiverCompatible_ = newCastAndroidReceiver;
 
     // Destroy the old sender
-    this.sender_.forceDisconnect();
-    await this.sender_.destroy();
+    this.sender_?.forceDisconnect();
+    await this.sender_?.destroy();
     this.sender_ = null;
 
     // Create the new one
@@ -238,11 +238,13 @@ export class CastProxy extends FakeEventTarget implements IDestroyable {
    * Initialize the Proxies and the Cast sender.
    */
   private init_() {
-    this.sender_.init();
+    this.sender_?.init();
     this.eventManager_ = new EventManager();
     for (const name of CastUtilsExports.VideoEvents) {
-      this.eventManager_.listen(
+      if(this.localVideo_!==null){
+        this.eventManager_.listen(
           this.localVideo_, name, (event) => this.videoProxyLocalEvent_(event));
+      }
     }
     for (const key in FakeEventExports.EventName) {
       const name = FakeEventExports.EventName[key];
@@ -374,15 +376,18 @@ export class CastProxy extends FakeEventTarget implements IDestroyable {
     };
 
     // Pause local playback before capturing state.
-    this.localVideo_.pause();
+    this.localVideo_?.pause();
     for (const name of CastUtilsExports.VideoInitStateAttributes) {
+      if(this.localVideo_!==null)
       initState['video'][name] = this.localVideo_[name];
     }
 
     // If the video is still playing, set the startTime.
     // Has no effect if nothing is loaded.
-    if (!this.localVideo_.ended) {
-      initState['startTime'] = this.localVideo_.currentTime;
+    if (!this.localVideo_?.ended) {
+      if(this.localVideo_!==null){
+        initState['startTime'] = this.localVideo_.currentTime;
+      }
     }
     for (const pair of CastUtilsExports.PlayerInitState) {
       const getter = pair[0];
@@ -412,9 +417,9 @@ export class CastProxy extends FakeEventTarget implements IDestroyable {
    * knows that the player is playing, if joining an existing receiver.
    */
   private onFirstCastStateUpdate_() {
-    const type = this.videoProxy_['paused'] ? 'pause' : 'play';
+    const type = this.videoProxy_?['paused'] ? 'pause' : 'play';
     const fakeEvent = new FakeEvent(type);
-    this.videoEventTarget_.dispatchEvent(fakeEvent);
+    this.videoEventTarget_?.dispatchEvent(fakeEvent);
   }
 
   /**
@@ -425,34 +430,36 @@ export class CastProxy extends FakeEventTarget implements IDestroyable {
     for (const pair of CastUtilsExports.PlayerInitState) {
       const getter = pair[0];
       const setter = pair[1];
-      const value = this.sender_.get('player', getter)();
+      const value = this.sender_?.get('player', getter)();
       (this.localPlayer_ as Object)[setter](value);
     }
 
     // Get the most recent manifest URI and ended state.
-    const assetUri = this.sender_.get('player', 'getAssetUri')();
-    const ended = this.sender_.get('video', 'ended');
+    const assetUri = this.sender_?.get('player', 'getAssetUri')();
+    const ended = this.sender_?.get('video', 'ended');
     let manifestReady = Promise.resolve();
-    const autoplay = this.localVideo_.autoplay;
+    const autoplay = this.localVideo_?.autoplay;
     let startTime = null;
 
     // If the video is still playing, set the startTime.
     // Has no effect if nothing is loaded.
     if (!ended) {
-      startTime = this.sender_.get('video', 'currentTime');
+      startTime = this.sender_?.get('video', 'currentTime');
     }
 
     // Now load the manifest, if present.
     if (assetUri) {
       // Don't autoplay the content until we finish setting up initial state.
-      this.localVideo_.autoplay = false;
+      if(this.localVideo_!=null){
+        this.localVideo_.autoplay = false;
+      }
       manifestReady = this.localPlayer_.load(assetUri, startTime);
     }
 
     // Get the video state into a temp variable since we will apply it async.
     const videoState = {};
     for (const name of CastUtilsExports.VideoInitStateAttributes) {
-      videoState[name] = this.sender_.get('video', name);
+      videoState[name] = this.sender_?.get('video', name);
     }
 
     // Finally, take on video state and player's "after load" state.
@@ -468,7 +475,7 @@ export class CastProxy extends FakeEventTarget implements IDestroyable {
           for (const pair of CastUtilsExports.PlayerInitAfterLoadState) {
             const getter = pair[0];
             const setter = pair[1];
-            const value = this.sender_.get('player', getter)();
+            const value = this.sender_?.get('player', getter)();
             (this.localPlayer_ as Object)[setter](value);
           }
 
@@ -492,47 +499,49 @@ export class CastProxy extends FakeEventTarget implements IDestroyable {
   private videoProxyGet_(name: string): any {
     if (name == 'addEventListener') {
       return (type, listener, options) => {
-        return this.videoEventTarget_.addEventListener(type, listener, options);
+        return this.videoEventTarget_?.addEventListener(type, listener, options);
       };
     }
     if (name == 'removeEventListener') {
       return (type, listener, options) => {
-        return this.videoEventTarget_.removeEventListener(
+        return this.videoEventTarget_?.removeEventListener(
             type, listener, options);
       };
     }
 
     // If we are casting, but the first update has not come in yet, use local
     // values, but not local methods.
-    if (this.sender_.isCasting() && !this.sender_.hasRemoteProperties()) {
-      const value = this.localVideo_[name];
+    if (this.sender_?.isCasting() && !this.sender_?.hasRemoteProperties()) {
+      const value = this.localVideo_!==null? this.localVideo_[name]:undefined;
       if (typeof value != 'function') {
         return value;
       }
     }
 
     // Use local values and methods if we are not casting.
-    if (!this.sender_.isCasting()) {
-      let value = this.localVideo_[name];
+    if (!this.sender_?.isCasting()) {
+      let value = this.localVideo_!==null? this.localVideo_[name]:undefined;
       if (typeof value == 'function') {
         // eslint-disable-next-line no-restricted-syntax
         value = value.bind(this.localVideo_);
       }
       return value;
     }
-    return this.sender_.get('video', name);
+    return this.sender_?.get('video', name);
   }
 
   private videoProxySet_(name: string, value: any) {
-    if (!this.sender_.isCasting()) {
-      this.localVideo_[name] = value;
+    if (!this.sender_?.isCasting()) {
+      if( this.localVideo_!==null){
+        this.localVideo_[name] = value;
+      }
       return;
     }
-    this.sender_.set('video', name, value);
+    this.sender_?.set('video', name, value);
   }
 
   private videoProxyLocalEvent_(event: Event) {
-    if (this.sender_.isCasting()) {
+    if (this.sender_?.isCasting()) {
       // Ignore any unexpected local events while casting.  Events can still be
       // fired by the local video and Player when we unload() after the Cast
       // connection is complete.
@@ -542,7 +551,7 @@ export class CastProxy extends FakeEventTarget implements IDestroyable {
     // Convert this real Event into a FakeEvent for dispatch from our
     // FakeEventListener.
     const fakeEvent = FakeEvent.fromRealEvent(event);
-    this.videoEventTarget_.dispatchEvent(fakeEvent);
+    this.videoEventTarget_?.dispatchEvent(fakeEvent);
   }
 
   private playerProxyGet_(name: string): any {
@@ -553,13 +562,13 @@ export class CastProxy extends FakeEventTarget implements IDestroyable {
     }
     if (name == 'addEventListener') {
       return (type, listener, options) => {
-        return this.playerEventTarget_.addEventListener(
+        return this.playerEventTarget_?.addEventListener(
             type, listener, options);
       };
     }
     if (name == 'removeEventListener') {
       return (type, listener, options) => {
-        return this.playerEventTarget_.removeEventListener(
+        return this.playerEventTarget_?.removeEventListener(
             type, listener, options);
       };
     }
@@ -569,39 +578,39 @@ export class CastProxy extends FakeEventTarget implements IDestroyable {
     if (name == 'getSharedConfiguration') {
       log.warning(
           'Can\'t share configuration across a network. Returning copy.');
-      return this.sender_.get('player', 'getConfiguration');
+      return this.sender_?.get('player', 'getConfiguration');
     }
     if (name == 'getNetworkingEngine') {
       // Always returns a local instance, in case you need to make a request.
       // Issues a warning, in case you think you are making a remote request
       // or affecting remote filters.
-      if (this.sender_.isCasting()) {
+      if (this.sender_?.isCasting()) {
         log.warning('NOTE: getNetworkingEngine() is always local!');
       }
       return () => this.localPlayer_.getNetworkingEngine();
     }
     if (name == 'getDrmEngine') {
       // Always returns a local instance.
-      if (this.sender_.isCasting()) {
+      if (this.sender_?.isCasting()) {
         log.warning('NOTE: getDrmEngine() is always local!');
       }
       return () => this.localPlayer_.getDrmEngine();
     }
     if (name == 'getAdManager') {
       // Always returns a local instance.
-      if (this.sender_.isCasting()) {
+      if (this.sender_?.isCasting()) {
         log.warning('NOTE: getAdManager() is always local!');
       }
       return () => this.localPlayer_.getAdManager();
     }
     if (name == 'setVideoContainer') {
       // Always returns a local instance.
-      if (this.sender_.isCasting()) {
+      if (this.sender_?.isCasting()) {
         log.warning('NOTE: setVideoContainer() is always local!');
       }
       return (container) => this.localPlayer_.setVideoContainer(container);
     }
-    if (this.sender_.isCasting()) {
+    if (this.sender_?.isCasting()) {
       // These methods are unavailable or otherwise stubbed during casting.
       if (name == 'getManifest' || name == 'drmInfo') {
         return () => {
@@ -621,7 +630,7 @@ export class CastProxy extends FakeEventTarget implements IDestroyable {
 
     // If we are casting, but the first update has not come in yet, use local
     // getters, but not local methods.
-    if (this.sender_.isCasting() && !this.sender_.hasRemoteProperties()) {
+    if (this.sender_?.isCasting() && !this.sender_?.hasRemoteProperties()) {
       if (CastUtilsExports.PlayerGetterMethods[name]) {
         const value = (this.localPlayer_ as Object)[name];
         asserts.assert(typeof value == 'function', 'only methods on Player');
@@ -632,37 +641,37 @@ export class CastProxy extends FakeEventTarget implements IDestroyable {
     }
 
     // Use local getters and methods if we are not casting.
-    if (!this.sender_.isCasting()) {
+    if (!this.sender_?.isCasting()) {
       const value = (this.localPlayer_ as Object)[name];
       asserts.assert(typeof value == 'function', 'only methods on Player');
 
       // eslint-disable-next-line no-restricted-syntax
       return value.bind(this.localPlayer_);
     }
-    return this.sender_.get('player', name);
+    return this.sender_?.get('player', name);
   }
 
   private playerProxyLocalEvent_(event: Event) {
-    if (this.sender_.isCasting()) {
+    if (this.sender_?.isCasting()) {
       // Ignore any unexpected local events while casting.
       return;
     }
-    this.playerEventTarget_.dispatchEvent(event);
+    this.playerEventTarget_?.dispatchEvent(event);
   }
 
   private onRemoteEvent_(targetName: string, event: FakeEvent) {
     asserts.assert(
-        this.sender_.isCasting(),
+        this.sender_?.isCasting(),
         'Should only receive remote events while casting');
-    if (!this.sender_.isCasting()) {
+    if (!this.sender_?.isCasting()) {
       // Ignore any unexpected remote events.
       return;
     }
     if (targetName == 'video') {
-      this.videoEventTarget_.dispatchEvent(event);
+      this.videoEventTarget_?.dispatchEvent(event);
     } else {
       if (targetName == 'player') {
-        this.playerEventTarget_.dispatchEvent(event);
+        this.playerEventTarget_?.dispatchEvent(event);
       }
     }
   }
