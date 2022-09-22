@@ -122,6 +122,7 @@ export enum EventName {
   DownloadHeadersReceived = 'downloadheadersreceived',
   DrmSessionUpdate = 'drmsessionupdate',
   Emsg = 'emsg',
+  Prft = 'prft',
   Error = 'error',
   ExpirationUpdated = 'expirationupdated',
   GapJumped = 'gapjumped',

@@ -772,20 +772,18 @@ export class MediaSourceEngine implements IDestroyable {
     });
   }
 
-  /**
-   * We only support increasing duration at this time.  Decreasing duration
-   * causes the MSE removal algorithm to run, which results in an 'updateend'
-   * event.  Supporting this scenario would be complicated, and is not currently
-   * needed.
-   *
-   */
   async setDuration(duration: number): Promise {
-    asserts.assert(
-        isNaN(this.mediaSource_.duration) ||
-            this.mediaSource_.duration <= duration,
-        'duration cannot decrease: ' + this.mediaSource_.duration + ' -> ' +
-            duration);
     await this.enqueueBlockingOperation_(() => {
+      // Reducing the duration causes the MSE removal algorithm to run, which
+      // triggers an 'updateend' event to fire.  To handle this scenario, we
+      // have to insert a dummy operation into the beginning of each queue,
+      // which the 'updateend' handler will remove.
+      if (duration < this.mediaSource_.duration) {
+        for (const contentType in this.sourceBuffers_) {
+          const dummyOperation = {start: () => {}, p: new PublicPromise()};
+          this.queues_[contentType].unshift(dummyOperation);
+        }
+      }
       this.mediaSource_.duration = duration;
     });
   }

@@ -5,6 +5,7 @@
  */
 import * as SimpleAbrManagerExports from './dev-workspace.shaka-player-fork.lib.abr.simple_abr_manager';
 import {SimpleAbrManager} from './dev-workspace.shaka-player-fork.lib.abr.simple_abr_manager';
+import {AutoShowText} from './dev-workspace.shaka-player-fork.lib.config.auto_show_text';
 import * as assertsExports from './dev-workspace.shaka-player-fork.lib.debug.asserts';
 import {asserts} from './dev-workspace.shaka-player-fork.lib.debug.asserts';
 import * as logExports from './dev-workspace.shaka-player-fork.lib.debug.log';
@@ -164,7 +165,8 @@ export class PlayerConfiguration {
       updateIntervalSeconds: 1,
       dispatchAllEmsgBoxes: false,
       observeQualityChanges: false,
-      maxDisabledTime: 30
+      maxDisabledTime: 30,
+      parsePrftBox: false
     };
 
     // WebOS, Tizen, and Chromecast have long hardware pipelines that respond
@@ -235,6 +237,7 @@ export class PlayerConfiguration {
     };
     const cmcd =
         {enabled: false, sessionId: '', contentId: '', useHeaders: false};
+    const AutoShowText = AutoShowText;
     const config: shaka.extern.PlayerConfiguration = {
       drm: drm,
       manifest: manifest,
@@ -242,6 +245,7 @@ export class PlayerConfiguration {
       offline: offline,
       abrFactory: () => new SimpleAbrManager(),
       abr: abr,
+      autoShowText: AutoShowText.IF_SUBTITLES_MAY_BE_NEEDED,
       preferredAudioLanguage: '',
       preferredTextLanguage: '',
       preferredVariantRole: '',

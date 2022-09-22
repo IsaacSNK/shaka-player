@@ -263,6 +263,20 @@ extern.ManifestParser {
       updates.push(this.updateStream_(streamInfos[i]));
     }
     await Promise.all(updates);
+    this.notifySegments_();
+
+    // If any hasEndList is false, the stream is still live.
+    const stillLive = streamInfos.some((s) => s.hasEndList == false);
+    if (!stillLive) {
+      // Convert the presentation to VOD and set the duration.
+      const PresentationType = PresentationType_;
+      this.setPresentationType_(PresentationType.VOD);
+      const maxTimestamps = streamInfos.map((s) => s.maxTimestamp);
+
+      // The duration is the minimum of the end times of all streams.
+      this.presentationTimeline_.setDuration(Math.min(...maxTimestamps));
+      this.playerInterface_.updateDuration();
+    }
   }
 
   /**
@@ -270,7 +284,6 @@ extern.ManifestParser {
    *
    */
   private async updateStream_(streamInfo: StreamInfo): Promise {
-    const PresentationType = PresentationType_;
     const manifestUri = streamInfo.absoluteMediaPlaylistUri;
     const uriObj = new goog.Uri(manifestUri);
     if (this.lowLatencyMode_ && streamInfo.canSkipSegments) {
@@ -294,6 +307,7 @@ extern.ManifestParser {
         streamInfo.verbatimMediaPlaylistUri, playlist, stream.type,
         stream.mimeType, streamInfo.mediaSequenceToStartTime, mediaVariables,
         stream.codecs);
+    this.segmentsToNotifyByStream_.push(segments);
     stream.segmentIndex.mergeAndEvict(
         segments, this.presentationTimeline_.getSegmentAvailabilityStart());
     if (segments.length) {
@@ -312,10 +326,10 @@ extern.ManifestParser {
     const endListTag =
         Utils.getFirstTagWithName(playlist.tags, 'EXT-X-ENDLIST');
     if (endListTag) {
-      // Convert the presentation to VOD and set the duration to the last
-      // segment's end time.
-      this.setPresentationType_(PresentationType.VOD);
-      this.presentationTimeline_.setDuration(newestSegment.endTime);
+      // Flag this for later.  We don't convert the whole presentation into VOD
+      // until we've seen the ENDLIST tag for all active playlists.
+      streamInfo.hasEndList = true;
+      streamInfo.maxTimestamp = newestSegment.endTime;
     }
   }
 
@@ -1519,7 +1533,8 @@ extern.ManifestParser {
       absoluteMediaPlaylistUri,
       maxTimestamp: lastEndTime,
       mediaSequenceToStartTime,
-      canSkipSegments
+      canSkipSegments,
+      hasEndList: false
     };
   }
 
@@ -2266,10 +2281,14 @@ extern.ManifestParser {
     }
     try {
       await this.update();
-      const delay = this.updatePlaylistDelay_;
-      this.updatePlaylistTimer_.tickAfter(
-          /* seconds= */
-          delay);
+
+      // This may have converted to VOD, in which case we stop updating.
+      if (this.isLive_()) {
+        const delay = this.updatePlaylistDelay_;
+        this.updatePlaylistTimer_.tickAfter(
+            /* seconds= */
+            delay);
+      }
     } catch (error) {
       // Detect a call to stop() during this.update()
       if (!this.playerInterface_) {
@@ -2446,7 +2465,8 @@ type StreamInfo = {
   absoluteMediaPlaylistUri: string,
   maxTimestamp: number,
   mediaSequenceToStartTime: Map<number, number>,
-  canSkipSegments: boolean
+  canSkipSegments: boolean,
+  hasEndList: boolean
 };
 
 export {StreamInfo};

@@ -16,6 +16,7 @@ import {ArrayUtils} from './dev-workspace.shaka-player-fork.lib.util.array_utils
 export class InitSegmentReference {
   getUris: () => string[];
   mediaQuality: shaka.extern.MediaQualityInfo|null;
+  timescale: number|undefined;
 
   /**
    * @param uris A function that creates the URIs
@@ -31,9 +32,11 @@ export class InitSegmentReference {
   constructor(
       uris: () => string[], public readonly startByte: number,
       public readonly endByte: number|null,
-      mediaQuality: null|shaka.extern.MediaQualityInfo = null) {
+      mediaQuality: null|shaka.extern.MediaQualityInfo = null,
+      timescale?: number) {
     this.getUris = uris;
     this.mediaQuality = mediaQuality;
+    this.timescale = timescale;
   }
 
   /**

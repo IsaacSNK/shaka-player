@@ -984,7 +984,8 @@ export class Storage implements IDestroyable {
       },
       isLowLatencyMode: () => false,
       isAutoLowLatencyMode: () => false,
-      enableLowLatencyMode: () => {}
+      enableLowLatencyMode: () => {},
+      updateDuration: () => {}
     };
     parser.configure(config.manifest);
 

@@ -3,6 +3,7 @@
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
+import {AutoShowText} from './dev-workspace.shaka-player-fork.lib.config.auto_show_text';
 import * as assertsExports from './dev-workspace.shaka-player-fork.lib.debug.asserts';
 import {asserts} from './dev-workspace.shaka-player-fork.lib.debug.asserts';
 import * as logExports from './dev-workspace.shaka-player-fork.lib.debug.log';
@@ -1569,6 +1570,11 @@ export class Player extends FakeEventTarget implements IDestroyable {
       isAutoLowLatencyMode: () => this.isAutoLowLatencyMode_(),
       enableLowLatencyMode: () => {
         this.configure('streaming.lowLatencyMode', true);
+      },
+      updateDuration: () => {
+        if (this.streamingEngine_) {
+          this.streamingEngine_.updateDuration();
+        }
       }
     };
     const startTime = Date.now() / 1000;
@@ -4936,31 +4942,49 @@ export class Player extends FakeEventTarget implements IDestroyable {
   /**
    * Check if we should show text on screen automatically.
    *
-   * The text should automatically be shown if the text is language-compatible
-   * with the user's text language preference, but not compatible with the
-   * audio.
-   *
-   * For example:
-   *   preferred | chosen | chosen |
-   *   text      | text   | audio  | show
-   *   -----------------------------------
-   *   en-CA     | en     | jp     | true
-   *   en        | en-US  | fr     | true
-   *   fr-CA     | en-US  | jp     | false
-   *   en-CA     | en-US  | en-US  | false
-   *
    */
   private shouldInitiallyShowText_(
       audioStream: shaka.extern.Stream,
       textStream: shaka.extern.Stream): boolean {
+    const AutoShowText = AutoShowText;
+    if (this.config_.autoShowText == AutoShowText.NEVER) {
+      return false;
+    }
+    if (this.config_.autoShowText == AutoShowText.ALWAYS) {
+      return true;
+    }
     const LanguageUtils = LanguageUtils;
     const preferredTextLocale: string =
         LanguageUtils.normalize(this.config_.preferredTextLanguage);
-    const audioLocale: string = LanguageUtils.normalize(audioStream.language);
     const textLocale: string = LanguageUtils.normalize(textStream.language);
-    return LanguageUtils.areLanguageCompatible(
-               textLocale, preferredTextLocale) &&
-        !LanguageUtils.areLanguageCompatible(audioLocale, textLocale);
+    if (this.config_.autoShowText == AutoShowText.IF_PREFERRED_TEXT_LANGUAGE) {
+      // Only the text language match matters.
+      return LanguageUtils.areLanguageCompatible(
+          textLocale, preferredTextLocale);
+    }
+    if (this.config_.autoShowText == AutoShowText.IF_SUBTITLES_MAY_BE_NEEDED) {
+      /* The text should automatically be shown if the text is
+       * language-compatible with the user's text language preference, but not
+       * compatible with the audio.  These are cases where we deduce that
+       * subtitles may be needed.
+       *
+       * For example:
+       *   preferred | chosen | chosen |
+       *   text      | text   | audio  | show
+       *   -----------------------------------
+       *   en-CA     | en     | jp     | true
+       *   en        | en-US  | fr     | true
+       *   fr-CA     | en-US  | jp     | false
+       *   en-CA     | en-US  | en-US  | false
+       *
+       */
+      const audioLocale: string = LanguageUtils.normalize(audioStream.language);
+      return LanguageUtils.areLanguageCompatible(
+                 textLocale, preferredTextLocale) &&
+          !LanguageUtils.areLanguageCompatible(audioLocale, textLocale);
+    }
+    log.alwaysWarn('Invalid autoShowText setting!');
+    return false;
   }
 
   /**

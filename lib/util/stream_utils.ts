@@ -424,7 +424,7 @@ export class StreamUtils {
       if (Platform.isXboxOne() && video &&
           (video.width && video.width > 1920 ||
            video.height && video.height > 1080) &&
-          video.codecs.includes('avc1.')) {
+          (video.codecs.includes('avc1.') || video.codecs.includes('avc3.'))) {
         log.debug(
             'Dropping variant - not compatible with platform',
             StreamUtils.getVariantSummaryString_(variant));

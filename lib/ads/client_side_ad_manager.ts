@@ -251,21 +251,24 @@ export class ClientSideAdManager implements IReleasable {
         });
     this.eventManager_.listen(
         this.imaAdsManager_, google.ima.AdEvent.Type.PAUSED, (e) => {
-          asserts.assert(this.ad_ != null, 'Ad should not be null!');
-          this.ad_.setPaused(true);
-          convertEventAndSend(e, shaka.ads.AdManager.AD_PAUSED);
+          if (this.ad_) {
+            this.ad_.setPaused(true);
+            convertEventAndSend(e, shaka.ads.AdManager.AD_PAUSED);
+          }
         });
     this.eventManager_.listen(
         this.imaAdsManager_, google.ima.AdEvent.Type.RESUMED, (e) => {
-          asserts.assert(this.ad_ != null, 'Ad should not be null!');
-          this.ad_.setPaused(false);
-          convertEventAndSend(e, shaka.ads.AdManager.AD_RESUMED);
+          if (this.ad_) {
+            this.ad_.setPaused(false);
+            convertEventAndSend(e, shaka.ads.AdManager.AD_RESUMED);
+          }
         });
     this.eventManager_.listen(
         this.imaAdsManager_, google.ima.AdEvent.Type.SKIPPABLE_STATE_CHANGED,
         (e) => {
-          asserts.assert(this.ad_ != null, 'Ad should not be null!');
-          convertEventAndSend(e, shaka.ads.AdManager.AD_SKIP_STATE_CHANGED);
+          if (this.ad_) {
+            convertEventAndSend(e, shaka.ads.AdManager.AD_SKIP_STATE_CHANGED);
+          }
         });
     this.eventManager_.listen(
         this.imaAdsManager_, google.ima.AdEvent.Type.CLICK, (e) => {
@@ -325,6 +328,15 @@ export class ClientSideAdManager implements IReleasable {
     asserts.assert(
         this.imaAdsManager_, 'Should have an ads manager at this point!');
     const imaAd = e.getAd();
+    if (!imaAd) {
+      // Sometimes the IMA SDK will fire a CONTENT_PAUSE_REQUESTED or STARTED
+      // event with no associated ad object.
+      // We can't really play an ad in that situation, so just ignore the event.
+      shaka.log.alwaysWarn(
+          'The IMA SDK fired a ' + e.type + ' event with no associated ad. ' +
+          'Unable to play ad!');
+      return;
+    }
     this.ad_ = new ClientSideAd(imaAd, this.imaAdsManager_, this.video_);
     const data = (new Map())
                      .set('ad', this.ad_)

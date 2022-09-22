@@ -65,6 +65,7 @@ export class StreamingEngine implements IDestroyable {
   private bufferingGoalScale_: number = 1;
   private currentVariant_: shaka.extern.Variant|null = null;
   private currentTextStream_: shaka.extern.Stream|null = null;
+  private parsedPrftEventRaised_: boolean = false;
 
   /**
    * Maps a content type, e.g., 'audio', 'video', or 'text', to a MediaState.
@@ -714,7 +715,7 @@ export class StreamingEngine implements IDestroyable {
     await mediaSourceEngine.init(
         streamsByType, forceTransmuxTS, this.manifest_.sequenceMode);
     this.destroyer_.ensureNotDestroyed();
-    this.setDuration_();
+    this.updateDuration();
     for (const type of streamsByType.keys()) {
       const stream = streamsByType.get(type);
       if (!this.mediaStates_.has(type)) {
@@ -759,7 +760,7 @@ export class StreamingEngine implements IDestroyable {
   /**
    * Sets the MediaSource's duration.
    */
-  private setDuration_() {
+  updateDuration() {
     const duration = this.manifest_.presentationTimeline.getDuration();
     if (duration < Infinity) {
       this.playerInterface_.mediaSourceEngine.setDuration(duration);
@@ -1461,6 +1462,17 @@ export class StreamingEngine implements IDestroyable {
           try {
             const initSegment = await fetchInit;
             this.destroyer_.ensureNotDestroyed();
+            const parser = new Mp4Parser();
+            const Mp4Parser = Mp4Parser;
+            parser.box('moov', Mp4Parser.children)
+                .box('trak', Mp4Parser.children)
+                .box('mdia', Mp4Parser.children)
+                .fullBox(
+                    'mdhd',
+                    (box) => {
+                      this.parseMDHD_(reference, box);
+                    })
+                .parse(initSegment);
             log.v1(logPrefix, 'appending init segment');
             const hasClosedCaptions = mediaState.stream.closedCaptions &&
                 mediaState.stream.closedCaptions.size > 0;
@@ -1492,13 +1504,25 @@ export class StreamingEngine implements IDestroyable {
     const logPrefix = StreamingEngine.logPrefix_(mediaState);
     const hasClosedCaptions =
         stream.closedCaptions && stream.closedCaptions.size > 0;
-    if (stream.emsgSchemeIdUris != null && stream.emsgSchemeIdUris.length > 0 ||
-        this.config_.dispatchAllEmsgBoxes) {
-      (new Mp4Parser())
-          .fullBox(
-              'emsg',
-              (box) => this.parseEMSG_(reference, stream.emsgSchemeIdUris, box))
-          .parse(segment);
+    let parser;
+    const hasEmsg =
+        stream.emsgSchemeIdUris != null && stream.emsgSchemeIdUris.length > 0 ||
+        this.config_.dispatchAllEmsgBoxes;
+    const shouldParsePrftBox =
+        this.config_.parsePrftBox && !this.parsedPrftEventRaised_;
+    if (hasEmsg || shouldParsePrftBox) {
+      parser = new Mp4Parser();
+    }
+    if (hasEmsg) {
+      parser.fullBox(
+          'emsg',
+          (box) => this.parseEMSG_(reference, stream.emsgSchemeIdUris, box));
+    }
+    if (shouldParsePrftBox) {
+      parser.fullBox('prft', (box) => this.parsePrft_(reference, box));
+    }
+    if (hasEmsg || shouldParsePrftBox) {
+      parser.parse(segment);
     }
     await this.evict_(mediaState, presentationTime);
     this.destroyer_.ensureNotDestroyed();
@@ -1598,6 +1622,66 @@ export class StreamingEngine implements IDestroyable {
         this.playerInterface_.onEvent(event);
       }
     }
+  }
+
+  /**
+   * Parse MDHD box.
+   */
+  private parseMDHD_(reference: SegmentReference, box: shaka.extern.ParsedBox) {
+    const parsedMDHDBox =
+        shaka.util.Mp4BoxParsers.parseMDHD(box.reader || 0, box.version || 0);
+    reference.initSegmentReference.timescale = parsedMDHDBox.timescale;
+  }
+
+  /**
+   * Parse PRFT box.
+   */
+  private parsePrft_(reference: SegmentReference, box: shaka.extern.ParsedBox) {
+    if (this.parsedPrftEventRaised_ ||
+        !reference.initSegmentReference.timescale) {
+      return;
+    }
+
+    // Ignore referenceTrackId
+    box.reader.readUint32();
+    const ntpTimestampSec = box.reader.readUint32();
+    const ntpTimestampFrac = box.reader.readUint32();
+    const ntpTimestamp =
+        ntpTimestampSec * 1000 + ntpTimestampFrac / 2 ** 32 * 1000;
+    let mediaTime;
+    if (box.version === 0) {
+      mediaTime = box.reader.readUint32();
+    } else {
+      try {
+        mediaTime = box.reader.readUint64();
+      } catch (e) {
+        log.warning(
+            'parsePrft_: parsing mediatime resulted in a ' +
+            'MEDIA.JS_INTEGER_OVERFLOW exception');
+        this.parsedPrftEventRaised_ = true;
+        return;
+      }
+    }
+    const timescale = reference.initSegmentReference.timescale;
+    const wallClockTime = this.convertNtp(ntpTimestamp);
+    const programStartDate =
+        new Date(wallClockTime - mediaTime / timescale * 1000);
+    const prftInfo = {wallClockTime, programStartDate};
+    const eventName = FakeEventExports.EventName.Prft;
+    const data = (new Map()).set('detail', prftInfo);
+    const event = new FakeEvent(eventName, data);
+    this.playerInterface_.onEvent(event);
+    this.parsedPrftEventRaised_ = true;
+  }
+
+  /**
+   * Convert Ntp ntpTimeStamp to UTC Time
+   *
+   * @return utcTime
+   */
+  convertNtp(ntpTimeStamp: number): number {
+    const start = new Date(Date.UTC(1900, 0, 1, 0, 0, 0));
+    return (new Date(start.getTime() + ntpTimeStamp)).getTime();
   }
 
   /**
