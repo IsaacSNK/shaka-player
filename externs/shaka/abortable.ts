@@ -41,5 +41,5 @@ export  interface IAbortableOperation<T> {
    * @return Returns this.
    * @exportDoc
    */
-  finally(onFinal: (p1: boolean) => any): shaka.extern.IAbortableOperation<T>;
+  finally(onFinal: (p1: boolean) => any): IAbortableOperation<T>;
 };

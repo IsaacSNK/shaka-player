@@ -4,6 +4,11 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+import { NetworkingEngine } from "../../lib/net/networking_engine";
+import { ManifestInfo, SegmentInfo } from "../../lib/util/cmcd_manager";
+import { Manifest } from "./manifest";
+import { ManifestConfiguration, TimelineRegionInfo } from "./player";
+
 /**
  * Parses media manifests and handles manifest updates.
  *
@@ -32,14 +37,14 @@
  *
  * @exportDoc
  */
-export  class ManifestParser{
+export  interface ManifestParser{
   /**
    * Called by the Player to provide an updated configuration any time the
    * configuration changes.  Will be called at least once before start().
    *
    * @exportDoc
    */
-  configure(config: shaka.extern.ManifestConfiguration) {}
+  configure(config: ManifestConfiguration) ;
 
   /**
    * Initialize and start the parser. When |start| resolves, it should return
@@ -54,7 +59,7 @@ export  class ManifestParser{
   start(
       uri: string,
       playerInterface: shaka.extern.ManifestParser.PlayerInterface):
-      Promise<shaka.extern.Manifest> {}
+      Promise<Manifest> ;
 
   /**
    * Tell the parser that it must stop and free all internal resources as soon
@@ -66,14 +71,14 @@ export  class ManifestParser{
    *
    * @exportDoc
    */
-  stop(): Promise {}
+  stop(): Promise<any> ;
 
   /**
    * Tells the parser to do a manual manifest update.  Implementing this is
    * optional.  This is only called when 'emsg' boxes are present.
    * @exportDoc
    */
-  update() {}
+  update() ;
 
   /**
    * Tells the parser that the expiration time of an EME session has changed.
@@ -81,19 +86,19 @@ export  class ManifestParser{
    *
    * @exportDoc
    */
-  onExpirationUpdated(sessionId: string, expiration: number) {}
+  onExpirationUpdated(sessionId: string, expiration: number);
 };
 
 export interface PlayerInterface {
-  networkingEngine: shaka.net.NetworkingEngine;
+  networkingEngine: NetworkingEngine;
   modifyManifestRequest:
-      (p1: shaka.extern.Request,
-       p2: shaka.util.CmcdManager.ManifestInfo) => any;
+      (p1: Request,
+       p2: ManifestInfo) => any;
   modifySegmentRequest:
-      (p1: shaka.extern.Request, p2: shaka.util.CmcdManager.SegmentInfo) => any;
-  filter: (p1: shaka.extern.Manifest) => Promise;
-  makeTextStreamsForClosedCaptions: (p1: shaka.extern.Manifest) => any;
-  onTimelineRegionAdded: (p1: shaka.extern.TimelineRegionInfo) => any;
+      (p1: Request, p2: SegmentInfo) => any;
+  filter: (p1: Manifest) => Promise<any>;
+  makeTextStreamsForClosedCaptions: (p1: Manifest) => any;
+  onTimelineRegionAdded: (p1: TimelineRegionInfo) => any;
   onEvent: (p1: Event) => any;
   onError: (p1: shaka.util.Error) => any;
   isLowLatencyMode: () => boolean;
@@ -101,4 +106,4 @@ export interface PlayerInterface {
   enableLowLatencyMode: () => any;
   updateDuration: () => any;
 }
-type Factory = () => shaka.extern.ManifestParser;
+type Factory = () => ManifestParser;

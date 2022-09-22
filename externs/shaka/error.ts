@@ -3,6 +3,9 @@
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
+
+import { Category, Code, Severity } from "../../lib/util/error";
+
 export interface RestrictionInfo {
   hasAppRestrictions: boolean;
   missingKeys: string[];
@@ -16,17 +19,17 @@ export class Error{
   /**
    * @exportDoc
    */
-  severity: shaka.util.Error.Severity;
+  severity: Severity;
 
   /**
    * @exportDoc
    */
-  category: shaka.util.Error.Category;
+  category: Category;
 
   /**
    * @exportDoc
    */
-  code: shaka.util.Error.Code;
+  code: Code;
 
   /**
    * @exportDoc

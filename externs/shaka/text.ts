@@ -4,6 +4,8 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+import { direction, displayAlign, fontStyle, fontWeight, lineAlign, lineInterpretation, positionAlign, scrollMode, textAlign, textDecoration, units, writingMode } from "../../lib/text/cue";
+
 /**
  * @exportDoc
  */
@@ -58,19 +60,19 @@ export class CueRegion {
    * The units (percentage, pixels or lines) the region height is in.
    * @exportDoc
    */
-  heightUnits: shaka.text.CueRegion.units;
+  heightUnits: units;
 
   /**
    * The units (percentage or pixels) the region width is in.
    * @exportDoc
    */
-  widthUnits: shaka.text.CueRegion.units;
+  widthUnits: units;
 
   /**
    * The units (percentage or pixels) the region viewportAnchors are in.
    * @exportDoc
    */
-  viewportAnchorUnits: shaka.text.CueRegion.units;
+  viewportAnchorUnits: units;
 
   /**
    * If scroll=UP, it means that cues in the region will be added to the
@@ -79,13 +81,13 @@ export class CueRegion {
    * they were first painted in.
    * @exportDoc
    */
-  scroll: shaka.text.CueRegion.scrollMode;
+  scroll: scrollMode;
 };
 
 /**
  * @exportDoc
  */
-shaka.extern.Cue = class {
+export class Cue{
   /**
    * The start time of the cue in seconds, relative to the start of the
    * presentation.
@@ -112,7 +114,7 @@ shaka.extern.Cue = class {
    * because nested cues are inline elements.
    * @exportDoc
    */
-  region: shaka.extern.CueRegion;
+  region: CueRegion;
 
   /**
    * The indent (in percent) of the cue box in the direction defined by the
@@ -125,7 +127,7 @@ shaka.extern.Cue = class {
    * Position alignment of the cue.
    * @exportDoc
    */
-  positionAlign: shaka.text.Cue.positionAlign;
+  positionAlign: positionAlign;
 
   /**
    * Size of the cue box (in percents), where 0 means "auto".
@@ -137,26 +139,26 @@ shaka.extern.Cue = class {
    * Alignment of the text inside the cue box.
    * @exportDoc
    */
-  textAlign: shaka.text.Cue.textAlign;
+  textAlign: textAlign;
 
   /**
    * Text direction of the cue.
    * @exportDoc
    */
-  direction: shaka.text.Cue.direction;
+  direction: direction;
 
   /**
    * Text writing mode of the cue.
    * @exportDoc
    */
-  writingMode: shaka.text.Cue.writingMode;
+  writingMode: writingMode;
 
   /**
    * The way to interpret line field. (Either as an integer line number or
    * percentage from the display box).
    * @exportDoc
    */
-  lineInterpretation: shaka.text.Cue.lineInterpretation;
+  lineInterpretation: lineInterpretation;
 
   /**
    * The offset from the display box in either number of lines or
@@ -185,7 +187,7 @@ shaka.extern.Cue = class {
    * aligned at the line.
    * @exportDoc
    */
-  lineAlign: shaka.text.Cue.lineAlign;
+  lineAlign: lineAlign;
 
   /**
    * Vertical alignments of the cues within their extents.
@@ -193,7 +195,7 @@ shaka.extern.Cue = class {
    * container box, 'CENTER' means in the middle, 'AFTER' means at the bottom.
    * @exportDoc
    */
-  displayAlign: shaka.text.Cue.displayAlign;
+  displayAlign: displayAlign;
 
   /**
    * Text color as a CSS color, e.g. "#FFFFFF" or "white".
@@ -237,13 +239,13 @@ shaka.extern.Cue = class {
    * Text font weight. Either normal or bold.
    * @exportDoc
    */
-  fontWeight: shaka.text.Cue.fontWeight;
+  fontWeight: fontWeight;
 
   /**
    * Text font style. Normal, italic or oblique.
    * @exportDoc
    */
-  fontStyle: shaka.text.Cue.fontStyle;
+  fontStyle: fontStyle;
 
   /**
    * Text font family.
@@ -292,7 +294,7 @@ shaka.extern.Cue = class {
    * and line through. Empty array means no decoration.
    * @exportDoc
    */
-  textDecoration: shaka.text.Cue.textDecoration[];
+  textDecoration: textDecoration[];
 
   /**
    * Whether or not line wrapping should be applied to the cue.
@@ -312,7 +314,7 @@ shaka.extern.Cue = class {
    * Cues can be nested arbitrarily deeply.
    * @exportDoc
    */
-  nestedCues: shaka.extern.Cue[];
+  nestedCues: Cue[];
 
   /**
    * If true, this represents a container element that is "above" the main
@@ -336,7 +338,7 @@ shaka.extern.Cue = class {
  *
  * @exportDoc
  */
-export  class TextParser{
+export  interface TextParser{
   /**
    * Parse an initialization segment. Some formats do not have init
    * segments so this won't always be called.
@@ -345,7 +347,7 @@ export  class TextParser{
    *
    * @exportDoc
    */
-  parseInit(data: Uint8Array) {}
+  parseInit(data: Uint8Array) ;
 
   /**
    * Parse a media segment and return the cues that make up the segment.
@@ -358,13 +360,13 @@ export  class TextParser{
    */
   parseMedia(
       data: Uint8Array,
-      timeContext: shaka.extern.TextParser.TimeContext): shaka.extern.Cue[] {}
+      timeContext: TimeContext): Cue[] ;
 
   /**
    * Notifies the stream if the manifest is in sequence mode or not.
    *
    */
-  setSequenceMode(sequenceMode: boolean) {}
+  setSequenceMode(sequenceMode: boolean) ;
 };
 
 export interface TimeContext {
@@ -373,7 +375,7 @@ export interface TimeContext {
   segmentEnd: number;
   vttOffset: number;
 }
-type TextParserPlugin = () => shaka.extern.TextParser;
+type TextParserPlugin = () => TextParser;
 
 /**
  * @summary
@@ -394,12 +396,12 @@ type TextParserPlugin = () => shaka.extern.TextParser;
  *
  * @exportDoc
  */
-export class TextDisplayer{
+export interface TextDisplayer{
   /**
    * @override
    * @exportDoc
    */
-  destroy() {}
+  destroy() ;
 
   /**
    * Append given text cues to the list of cues to be displayed.
@@ -408,7 +410,7 @@ export class TextDisplayer{
    *
    * @exportDoc
    */
-  append(cues: shaka.text.Cue[]) {}
+  append(cues: Cue[]) ;
 
   /**
    * Remove all cues that are fully contained by the given time range (relative
@@ -421,7 +423,7 @@ export class TextDisplayer{
    *
    * @exportDoc
    */
-  remove(startTime: number, endTime: number): boolean {}
+  remove(startTime: number, endTime: number): boolean ;
 
   /**
    * Returns true if text is currently visible.
@@ -429,7 +431,7 @@ export class TextDisplayer{
    *
    * @exportDoc
    */
-  isTextVisible(): boolean {}
+  isTextVisible(): boolean ;
 
   /**
    * Set text visibility.
@@ -437,6 +439,6 @@ export class TextDisplayer{
    *
    * @exportDoc
    */
-  setTextVisibility(on: boolean) {}
+  setTextVisibility(on: boolean) ;
 };
-type Factory = () => shaka.extern.TextDisplayer;
+type Factory = () => TextDisplayer;

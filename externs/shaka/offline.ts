@@ -3,6 +3,10 @@
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
+
+import { DrmInfo } from "./manifest";
+import { Track } from "./player";
+
 export interface OfflineSupport {
   basic: boolean;
   encrypted: {[key: string]: boolean};
@@ -14,7 +18,7 @@ export interface StoredContent {
   duration: number;
   size: number;
   expiration: number;
-  tracks: shaka.extern.Track[];
+  tracks: Track[];
   appMetadata: Object;
   isIncomplete: boolean;
 }
@@ -25,9 +29,9 @@ export interface ManifestDB {
   duration: number;
   size: number;
   expiration: number;
-  streams: shaka.extern.StreamDB[];
+  streams:StreamDB[];
   sessionIds: string[];
-  drmInfo: shaka.extern.DrmInfo|null;
+  drmInfo: DrmInfo|null;
   appMetadata: Object;
   isIncomplete: boolean|undefined;
   sequenceMode: boolean|undefined;
@@ -50,7 +54,7 @@ export interface StreamDB {
   height: number|null;
   encrypted: boolean;
   keyIds: Set<string>;
-  segments: shaka.extern.SegmentDB[];
+  segments: SegmentDB[];
   variantIds: number[];
   roles: string[];
   forced: boolean;
@@ -98,13 +102,13 @@ export interface EmeSessionDB {
  * structures.
  *
  */
-export class StorageCell{
+export interface StorageCell{
   /**
    * Free all resources used by this cell. This should not affect the stored
    * content.
    *
    */
-  destroy(): Promise {}
+  destroy(): Promise<any> ;
 
   /**
    * Check if the cell can support new keys. If a cell has a fixed key space,
@@ -112,7 +116,7 @@ export class StorageCell{
    * remove-operations and update-operations should still work.
    *
    */
-  hasFixedKeySpace(): boolean {}
+  hasFixedKeySpace(): boolean ;
 
   /**
    * Add a group of segments. Will return a promise that resolves with a list
@@ -120,7 +124,7 @@ export class StorageCell{
    * should fail to be added.
    *
    */
-  addSegments(segments: shaka.extern.SegmentDataDB[]): Promise<number[]> {}
+  addSegments(segments: SegmentDataDB[]): Promise<number[]> ;
 
   /**
    * Remove a group of segments using their keys to identify them. If a key
@@ -130,14 +134,14 @@ export class StorageCell{
    *                                    from the cell. The key of the segment
    *                                    will be passed to the callback.
    */
-  removeSegments(keys: number[], onRemove: (p1: number) => any): Promise {}
+  removeSegments(keys: number[], onRemove: (p1: number) => any): Promise<any> ;
 
   /**
    * Get a group of segments using their keys to identify them. If any key is
    * not found, the promise chain will be rejected.
    *
    */
-  getSegments(keys: number[]): Promise<shaka.extern.SegmentDataDB[]> {}
+  getSegments(keys: number[]): Promise<SegmentDataDB[]> ;
 
   /**
    * Add a group of manifests. Will return a promise that resolves with a list
@@ -146,13 +150,13 @@ export class StorageCell{
    *
    * @return keys
    */
-  addManifests(manifests: shaka.extern.ManifestDB[]): Promise<number[]> {}
+  addManifests(manifests: ManifestDB[]): Promise<number[]> ;
 
   /**
    * Updates the given manifest, stored at the given key.
    *
    */
-  updateManifest(key: number, manifest: shaka.extern.ManifestDB): Promise {}
+  updateManifest(key: number, manifest: ManifestDB): Promise<any> ;
 
   /**
    * Replace the expiration time of the manifest stored under |key| with
@@ -160,7 +164,7 @@ export class StorageCell{
    * act as a no-op.
    *
    */
-  updateManifestExpiration(key: number, expiration: number): Promise {}
+  updateManifestExpiration(key: number, expiration: number): Promise<any> ;
 
   /**
    * Remove a group of manifests using their keys to identify them. If a key
@@ -170,14 +174,14 @@ export class StorageCell{
    *                                    removed from the cell. The key of the
    *                                    manifest will be passed to the callback.
    */
-  removeManifests(keys: number[], onRemove: (p1: number) => any): Promise {}
+  removeManifests(keys: number[], onRemove: (p1: number) => any): Promise<any> ;
 
   /**
    * Get a group of manifests using their keys to identify them. If any key is
    * not found, the promise chain will be rejected.
    *
    */
-  getManifests(keys: number[]): Promise<shaka.extern.ManifestDB[]> {}
+  getManifests(keys: number[]): Promise<ManifestDB[]> ;
 
   /**
    * Get all manifests stored in this cell. Since manifests are small compared
@@ -185,7 +189,7 @@ export class StorageCell{
    * all in main memory at one time.
    *
    */
-  getAllManifests(): Promise<Map<number, shaka.extern.ManifestDB>> {}
+  getAllManifests(): Promise<Map<number, ManifestDB>> ;
 };
 
 /**
@@ -194,26 +198,26 @@ export class StorageCell{
  * the license itself.  The license itself is stored using EME.
  *
  */
-export class EmeSessionStorageCell{
+export interface EmeSessionStorageCell{
   /**
    * Free all resources used by this cell. This won't affect the stored content.
    */
-  destroy(): Promise {}
+  destroy(): Promise<any> ;
 
   /**
    * Gets the currently stored sessions.
    */
-  getAll(): Promise<shaka.extern.EmeSessionDB[]> {}
+  getAll(): Promise<EmeSessionDB[]> ;
 
   /**
    * Adds the given sessions to the store.
    */
-  add(sessions: shaka.extern.EmeSessionDB[]): Promise {}
+  add(sessions: EmeSessionDB[]): Promise<any> ;
 
   /**
    * Removes the given session IDs from the store.
    */
-  remove(sessionIds: string[]): Promise {}
+  remove(sessionIds: string[]): Promise<any> ;
 };
 
 /**
@@ -227,20 +231,20 @@ export class EmeSessionStorageCell{
  * connection.
  *
  */
-export  class StorageMechanism{
+export  interface StorageMechanism{
   /**
    * Initialize the storage mechanism for first use. This should only be called
    * once. Calling |init| multiple times has an undefined behaviour.
    *
    */
-  init(): Promise {}
+  init(): Promise<any> ;
 
   /**
    * Free all resources used by the storage mechanism and its cells. This should
    * not affect the stored content.
    *
    */
-  destroy(): Promise {}
+  destroy(): Promise<any> ;
 
   /**
    * Get a map of all the cells managed by the storage mechanism. Editing the
@@ -249,12 +253,12 @@ export  class StorageMechanism{
    * |getCells|.
    *
    */
-  getCells(): Map<string, shaka.extern.StorageCell> {}
+  getCells(): Map<string, StorageCell> ;
 
   /**
    * Get the current EME session storage cell.
    */
-  getEmeSessionCell(): shaka.extern.EmeSessionStorageCell {}
+  getEmeSessionCell(): EmeSessionStorageCell ;
 
   /**
    * Erase all content from storage and leave storage in an empty state. Erase
@@ -264,5 +268,5 @@ export  class StorageMechanism{
    * After calling |erase|, the mechanism will be in an initialized state.
    *
    */
-  erase(): Promise {}
+  erase(): Promise<any> ;
 };

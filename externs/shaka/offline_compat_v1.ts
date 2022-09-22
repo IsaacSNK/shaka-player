@@ -3,21 +3,24 @@
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
+
+import { DrmInfo } from "./manifest";
+
 export interface ManifestDBV1 {
   key: number;
   originalManifestUri: string;
   duration: number;
   size: number;
   expiration: number;
-  periods: shaka.extern.PeriodDBV1[];
+  periods: PeriodDBV1[];
   sessionIds: string[];
-  drmInfo: shaka.extern.DrmInfo|null;
+  drmInfo: DrmInfo|null;
   appMetadata: Object;
 }
 
 export interface PeriodDBV1 {
   startTime: number;
-  streams: shaka.extern.StreamDBV1[];
+  streams: StreamDBV1[];
 }
 
 export interface StreamDBV1 {
@@ -36,7 +39,7 @@ export interface StreamDBV1 {
   initSegmentUri: string|null;
   encrypted: boolean;
   keyId: string|null;
-  segments: shaka.extern.SegmentDBV1[];
+  segments: SegmentDBV1[];
   variantIds: number[];
 }
 

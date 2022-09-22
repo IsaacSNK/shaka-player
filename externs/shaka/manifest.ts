@@ -3,11 +3,15 @@
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
+
+import { PresentationTimeline } from "../../lib/media/presentation_timeline";
+import { StreamDB } from "./offline";
+
 export interface Manifest {
-  presentationTimeline: shaka.media.PresentationTimeline;
-  variants: shaka.extern.Variant[];
-  textStreams: shaka.extern.Stream[];
-  imageStreams: shaka.extern.Stream[];
+  presentationTimeline: PresentationTimeline;
+  variants: Variant[];
+  textStreams:  Stream[];
+  imageStreams: Stream[];
   offlineSessionIds: string[];
   minBufferTime: number;
   sequenceMode: boolean;
@@ -29,7 +33,7 @@ export interface DrmInfo {
   serverCertificate: Uint8Array;
   serverCertificateUri: string;
   sessionType: string;
-  initData: shaka.extern.InitDataOverride[];
+  initData: InitDataOverride[];
   keyIds: Set<string>;
 }
 
@@ -38,30 +42,30 @@ export interface Variant {
   language: string;
   disabledUntilTime: number;
   primary: boolean;
-  audio: shaka.extern.Stream|null;
-  video: shaka.extern.Stream|null;
+  audio: Stream|null;
+  video: Stream|null;
   bandwidth: number;
   allowedByApplication: boolean;
   allowedByKeySystem: boolean;
   decodingInfos: MediaCapabilitiesDecodingInfo[];
 }
-type CreateSegmentIndexFunction = () => Promise;
+type CreateSegmentIndexFunction = () => Promise<any>;
 
 export interface HlsAes128Key {
   method: string;
   cryptoKey: webCrypto.CryptoKey|undefined;
-  fetchKey: shaka.extern.CreateSegmentIndexFunction|undefined;
+  fetchKey: CreateSegmentIndexFunction|undefined;
   iv: Uint8Array|undefined;
   firstMediaSequenceNumber: number;
 }
-type FetchCryptoKeysFunction = () => Promise;
+type FetchCryptoKeysFunction = () => Promise<any>;
 
 export interface Stream {
   id: number;
   originalId: string|null;
-  createSegmentIndex: shaka.extern.CreateSegmentIndexFunction;
+  createSegmentIndex: CreateSegmentIndexFunction;
   closeSegmentIndex: (() => any)|undefined;
-  segmentIndex: shaka.media.SegmentIndex;
+  segmentIndex: SegmentIndex;
   mimeType: string;
   codecs: string;
   frameRate: number|undefined;
@@ -72,13 +76,13 @@ export interface Stream {
   height: number|undefined;
   kind: string|undefined;
   encrypted: boolean;
-  drmInfos: shaka.extern.DrmInfo[];
+  drmInfos: DrmInfo[];
   keyIds: Set<string>;
   language: string;
   label: string|null;
   type: string;
   primary: boolean;
-  trickModeVideo: shaka.extern.Stream|null;
+  trickModeVideo: Stream|null;
   emsgSchemeIdUris: string[]|null;
   roles: string[];
   forced: boolean;
@@ -87,5 +91,5 @@ export interface Stream {
   spatialAudio: boolean;
   closedCaptions: Map<string, string>;
   tilesLayout: string|undefined;
-  matchedStreams: shaka.extern.Stream[]|shaka.extern.StreamDB[]|undefined;
+  matchedStreams: Stream[]|StreamDB[]|undefined;
 }

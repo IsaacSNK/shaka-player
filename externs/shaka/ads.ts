@@ -3,6 +3,9 @@
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
+
+import { TimelineRegionInfo } from "./player";
+
 export interface AdsStats {
   loadTimes: number[];
   started: number;
@@ -21,41 +24,41 @@ export interface AdCuePoint {
  *
  * @exportDoc
  */
-export class IAdManager extends EventTarget {
-  setLocale(locale: string) {}
+export interface IAdManager extends EventTarget {
+  setLocale(locale: string) ;
 
-  release() {}
+  release() ;
 
-  onAssetUnload() {}
+  onAssetUnload() ;
 
-  initClientSide(adContainer: HTMLElement, video: HTMLMediaElement) {}
+  initClientSide(adContainer: HTMLElement, video: HTMLMediaElement) ;
 
-  requestClientSideAds(imaRequest: google.ima.AdsRequest) {}
+  requestClientSideAds(imaRequest: google.ima.AdsRequest) ;
 
-  initServerSide(adContainer: HTMLElement, video: HTMLMediaElement) {}
+  initServerSide(adContainer: HTMLElement, video: HTMLMediaElement) ;
 
   requestServerSideStream(
       imaRequest: google.ima.dai.api.StreamRequest,
-      backupUrl?: string): Promise<string> {}
+      backupUrl?: string): Promise<string> ;
 
-  replaceServerSideAdTagParameters(adTagParameters: Object) {}
+  replaceServerSideAdTagParameters(adTagParameters: Object) ;
 
-  getServerSideCuePoints(): shaka.extern.AdCuePoint[] {}
+  getServerSideCuePoints(): AdCuePoint[] ;
 
   /**
    * Get statistics for the current playback session. If the player is not
    * playing content, this will return an empty stats object.
    */
-  getStats() {}
+  getStats() ;
 
-  onDashTimedMetadata(region: shaka.extern.TimelineRegionInfo) {}
+  onDashTimedMetadata(region: TimelineRegionInfo) ;
 
   onHlsTimedMetadata(
-      metadata: shaka.extern.ID3Metadata, timestampOffset: number) {}
+      metadata: shaka.extern.ID3Metadata, timestampOffset: number) ;
 
-  onCueMetadataChange(value: shaka.extern.ID3Metadata) {}
+  onCueMetadataChange(value: shaka.extern.ID3Metadata) ;
 };
-type Factory = () => shaka.extern.IAdManager;
+type Factory = () => IAdManager;
 
 /**
  * Interface for Ad objects.

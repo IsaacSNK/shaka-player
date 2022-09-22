@@ -3,6 +3,13 @@
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
+
+import { AutoShowText } from "../../lib/config/auto_show_text";
+import { Factory } from "./abr_manager";
+import { DrmInfo } from "./manifest";
+import { RetryParameters } from "./net";
+import { StoredContent } from "./offline";
+
 export interface TrackChoice {
   timestamp: number;
   id: number;
@@ -37,8 +44,8 @@ export interface Stats {
   maxSegmentDuration: number;
   gapsJumped: number;
   stallsDetected: number;
-  switchHistory: shaka.extern.TrackChoice[];
-  stateHistory: shaka.extern.StateChange[];
+  switchHistory: TrackChoice[];
+  stateHistory: StateChange[];
 }
 
 export interface BufferedRange {
@@ -47,10 +54,10 @@ export interface BufferedRange {
 }
 
 export interface BufferedInfo {
-  total: shaka.extern.BufferedRange[];
-  audio: shaka.extern.BufferedRange[];
-  video: shaka.extern.BufferedRange[];
-  text: shaka.extern.BufferedRange[];
+  total: BufferedRange[];
+  audio: BufferedRange[];
+  video: BufferedRange[];
+  text: BufferedRange[];
 }
 
 export interface Track {
@@ -89,7 +96,7 @@ export interface Track {
   originalTextId: string|null;
   originalImageId: string|null;
 }
-type TrackList = shaka.extern.Track[];
+type TrackList = Track[];
 
 export interface Restrictions {
   minWidth: number;
@@ -111,7 +118,7 @@ export interface DrmSupportType {
 export interface SupportType {
   manifest: {[key: string]: boolean};
   media: {[key: string]: boolean};
-  drm: {[key: string]: shaka.extern.DrmSupportType|null};
+  drm: {[key: string]: DrmSupportType|null};
 }
 type ID3Metadata = {
   [key: string]: any
@@ -168,14 +175,14 @@ export interface AdvancedDrmConfiguration {
 }
 
 export interface DrmConfiguration {
-  retryParameters: shaka.extern.RetryParameters;
+  retryParameters: RetryParameters;
   servers: {[key: string]: string};
   clearKeys: {[key: string]: string};
   delayLicenseRequestUntilPlayed: boolean;
-  advanced: {[key: string]: shaka.extern.AdvancedDrmConfiguration};
+  advanced: {[key: string]: AdvancedDrmConfiguration};
   initDataTransform:
       ((p1: Uint8Array, p2: string,
-        p3: shaka.extern.DrmInfo|null) => Uint8Array)|undefined;
+        p3: DrmInfo|null) => Uint8Array)|undefined;
   logLicenseExchange: boolean;
   updateExpirationTime: number;
   preferredKeySystems: string[];
@@ -207,7 +214,7 @@ export interface HlsManifestConfiguration {
 }
 
 export interface ManifestConfiguration {
-  retryParameters: shaka.extern.RetryParameters;
+  retryParameters: RetryParameters;
   availabilityWindowOverride: number;
   disableAudio: boolean;
   disableVideo: boolean;
@@ -215,12 +222,12 @@ export interface ManifestConfiguration {
   disableThumbnails: boolean;
   defaultPresentationDelay: number;
   segmentRelativeVttTiming: boolean;
-  dash: shaka.extern.DashManifestConfiguration;
-  hls: shaka.extern.HlsManifestConfiguration;
+  dash: DashManifestConfiguration;
+  hls: HlsManifestConfiguration;
 }
 
 export interface StreamingConfiguration {
-  retryParameters: shaka.extern.RetryParameters;
+  retryParameters: RetryParameters;
   failureCallback: (p1: shaka.util.Error) => any;
   rebufferingGoal: number;
   bufferingGoal: number;
@@ -252,11 +259,11 @@ export interface AbrConfiguration {
   enabled: boolean;
   useNetworkInformation: boolean;
   defaultBandwidthEstimate: number;
-  restrictions: shaka.extern.Restrictions;
+  restrictions: Restrictions;
   switchInterval: number;
   bandwidthUpgradeTarget: number;
   bandwidthDowngradeTarget: number;
-  advanced: shaka.extern.AdvancedAbrConfiguration;
+  advanced: AdvancedAbrConfiguration;
   restrictToElementSize: boolean;
   ignoreDevicePixelRatio: boolean;
 }
@@ -277,22 +284,22 @@ export interface CmcdConfiguration {
 
 export interface OfflineConfiguration {
   trackSelectionCallback:
-      (p1: shaka.extern.TrackList) => Promise<shaka.extern.TrackList>;
+      (p1: TrackList) => Promise<TrackList>;
   downloadSizeCallback: (p1: number) => Promise<boolean>;
-  progressCallback: (p1: shaka.extern.StoredContent, p2: number) => any;
+  progressCallback: (p1: StoredContent, p2: number) => any;
   usePersistentLicense: boolean;
   numberOfParallelDownloads: number;
 }
 
 export interface PlayerConfiguration {
-  autoShowText: shaka.config.AutoShowText;
-  drm: shaka.extern.DrmConfiguration;
-  manifest: shaka.extern.ManifestConfiguration;
-  streaming: shaka.extern.StreamingConfiguration;
-  abrFactory: shaka.extern.AbrManager.Factory;
-  abr: shaka.extern.AbrConfiguration;
-  cmcd: shaka.extern.CmcdConfiguration;
-  offline: shaka.extern.OfflineConfiguration;
+  autoShowText: AutoShowText;
+  drm: DrmConfiguration;
+  manifest: ManifestConfiguration;
+  streaming: StreamingConfiguration;
+  abrFactory: Factory;
+  abr: AbrConfiguration;
+  cmcd: CmcdConfiguration;
+  offline: OfflineConfiguration;
   preferredAudioLanguage: string;
   preferredTextLanguage: string;
   preferredVariantRole: string;
@@ -302,10 +309,10 @@ export interface PlayerConfiguration {
   preferredAudioChannelCount: number;
   preferredDecodingAttributes: string[];
   preferForcedSubs: boolean;
-  restrictions: shaka.extern.Restrictions;
+  restrictions: Restrictions;
   playRangeStart: number;
   playRangeEnd: number;
-  textDisplayFactory: shaka.extern.TextDisplayer.Factory;
+  textDisplayFactory: Factory;
 }
 
 export interface LanguageRole {

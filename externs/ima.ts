@@ -12,11 +12,12 @@ export namespace google {
    *
    * Download the code samples to assist with implementing the IMA HTML5 SDK.
    */
-  namespace ima {
+  export namespace ima {
     /**
      * An ad class that's extended by classes representing different ad types.
      */
-    interface Ad {
+    export const dai = {}
+    export interface Ad {
       /**
        * Ad ID is used to synchronize master ad and companion ads.
        * @returns The ID of the ad, or the empty string if this information is unavailable.
@@ -179,7 +180,7 @@ export namespace google {
      *
      * The containerElement parameter must be an element that is part of the DOM. It is necessary to correctly position the containerElement in order for the ads to be displayed correctly. It is recommended to position it above the content video player and size it to cover the whole video player. Please refer to the SDK documentation for details about recommended implementations.
      */
-    class AdDisplayContainer {
+    export class AdDisplayContainer {
       /**
        *
        * @param containerElement The element to display the ads in. The element must be inserted into the DOM before creating ima.AdDisplayContainer.
