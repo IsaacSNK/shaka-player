@@ -3,13 +3,13 @@
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-import {AdsStats} from './/ads_stats';
-import {ClientSideAdManager} from './/client_side_ad_manager';
-import {ServerSideAdManager} from './/server_side_ad_manager';
+import {AdsStats} from './ads_stats';
+import {ClientSideAdManager} from './client_side_ad_manager';
+import {ServerSideAdManager} from './server_side_ad_manager';
 import * as logExports from './../debug/log';
 import {log} from './../debug/log';
-import * as PlayerExports from './../player/player';
-import {Player} from './../player/player';
+import * as PlayerExports from './../player';
+import {Player} from './../player';
 import * as ErrorExports from './../util/error';
 import {Error} from './../util/error';
 import * as FakeEventExports from './../util/fake_event';
@@ -333,8 +333,8 @@ import {IReleasable} from './../util/i_releasable';
  */
 export class AdManager extends FakeEventTarget implements shaka.
 extern.IAdManager, IReleasable {
-  private csAdManager_: ClientSideAdManager = null;
-  private ssAdManager_: ServerSideAdManager = null;
+  private csAdManager_: ClientSideAdManager | null = null;
+  private ssAdManager_: ServerSideAdManager | null = null;
   private stats_: AdsStats;
 
   /** locale */

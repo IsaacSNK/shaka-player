@@ -51,8 +51,8 @@ extern.AbrManager {
    */
   private lastTimeChosenMs_: number|null = null;
   private config_: shaka.extern.AbrConfiguration|null = null;
-  private mediaElement_: HTMLMediaElement = null;
-  private resizeObserver_: ResizeObserver = null;
+  private mediaElement_: HTMLMediaElement|null = null;
+  private resizeObserver_: ResizeObserver |null= null;
   private resizeObserverTimer_: Timer;
 
   constructor() {
@@ -62,7 +62,9 @@ extern.AbrManager {
     // retrieving information about a user's network connection. We listen
     // to the change event to be able to make quick changes in case the type
     // of connectivity changes.
+    //@ts-ignore
     if (navigator.connection) {
+        //@ts-ignore
       navigator.connection.addEventListener('change', () => {
         if (this.config_.useNetworkInformation && this.enabled_) {
           this.bandwidthEstimator_ = new EwmaBandwidthEstimator();
@@ -119,14 +121,14 @@ extern.AbrManager {
    * @export
    */
   chooseVariant() {
-    const SimpleAbrManager = SimpleAbrManager;
+    const SimpleAbrManagerInstance = new SimpleAbrManager();
     let maxHeight = Infinity;
     let maxWidth = Infinity;
     if (this.resizeObserver_ && this.config_.restrictToElementSize) {
       const devicePixelRatio =
           this.config_.ignoreDevicePixelRatio ? 1 : window.devicePixelRatio;
-      maxHeight = this.mediaElement_.clientWidth * devicePixelRatio;
-      maxWidth = this.mediaElement_.clientHeight * devicePixelRatio;
+      maxHeight = this.mediaElement_!==null? this.mediaElement_.clientWidth * devicePixelRatio:0;
+      maxWidth = this.mediaElement_!==null? this.mediaElement_.clientHeight * devicePixelRatio:0;
     }
 
     // Get sorted Variants.
@@ -255,12 +257,12 @@ extern.AbrManager {
     }
     if (this.mediaElement_ && 'ResizeObserver' in window) {
       this.resizeObserver_ = new ResizeObserver(() => {
-        const SimpleAbrManager = SimpleAbrManager;
+        //const SimpleAbrManager = SimpleAbrManager;
 
         // Batch up resize changes before checking them.
         this.resizeObserverTimer_.tickAfter(
             /* seconds= */
-            SimpleAbrManager.RESIZE_OBSERVER_BATCH_TIME);
+           RESIZE_OBSERVER_BATCH_TIME);
       });
       this.resizeObserver_.observe(this.mediaElement_);
     }
@@ -295,7 +297,7 @@ extern.AbrManager {
     } else {
       // Check if we've left the switch interval.
       const now = Date.now();
-      const delta = now - this.lastTimeChosenMs_;
+      const delta = now - (this.lastTimeChosenMs_!==null?this.lastTimeChosenMs_:0);
       if (delta < this.config_.switchInterval * 1000) {
         log.v2('Still within switch interval...');
         return;
@@ -322,10 +324,12 @@ extern.AbrManager {
     // Some browsers implement the Network Information API, which allows
     // retrieving information about a user's network connection.  Tizen 3 has
     // NetworkInformation, but not the downlink attribute.
+      //@ts-ignore
     if (navigator.connection && navigator.connection.downlink &&
         this.config_.useNetworkInformation) {
       // If it's available, get the bandwidth estimate from the browser (in
       // megabits per second) and use it as defaultBandwidthEstimate.
+        //@ts-ignore
       defaultBandwidthEstimate = navigator.connection.downlink * 1e6;
     }
     return defaultBandwidthEstimate;

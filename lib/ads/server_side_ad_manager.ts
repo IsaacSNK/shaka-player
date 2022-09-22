@@ -8,7 +8,7 @@
  * @fileoverview
  * @suppress {missingRequire} TODO(b/152540451): this shouldn't be needed
  */
-import {ServerSideAd} from './/server_side_ad';
+import {ServerSideAd} from './server_side_ad';
 import * as assertsExports from './../debug/asserts';
 import {asserts} from './../debug/asserts';
 import * as logExports from './../debug/log';
@@ -16,6 +16,8 @@ import {log} from './../debug/log';
 import {EventManager} from './../util/event_manager';
 import {FakeEvent} from './../util/fake_event';
 import {IReleasable} from './../util/i_releasable';
+import { ADS_LOADED, AD_COMPLETE, AD_FIRST_QUARTILE, AD_MIDPOINT, AD_SKIPPED, AD_STARTED, AD_STOPPED, AD_THIRD_QUARTILE, CUEPOINTS_CHANGED, IMA_STREAM_MANAGER_LOADED } from './ad_manager';
+import { Category, Severity ,Code,Error} from '../util/error';
 
 /**
  * A class responsible for server-side ad interactions.
@@ -35,7 +37,7 @@ export class ServerSideAdManager implements IReleasable {
    * snapback.
    */
   private snapForwardTime_: number|null = null;
-  private ad_: ServerSideAd = null;
+  private ad_: ServerSideAd|null = null;
   private adProgressData_: google.ima.dai.api.AdProgressData|null = null;
   private backupUrl_: string = '';
   private currentCuePoints_: shaka.extern.AdCuePoint[] = [];
@@ -48,14 +50,14 @@ export class ServerSideAdManager implements IReleasable {
     this.adContainer_ = adContainer;
     this.video_ = video;
     this.onEvent_ = onEvent;
-    this.eventManager_ = new shaka.util.EventManager();
+    this.eventManager_ = new EventManager();
     const uiSettings: google.ima.dai.api.UiSettings =
         new google.ima.dai.api.UiSettings();
     uiSettings.setLocale(locale);
     this.streamManager_ = new google.ima.dai.api.StreamManager(
         this.video_, this.adContainer_, uiSettings);
-    this.onEvent_(new shaka.util.FakeEvent(
-        shaka.ads.AdManager.IMA_STREAM_MANAGER_LOADED,
+    this.onEvent_(new FakeEvent(
+        IMA_STREAM_MANAGER_LOADED,
         (new Map()).set('imaStreamManager', this.streamManager_)));
 
     // Events
@@ -97,30 +99,30 @@ export class ServerSideAdManager implements IReleasable {
         () => {
           log.info('Ad event: First Quartile');
           this.onEvent_(
-              new shaka.util.FakeEvent(shaka.ads.AdManager.AD_FIRST_QUARTILE));
+              new FakeEvent(AD_FIRST_QUARTILE));
         });
     this.eventManager_.listen(
         this.streamManager_, google.ima.dai.api.StreamEvent.Type.MIDPOINT,
         () => {
           log.info('Ad event: Midpoint');
           this.onEvent_(
-              new shaka.util.FakeEvent(shaka.ads.AdManager.AD_MIDPOINT));
+              new FakeEvent(AD_MIDPOINT));
         });
     this.eventManager_.listen(
         this.streamManager_, google.ima.dai.api.StreamEvent.Type.THIRD_QUARTILE,
         () => {
           log.info('Ad event: Third Quartile');
           this.onEvent_(
-              new shaka.util.FakeEvent(shaka.ads.AdManager.AD_THIRD_QUARTILE));
+              new FakeEvent(AD_THIRD_QUARTILE));
         });
     this.eventManager_.listen(
         this.streamManager_, google.ima.dai.api.StreamEvent.Type.COMPLETE,
         () => {
           log.info('Ad event: Complete');
           this.onEvent_(
-              new shaka.util.FakeEvent(shaka.ads.AdManager.AD_COMPLETE));
+              new FakeEvent(AD_COMPLETE));
           this.onEvent_(
-              new shaka.util.FakeEvent(shaka.ads.AdManager.AD_STOPPED));
+              new FakeEvent(AD_STOPPED));
           this.adContainer_.removeAttribute('ad-active');
           this.ad_ = null;
         });
@@ -129,9 +131,9 @@ export class ServerSideAdManager implements IReleasable {
         () => {
           log.info('Ad event: Skipped');
           this.onEvent_(
-              new shaka.util.FakeEvent(shaka.ads.AdManager.AD_SKIPPED));
+              new FakeEvent(AD_SKIPPED));
           this.onEvent_(
-              new shaka.util.FakeEvent(shaka.ads.AdManager.AD_STOPPED));
+              new FakeEvent(AD_STOPPED));
         });
     this.eventManager_.listen(
         this.streamManager_,
@@ -145,14 +147,14 @@ export class ServerSideAdManager implements IReleasable {
       streamRequest: google.ima.dai.api.StreamRequest,
       backupUrl?: string): Promise<string> {
     if (this.streamPromise_) {
-      return Promise.reject(new shaka.util.Error(
-          shaka.util.Error.Severity.RECOVERABLE, shaka.util.Error.Category.ADS,
-          shaka.util.Error.Code.CURRENT_DAI_REQUEST_NOT_FINISHED));
+      return Promise.reject(new Error(
+           Severity.RECOVERABLE, Category.ADS,
+          Code.CURRENT_DAI_REQUEST_NOT_FINISHED));
     }
     if (streamRequest instanceof google.ima.dai.api.LiveStreamRequest) {
       this.isLiveContent_ = true;
     }
-    this.streamPromise_ = new shaka.util.PublicPromise();
+    this.streamPromise_ = new PublicPromise();
     this.streamManager_.requestStream(streamRequest);
     this.backupUrl_ = backupUrl || '';
     this.streamRequestStartTime_ = Date.now() / 1000;
@@ -255,8 +257,8 @@ export class ServerSideAdManager implements IReleasable {
     if (this.adProgressData_) {
       this.ad_.setProgressData(this.adProgressData_);
     }
-    this.onEvent_(new shaka.util.FakeEvent(
-        shaka.ads.AdManager.AD_STARTED, (new Map()).set('ad', this.ad_)));
+    this.onEvent_(new FakeEvent(
+        AD_STARTED, (new Map()).set('ad', this.ad_)));
     this.adContainer_.setAttribute('ad-active', 'true');
   }
 
@@ -276,8 +278,8 @@ export class ServerSideAdManager implements IReleasable {
   private onLoaded_(e: google.ima.dai.api.StreamEvent) {
     const now = Date.now() / 1000;
     const loadTime = now - this.streamRequestStartTime_;
-    this.onEvent_(new shaka.util.FakeEvent(
-        shaka.ads.AdManager.ADS_LOADED, (new Map()).set('loadTime', loadTime)));
+    this.onEvent_(new FakeEvent(
+        ADS_LOADED, (new Map()).set('loadTime', loadTime)));
     const streamData = e.getStreamData();
     const url = streamData.url;
     this.streamPromise_.resolve(url);
@@ -322,8 +324,8 @@ export class ServerSideAdManager implements IReleasable {
       cuePoints.push(shakaCuePoint);
     }
     this.currentCuePoints_ = cuePoints;
-    this.onEvent_(new shaka.util.FakeEvent(
-        shaka.ads.AdManager.CUEPOINTS_CHANGED,
+    this.onEvent_(new FakeEvent(
+        CUEPOINTS_CHANGED,
         (new Map()).set('cuepoints', cuePoints)));
   }
 }

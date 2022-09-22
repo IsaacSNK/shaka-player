@@ -13,7 +13,7 @@
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "strict": false,
-    "lib": ["DOM"]
+    "lib": ["DOM","ES2022"]
   },
   "include": ["./lib/**/*.ts", "./externs/**/*.ts"],
   "exclude": [

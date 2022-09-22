@@ -11,7 +11,7 @@ export class ServerSideAd implements shaka.
 extern.IAd {
   private ad_: google.ima.dai.api.Ad;
   private adProgressData_: google.ima.dai.api.AdProgressData|null = null;
-  private video_: HTMLMediaElement;
+  private video_: HTMLMediaElement|null;
 
   constructor(imaAd: google.ima.dai.api.Ad, video: HTMLMediaElement) {
     this.ad_ = imaAd;
@@ -59,7 +59,7 @@ extern.IAd {
    * @export
    */
   isPaused() {
-    return this.video_.paused;
+    return this.video_!==null? this.video_.paused:undefined;
   }
 
   /**
@@ -93,7 +93,9 @@ extern.IAd {
    * @export
    */
   skip() {
-    this.video_.currentTime += this.getRemainingTime();
+    if(this.video_!==null){
+      this.video_.currentTime += this.getRemainingTime();
+    }
   }
 
   /**
@@ -101,7 +103,7 @@ extern.IAd {
    * @export
    */
   pause() {
-    return this.video_.pause();
+    return this.video_!==null?this.video_.pause():undefined;
   }
 
   /**
@@ -109,7 +111,7 @@ extern.IAd {
    * @export
    */
   play() {
-    return this.video_.play();
+    return this.video_!==null?this.video_.play():undefined;
   }
 
   /**
@@ -117,7 +119,7 @@ extern.IAd {
    * @export
    */
   getVolume() {
-    return this.video_.volume;
+    return this.video_!==null?this.video_.volume:undefined;
   }
 
   /**
@@ -125,7 +127,9 @@ extern.IAd {
    * @export
    */
   setVolume(volume) {
+    if(this.video_!==null){
     this.video_.volume = volume;
+    }
   }
 
   /**
@@ -133,7 +137,7 @@ extern.IAd {
    * @export
    */
   isMuted() {
-    return this.video_.muted;
+    return this.video_!==null?this.video_.muted:undefined;
   }
 
   /**
@@ -156,7 +160,9 @@ extern.IAd {
    * @export
    */
   setMuted(muted) {
+    if(this.video_!==null){
     this.video_.muted = muted;
+    }
   }
 
   /**

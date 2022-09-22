@@ -12,7 +12,7 @@ import {asserts} from './../debug/asserts';
  *
  * @export
  */
-export class FakeEvent {
+export class FakeEvent extends Event{
   bubbles: boolean = false;
   cancelable: boolean = false;
   defaultPrevented: boolean = false;
