@@ -4,12 +4,6 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-
-/**
- * @externs
- */
-
-
 /**
  * An object which selects Streams from a set of possible choices.  This also
  * watches for system changes to automatically adapt for the current streaming
@@ -22,132 +16,96 @@
  * about ABR.  It is up to this class how those decisions are made.  All the
  * Player will do is tell this class what streams to choose from.
  *
- * @interface
  * @exportDoc
  */
- export interface AbrManager {
-    /**
-     * Initializes the AbrManager.
-     *
-     * @param {SwitchCallback} switchCallback
-     * @exportDoc
-     */
-    init(switchCallback);
-  
-    /**
-     * Stops any background timers and frees any objects held by this instance.
-     * This will only be called after a call to init.
-     *
-     * @exportDoc
-     */
-    stop();
-  
-    /**
-     * Updates manager's variants collection.
-     *
-     * @param {!Array.<!shaka.extern.Variant>} variants
-     * @exportDoc
-     */
-    setVariants(variants);
-  
-    /**
-     * Chooses one variant to switch to.  Called by the Player.
-     * @return {shaka.extern.Variant}
-     * @exportDoc
-     */
-    chooseVariant();
-  
-    /**
-     * Enables automatic Variant choices from the last ones passed to setVariants.
-     * After this, the AbrManager may call switchCallback() at any time.
-     *
-     * @exportDoc
-     */
-    enable();
-  
-    /**
-     * Disables automatic Stream suggestions. After this, the AbrManager may not
-     * call switchCallback().
-     *
-     * @exportDoc
-     */
-    disable();
-  
-    /**
-     * Notifies the AbrManager that a segment has been downloaded (includes MP4
-     * SIDX data, WebM Cues data, initialization segments, and media segments).
-     *
-     * @param {number} deltaTimeMs The duration, in milliseconds, that the request
-     *     took to complete.
-     * @param {number} numBytes The total number of bytes transferred.
-     * @exportDoc
-     */
-    segmentDownloaded(deltaTimeMs, numBytes);
-  
-    /**
-     * Gets an estimate of the current bandwidth in bit/sec.  This is used by the
-     * Player to generate stats.
-     *
-     * @return {number}
-     * @exportDoc
-     */
-    getBandwidthEstimate();
-  
-    /**
-     * Updates manager playback rate.
-     *
-     * @param {number} rate
-     * @exportDoc
-     */
-    playbackRateChanged(rate);
-  
-    /**
-     * Set media element.
-     *
-     * @param {HTMLMediaElement} mediaElement
-     * @exportDoc
-     */
-    setMediaElement(mediaElement);
-  
-    /**
-     * Sets the ABR configuration.
-     *
-     * It is the responsibility of the AbrManager implementation to implement the
-     * restrictions behavior described in shaka.extern.AbrConfiguration.
-     *
-     * @param {shaka.extern.AbrConfiguration} config
-     * @exportDoc
-     */
-    configure(config);
-  };
-  
-  
+shaka.extern.AbrManager = class {
   /**
-   * A callback into the Player that should be called when the AbrManager decides
-   * it's time to change to a different variant.
+   * Initializes the AbrManager.
    *
-   * The first argument is a variant to switch to.
-   *
-   * The second argument is an optional boolean. If true, all data will be removed
-   * from the buffer, which will result in a buffering event. Unless a third
-   * argument is passed.
-   *
-   * The third argument in an optional number that specifies how much data (in
-   * seconds) should be retained when clearing the buffer. This can help achieve
-   * a fast switch that doesn't involve a buffering event. A minimum of two video
-   * segments should always be kept buffered to avoid temporary hiccups.
-   *
-   * @typedef {function(shaka.extern.Variant, boolean=, number=)}
    * @exportDoc
    */
-  export type SwitchCallback = (p1: Variant, p2: boolean, p3: number);
-  
-  
+  init(switchCallback: shaka.extern.AbrManager.SwitchCallback) {}
+
   /**
-   * A factory for creating the abr manager.
+   * Stops any background timers and frees any objects held by this instance.
+   * This will only be called after a call to init.
    *
-   * @typedef {function():!shaka.extern.AbrManager}
    * @exportDoc
    */
-  export type Factory = () => AbrManager;
-  
+  stop() {}
+
+  /**
+   * Updates manager's variants collection.
+   *
+   * @exportDoc
+   */
+  setVariants(variants: shaka.extern.Variant[]) {}
+
+  /**
+   * Chooses one variant to switch to.  Called by the Player.
+   * @exportDoc
+   */
+  chooseVariant(): shaka.extern.Variant {}
+
+  /**
+   * Enables automatic Variant choices from the last ones passed to setVariants.
+   * After this, the AbrManager may call switchCallback() at any time.
+   *
+   * @exportDoc
+   */
+  enable() {}
+
+  /**
+   * Disables automatic Stream suggestions. After this, the AbrManager may not
+   * call switchCallback().
+   *
+   * @exportDoc
+   */
+  disable() {}
+
+  /**
+   * Notifies the AbrManager that a segment has been downloaded (includes MP4
+   * SIDX data, WebM Cues data, initialization segments, and media segments).
+   *
+   * @param deltaTimeMs The duration, in milliseconds, that the request
+   *     took to complete.
+   * @param numBytes The total number of bytes transferred.
+   * @exportDoc
+   */
+  segmentDownloaded(deltaTimeMs: number, numBytes: number) {}
+
+  /**
+   * Gets an estimate of the current bandwidth in bit/sec.  This is used by the
+   * Player to generate stats.
+   *
+   * @exportDoc
+   */
+  getBandwidthEstimate(): number {}
+
+  /**
+   * Updates manager playback rate.
+   *
+   * @exportDoc
+   */
+  playbackRateChanged(rate: number) {}
+
+  /**
+   * Set media element.
+   *
+   * @exportDoc
+   */
+  setMediaElement(mediaElement: HTMLMediaElement) {}
+
+  /**
+   * Sets the ABR configuration.
+   *
+   * It is the responsibility of the AbrManager implementation to implement the
+   * restrictions behavior described in shaka.extern.AbrConfiguration.
+   *
+   * @exportDoc
+   */
+  configure(config: shaka.extern.AbrConfiguration) {}
+};
+type SwitchCallback = (p1: shaka.extern.Variant, p2?: boolean, p3?: number) =>
+    any;
+type Factory = () => shaka.extern.AbrManager;
