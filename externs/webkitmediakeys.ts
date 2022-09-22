@@ -9,13 +9,11 @@
  * (http://www.w3.org/TR/2014/WD-encrypted-media-20140218).
  *
  */
-class WebKitMediaKeys {
-  constructor(keySystem: string) {}
-
-  static isTypeSupported(keySystem: string, contentType: string): boolean {}
-
+export interface WebKitMediaKeys {
+  constructor(keySystem: string) ;
+  isTypeSupported(keySystem: string, contentType: string): boolean;
   createSession(contentType: string, initData: Uint8Array):
-      WebKitMediaKeySession {}
+      WebKitMediaKeySession ;
 }
 
 interface WebKitMediaKeySession extends EventTarget {

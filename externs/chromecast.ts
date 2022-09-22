@@ -11,99 +11,102 @@
  */
 let __onGCastApiAvailable: (p1: boolean) => any;
 const cast = {};
+//@ts-ignore
 cast.receiver = {};
+//@ts-ignore
 cast.receiver.system = {};
-cast.receiver.system.SystemVolumeData = class {
+export class SystemVolumeData{
   level: number;
   muted: boolean;
 };
-export class CastMessageBus{
+export  class CastChannel{
+  send(message: any) {}
+};
+export interface CastMessageBus{
   onMessage: Function;
-
-  broadcast(message: any) {}
-
-  getCastChannel(senderId: string): cast.receiver.CastChannel {}
+  broadcast(message: any);
+  getCastChannel(senderId: string):CastChannel 
 };
 
 /**
  * @struct
  */
-cast.receiver.CastMessageBus.Event = class {
+export class CastMessageBusEvent{
   data: any;
   senderId: string;
 };
-export  class CastChannel{
-  send(message: any) {}
-};
-export class CastReceiverManager{
+
+export interface CastReceiverManager{
   onSenderConnected: Function;
   onSenderDisconnected: Function;
   onSystemVolumeChanged: Function;
 
-  static getInstance(): cast.receiver.CastReceiverManager {}
+  getInstance():  {}
 
-  getCastMessageBus(namespace: string, messageType?: string):
-      cast.receiver.CastMessageBus {}
+  getCastMessageBus(namespace: string, messageType?: string):{}
 
-  getSenders(): string[] {}
+  getSenders(): string[] ;
 
-  start() {}
+  start() ;
 
-  stop() {}
+  stop() ;
 
-  getSystemVolume(): cast.receiver.system.SystemVolumeData|null {}
+  getSystemVolume(): SystemVolumeData|null ;
 
-  setSystemVolumeLevel(level: number) {}
+  setSystemVolumeLevel(level: number);
 
-  setSystemVolumeMuted(muted: number) {}
+  setSystemVolumeMuted(muted: number);
 
-  isSystemReady(): boolean {}
+  isSystemReady(): boolean;
 };
+//@ts-ignore
 cast.receiver.media = {};
-cast.receiver.media.MetadataType = {
-  'GENERIC': 0,
-  'MOVIE': 1,
-  'TV_SHOW': 2,
-  'MUSIC_TRACK': 3,
-  'PHOTO': 4
+export enum MetadataType {
+  GENERIC = 0,
+  MOVIE = 1,
+  TV_SHOW = 2,
+  MUSIC_TRACK = 3,
+  PHOTO = 4
 };
-export class __platform__{
-  static canDisplayType(type: string): boolean {}
+export interface __platform__{
+   canDisplayType(type: string): boolean ;
 };
 const chrome = {};
-chrome.cast = class {
-  static isAvailable: boolean;
+export  interface cast{
+   isAvailable: boolean;
 
-  static initialize(
-      apiConfig: chrome.cast.ApiConfig, successCallback: Function,
-      errorCallback: Function) {}
+   initialize(
+      apiConfig: ApiConfig, successCallback: Function,
+      errorCallback: Function) ;
 
-  static requestSession(
+   requestSession(
       successCallback: Function, errorCallback: Function,
-      sessionRequest?: chrome.cast.SessionRequest) {}
+      sessionRequest?: SessionRequest);
 };
+//@ts-ignore
 chrome.cast.SessionStatus = {};
+//@ts-ignore
 chrome.cast.SessionStatus.STOPPED;
-chrome.cast.ApiConfig = class {
+export class ApiConfig {
   constructor(
-      sessionRequest: chrome.cast.SessionRequest, sessionListener: Function,
+      sessionRequest: SessionRequest, sessionListener: Function,
       receiverListener: Function, autoJoinPolicy?: string,
       defaultActionPolicy?: string) {}
 };
-chrome.cast.Error = class {
+export class castError{
   code: string;
   description: string|null;
   details: Object;
 
   constructor(code: string, description?: string, details?: Object) {}
 };
-chrome.cast.Receiver = class {
+export interface Receiver {
   friendlyName: string;
 };
 export class  Session{
   sessionId: string;
   status: string;
-  receiver: chrome.cast.Receiver;
+  receiver: Receiver;
 
   addMessageListener(namespace: string, listener: Function) {}
 

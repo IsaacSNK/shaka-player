@@ -8,9 +8,7 @@
  * @fileoverview Externs for less.js library.
  *
  */
-class less {
-  static registerStylesheetsImmediately() {}
-
-  static refresh(reload: boolean, modifyVars: boolean, clearFileCache: boolean):
-      Promise {}
+export interface less {
+   registerStylesheetsImmediately() ;
+   refresh(reload: boolean, modifyVars: boolean, clearFileCache: boolean):Promise<any>
 }

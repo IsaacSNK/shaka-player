@@ -29,7 +29,7 @@ HTMLMediaElement.prototype.generateKeyRequest = function(
 HTMLVideoElement.prototype.canPlayType = function(
     mimeType: string, keySystem?: string): string {};
 
-class MediaKeyEvent extends Event {
+export interface MediaKeyEvent extends Event {
   keySystem: string;
   sessionId: string;
   initData: Uint8Array;
@@ -39,7 +39,7 @@ class MediaKeyEvent extends Event {
   systemCode: number;
   target: HTMLMediaElement;
 
-  constructor(type: string, eventInitDict?: Object) {}
+  constructor(type: string, eventInitDict?: Object) ;
 }
 
 class MediaKeyError {

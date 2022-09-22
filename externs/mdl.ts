@@ -15,6 +15,9 @@ class componentHandler {
 class MaterialLayout {
   toggleDrawer() {}
 }
+//@ts-ignore
 MaterialLayout.prototype.Constant_ = {};
+//@ts-ignore
 MaterialLayout.prototype.Constant_.MENU_ICON;
+//@ts-ignore
 Element.prototype.MaterialLayout;

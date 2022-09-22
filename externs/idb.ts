@@ -17,6 +17,6 @@
  * @suppress {duplicate}
  * The upstream extern doesn't have the correct type for Result.
  */
-class IDBOpenDBRequest extends IDBRequest {
+export class IDBOpenDBRequest extends IDBRequest {
   result: IDBDatabase;
 }

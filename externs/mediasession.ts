@@ -10,12 +10,11 @@
  *
  *
  */
-class MediaMetadata {
+export interface MediaMetadata {
   title: string;
   artist: string;
   artwork: Object;
-
-  constructor(options) {}
+  constructor(options) ;
 }
 
 class MediaSession {

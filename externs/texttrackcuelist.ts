@@ -19,5 +19,5 @@
  *
  * @suppress {duplicate}
  */
-class TextTrackCueList implements IArrayLike<TextTrackCue>,
+export interface TextTrackCueList implements IArrayLike<TextTrackCue>,
                                   Iterable<TextTrackCue> {}

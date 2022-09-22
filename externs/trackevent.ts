@@ -10,6 +10,6 @@
  *
  * TODO: Remove once this is available from the compiler.
  */
-class TrackEvent extends Event {
+export class TrackEvent extends Event {
   track: AudioTrack|TextTrack|VideoTrack;
 }

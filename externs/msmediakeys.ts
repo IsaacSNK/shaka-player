@@ -9,14 +9,12 @@
  * (http://www.w3.org/TR/2014/WD-encrypted-media-20140218).
  *
  */
-class MSMediaKeys {
-  constructor(keySystem: string) {}
-
-  static isTypeSupported(keySystem: string, contentType: string): boolean {}
-
+export interface MSMediaKeys {
+  constructor(keySystem: string) ;
+  isTypeSupported(keySystem: string, contentType: string): boolean ;
   createSession(
       contentType: string, initData: Uint8Array,
-      cdmData?: Uint8Array): MSMediaKeySession {}
+      cdmData?: Uint8Array): MSMediaKeySession ;
 }
 
 interface MSMediaKeySession extends EventTarget {
@@ -35,6 +33,7 @@ interface MSMediaKeySession extends EventTarget {
   /** @override */
   dispatchEvent(evt);
 }
+//@ts-ignore
 HTMLMediaElement.prototype.msSetMediaKeys = function(mediaKeys: MSMediaKeys) {};
 
 class MSMediaKeyError {
