@@ -3,6 +3,7 @@
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
+import { DrmInfo, InitDataOverride } from '../../externs/shaka/manifest';
 import * as assertsExports from './../debug/asserts';
 import {asserts} from './../debug/asserts';
 import * as logExports from './../debug/log';
@@ -33,8 +34,8 @@ export class ContentProtection {
     const ContentProtection = ContentProtection;
     const ManifestParserUtils = ManifestParserUtils;
     const parsed = ContentProtection.parseElements_(elems);
-    let defaultInit: shaka.extern.InitDataOverride[] = null;
-    let drmInfos: shaka.extern.DrmInfo[] = [];
+    let defaultInit: InitDataOverride[] = null;
+    let drmInfos: DrmInfo[] = [];
     let parsedNonCenc = [];
 
     // Get the default key ID; if there are multiple, they must all match.
