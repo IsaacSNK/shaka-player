@@ -3,22 +3,18 @@
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-import {AdsStats} from './ads_stats';
-import {ClientSideAdManager} from './client_side_ad_manager';
-import {ServerSideAdManager} from './server_side_ad_manager';
-import * as logExports from './../debug/log';
-import {log} from './../debug/log';
-import * as PlayerExports from './../player';
-import {Player} from './../player';
-import * as ErrorExports from './../util/error';
-import {Error} from './../util/error';
-import * as FakeEventExports from './../util/fake_event';
-import {FakeEvent} from './../util/fake_event';
-import * as FakeEventTargetExports from './../util/fake_event_target';
-import {FakeEventTarget} from './../util/fake_event_target';
-import {IReleasable} from './../util/i_releasable';
 import { AdCuePoint, IAdManager } from '../../externs/shaka/ads';
-import { google } from '../../externs/ima';
+import { log } from './../debug/log';
+import * as PlayerExports from './../player';
+import { Player } from './../player';
+import * as ErrorExports from './../util/error';
+import { ShakaError } from './../util/error';
+import { FakeEvent } from './../util/fake_event';
+import { FakeEventTarget } from './../util/fake_event_target';
+import { IReleasable } from './../util/i_releasable';
+import { AdsStats } from './ads_stats';
+import { ClientSideAdManager } from './client_side_ad_manager';
+import { ServerSideAdManager } from './server_side_ad_manager';
 
 /**
  * @event shaka.ads.AdManager.ADS_LOADED
@@ -367,36 +363,36 @@ export class AdManager extends FakeEventTarget implements IAdManager, IReleasabl
     // {google.ima.AdsLoader} is an object that's part of CS IMA SDK
     // but not SS SDK.
     if (!window['google'] || !google.ima || !google.ima.AdsLoader) {
-      throw new Error(
-          ErrorExports.Severity.CRITICAL, ErrorExports.Category.ADS,
-          ErrorExports.Code.CS_IMA_SDK_MISSING);
+      throw new ShakaError(
+        ErrorExports.Severity.CRITICAL, ErrorExports.Category.ADS,
+        ErrorExports.Code.CS_IMA_SDK_MISSING);
     }
     if (this.csAdManager_) {
       this.csAdManager_.release();
     }
     this.csAdManager_ =
-        new ClientSideAdManager(adContainer, video, this.locale_, (e) => {
-          const event = (e as FakeEvent);
-          if (event && event.type) {
-            switch (event.type) {
-              case ADS_LOADED: {
-                const loadTime = (e as Object)['loadTime'];
-                this.stats_.addLoadTime(loadTime);
-                break;
-              }
-              case AD_STARTED:
-                this.stats_.incrementStarted();
-                break;
-              case AD_COMPLETE:
-                this.stats_.incrementPlayedCompletely();
-                break;
-              case AD_SKIPPED:
-                this.stats_.incrementSkipped();
-                break;
+      new ClientSideAdManager(adContainer, video, this.locale_, (e) => {
+        const event = (e as FakeEvent);
+        if (event && event.type) {
+          switch (event.type) {
+            case ADS_LOADED: {
+              const loadTime = (e as Object)['loadTime'];
+              this.stats_.addLoadTime(loadTime);
+              break;
             }
+            case AD_STARTED:
+              this.stats_.incrementStarted();
+              break;
+            case AD_COMPLETE:
+              this.stats_.incrementPlayedCompletely();
+              break;
+            case AD_SKIPPED:
+              this.stats_.incrementSkipped();
+              break;
           }
-          this.dispatchEvent(event);
-        });
+        }
+        this.dispatchEvent(event);
+      });
   }
 
   /**
@@ -436,9 +432,9 @@ export class AdManager extends FakeEventTarget implements IAdManager, IReleasabl
    */
   requestClientSideAds(imaRequest) {
     if (!this.csAdManager_) {
-      throw new Error(
-          ErrorExports.Severity.RECOVERABLE, ErrorExports.Category.ADS,
-          ErrorExports.Code.CS_AD_MANAGER_NOT_INITIALIZED);
+      throw new ShakaError(
+        ErrorExports.Severity.RECOVERABLE, ErrorExports.Category.ADS,
+        ErrorExports.Code.CS_AD_MANAGER_NOT_INITIALIZED);
     }
     this.csAdManager_.requestAds(imaRequest);
   }
@@ -455,36 +451,36 @@ export class AdManager extends FakeEventTarget implements IAdManager, IReleasabl
     // {google.ima.dai} is an object that's part of DAI IMA SDK
     // but not SS SDK.
     if (!window['google'] || !google.ima || !google.ima.dai) {
-      throw new Error(
-          ErrorExports.Severity.CRITICAL, ErrorExports.Category.ADS,
-          ErrorExports.Code.SS_IMA_SDK_MISSING);
+      throw new ShakaError(
+        ErrorExports.Severity.CRITICAL, ErrorExports.Category.ADS,
+        ErrorExports.Code.SS_IMA_SDK_MISSING);
     }
     if (this.ssAdManager_) {
       this.ssAdManager_.release();
     }
     this.ssAdManager_ =
-        new ServerSideAdManager(adContainer, video, this.locale_, (e) => {
-          const event = (e as FakeEvent);
-          if (event && event.type) {
-            switch (event.type) {
-              case ADS_LOADED: {
-                const loadTime = (e as Object)['loadTime'];
-                this.stats_.addLoadTime(loadTime);
-                break;
-              }
-              case AD_STARTED:
-                this.stats_.incrementStarted();
-                break;
-              case AD_COMPLETE:
-                this.stats_.incrementPlayedCompletely();
-                break;
-              case AD_SKIPPED:
-                this.stats_.incrementSkipped();
-                break;
+      new ServerSideAdManager(adContainer, video, this.locale_, (e) => {
+        const event = (e as FakeEvent);
+        if (event && event.type) {
+          switch (event.type) {
+            case ADS_LOADED: {
+              const loadTime = (e as Object)['loadTime'];
+              this.stats_.addLoadTime(loadTime);
+              break;
             }
+            case AD_STARTED:
+              this.stats_.incrementStarted();
+              break;
+            case AD_COMPLETE:
+              this.stats_.incrementPlayedCompletely();
+              break;
+            case AD_SKIPPED:
+              this.stats_.incrementSkipped();
+              break;
           }
-          this.dispatchEvent(event);
-        });
+        }
+        this.dispatchEvent(event);
+      });
   }
 
   /**
@@ -492,12 +488,12 @@ export class AdManager extends FakeEventTarget implements IAdManager, IReleasabl
    * @export
    */
   requestServerSideStream(
-      imaRequest: google.ima.dai.api.StreamRequest,
-      backupUrl: string = ''): Promise<string> {
+    imaRequest: google.ima.dai.api.StreamRequest,
+    backupUrl: string = ''): Promise<string> {
     if (!this.ssAdManager_) {
-      throw new Error(
-          ErrorExports.Severity.RECOVERABLE, ErrorExports.Category.ADS,
-          ErrorExports.Code.SS_AD_MANAGER_NOT_INITIALIZED);
+      throw new ShakaError(
+        ErrorExports.Severity.RECOVERABLE, ErrorExports.Category.ADS,
+        ErrorExports.Code.SS_AD_MANAGER_NOT_INITIALIZED);
     }
     if (!imaRequest.adTagParameters) {
       imaRequest.adTagParameters = {};
@@ -505,9 +501,9 @@ export class AdManager extends FakeEventTarget implements IAdManager, IReleasabl
     const adTagParams = imaRequest.adTagParameters;
     if (adTagParams['mpt'] || adTagParams['mpv']) {
       log.alwaysWarn(
-          'You have attempted to set "mpt" and/or "mpv" ' +
-          'parameters of the ad tag. Please note that those parameters are ' +
-          'used for Shaka adoption tracking and will be overriden.');
+        'You have attempted to set "mpt" and/or "mpv" ' +
+        'parameters of the ad tag. Please note that those parameters are ' +
+        'used for Shaka adoption tracking and will be overriden.');
     }
 
     // Set player and version parameters for tracking
@@ -522,15 +518,15 @@ export class AdManager extends FakeEventTarget implements IAdManager, IReleasabl
    */
   replaceServerSideAdTagParameters(adTagParameters) {
     if (!this.ssAdManager_) {
-      throw new Error(
-          ErrorExports.Severity.RECOVERABLE, ErrorExports.Category.ADS,
-          ErrorExports.Code.SS_AD_MANAGER_NOT_INITIALIZED);
+      throw new ShakaError(
+        ErrorExports.Severity.RECOVERABLE, ErrorExports.Category.ADS,
+        ErrorExports.Code.SS_AD_MANAGER_NOT_INITIALIZED);
     }
     if (adTagParameters['mpt'] || adTagParameters['mpv']) {
       log.alwaysWarn(
-          'You have attempted to set "mpt" and/or "mpv" ' +
-          'parameters of the ad tag. Please note that those parameters are ' +
-          'used for Shaka adoption tracking and will be overriden.');
+        'You have attempted to set "mpt" and/or "mpv" ' +
+        'parameters of the ad tag. Please note that those parameters are ' +
+        'used for Shaka adoption tracking and will be overriden.');
     }
     adTagParameters['mpt'] = 'Shaka Player';
     adTagParameters['mpv'] = PlayerExports.version;
@@ -543,9 +539,9 @@ export class AdManager extends FakeEventTarget implements IAdManager, IReleasabl
    */
   getServerSideCuePoints(): AdCuePoint[] {
     if (!this.ssAdManager_) {
-      throw new Error(
-          ErrorExports.Severity.RECOVERABLE, ErrorExports.Category.ADS,
-          ErrorExports.Code.SS_AD_MANAGER_NOT_INITIALIZED);
+      throw new ShakaError(
+        ErrorExports.Severity.RECOVERABLE, ErrorExports.Category.ADS,
+        ErrorExports.Code.SS_AD_MANAGER_NOT_INITIALIZED);
     }
     return this.ssAdManager_.getCuePoints();
   }
@@ -566,8 +562,8 @@ export class AdManager extends FakeEventTarget implements IAdManager, IReleasabl
     if (this.ssAdManager_ && region.schemeIdUri == 'urn:google:dai:2018') {
       const type = region.schemeIdUri;
       const data = region.eventElement ?
-          region.eventElement.getAttribute('messageData') :
-          null;
+        region.eventElement.getAttribute('messageData') :
+        null;
       const timestamp = region.startTime;
       this.ssAdManager_.onTimedMetadata(type, data, timestamp);
     }
@@ -582,9 +578,9 @@ export class AdManager extends FakeEventTarget implements IAdManager, IReleasabl
       this.ssAdManager_.onTimedMetadata('ID3', metadata['data'], timestamp);
     } else {
       log.warning(
-          'ID3 metadata processing was called without ' +
-          'initializing server side ad logic. Ad-related metadata will ' +
-          'not take effect');
+        'ID3 metadata processing was called without ' +
+        'initializing server side ad logic. Ad-related metadata will ' +
+        'not take effect');
     }
   }
 
@@ -597,9 +593,9 @@ export class AdManager extends FakeEventTarget implements IAdManager, IReleasabl
       this.ssAdManager_.onCueMetadataChange(value);
     } else {
       log.warning(
-          'ID3 metadata processing was called without ' +
-          'initializing server side ad logic. Ad-related metadata will ' +
-          'not take effect');
+        'ID3 metadata processing was called without ' +
+        'initializing server side ad logic. Ad-related metadata will ' +
+        'not take effect');
     }
   }
 }

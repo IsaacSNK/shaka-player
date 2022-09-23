@@ -250,117 +250,113 @@ declare namespace google.ima {
             dispatchEvent();
         }
 
-
         class UiSettings {
             getLocale(): number;
 
             setLocale(locale: string);
         }
 
+        export class Ad {
+            getDuration(): number;
 
-        namespace dai.api {
-            export class Ad {
-                getDuration(): number;
+            getSkipTimeOffset(): number;
 
-                getSkipTimeOffset(): number;
+            getAdPodInfo(): AdPodInfo;
 
-                getAdPodInfo(): AdPodInfo;
+            getAdvertiserName(): string;
 
-                getAdvertiserName(): string;
+            isSkippable(): boolean;
+        }
 
-                isSkippable(): boolean;
-            }
+        class AdPodInfo {
+            getAdPosition(): number;
 
-            class AdPodInfo {
-                getAdPosition(): number;
+            getTotalAds(): number;
+        }
 
-                getTotalAds(): number;
-            }
+        class CuePoint {
+            start(): number;
+            end(): number;
+            played: boolean;
+        }
 
-            class CuePoint {
-                start(): number;
-                end(): number;
-                played: boolean;
-            }
+        class AdProgressData {
+            currentTime: number;
 
-            class AdProgressData {
-                currentTime: number;
+            duration: number;
 
-                duration: number;
+            url: number;
 
-                url: number;
+            totalAds: number;
 
-                totalAds: number;
+            adPosition: number;
+        }
 
-                adPosition: number;
-            }
+        class StreamData {
+            adProgressData: AdProgressData;
 
-            class StreamData {
-                adProgressData: AdProgressData;
+            url: string;
 
-                url: string;
+            cuepoints: Array<CuePoint>;
 
-                cuepoints: Array<CuePoint>;
+            errorMessage: string;
 
-                errorMessage: string;
+            streamId: string;
 
-                streamId: string;
+            subtitles?: Array<{ url: string, language: string, language_name: string }>;
 
-                subtitles?: Array<{ url: string, language: string, language_name: string }>;
+        }
 
-            }
+        class StreamEvent extends Event {
+            getAd(): Ad;
 
-            class StreamEvent extends Event {
-                getAd(): Ad;
+            getStreamData(): StreamData;
+        }
 
-                getStreamData(): StreamData;
-            }
+        class StreamRequest {
+            adTagParameters: Object;
 
-            export class StreamRequest {
-                adTagParameters(): Object;
+            apiKey: string;
 
-                apiKey(): string;
+            authToken: string;
 
-                authToken(): string;
+            streamActivityMonitorId: string;
 
-                streamActivityMonitorId(): string;
+            format: string | undefined;
+        }
 
-                format(): string | undefined;
-            }
+        class VODStreamRequest extends StreamRequest {
 
-            class VODStreamRequest extends StreamRequest {
-
-                contentSourceId: string;
+            contentSourceId: string;
 
 
-                videoId: string;
-            }
+            videoId: string;
+        }
 
-            class LiveStreamRequest extends StreamRequest {
-                assetKey: string;
-            }
+        class LiveStreamRequest extends StreamRequest {
+            assetKey: string;
+        }
 
-            namespace StreamEvent {
-                const enum Type {
-                    LOADED = 'loaded',
-                    AD_BREAK_STARTED = 'adBreakStarted',
-                    AD_BREAK_ENDED = 'adBreakEnded',
-                    AD_PERIOD_STARTED = 'adPeriodStarted',
-                    AD_PERIOD_ENDED = 'adPeriodEnded',
-                    AD_PROGRESS = 'adProgress',
-                    CUEPOINTS_CHANGED = 'cuepointsChanged',
-                    CLICK = 'click',
-                    ERROR = 'error',
-                    STARTED = 'started',
-                    FIRST_QUARTILE = 'firstquartile',
-                    MIDPOINT = 'midpoint',
-                    STREAM_INITIALIZED = 'streamInitialized',
-                    THIRD_QUARTILE = 'thirdquartile',
-                    COMPLETE = 'complete',
-                    SKIPPABLE_STATE_CHANGED = 'skippableStateChanged',
-                    SKIPPED = 'skip',
-                    VIDEO_CLICKED = 'videoClicked',
-                }
+        namespace StreamEvent {
+            const enum Type {
+                LOADED = 'loaded',
+                AD_BREAK_STARTED = 'adBreakStarted',
+                AD_BREAK_ENDED = 'adBreakEnded',
+                AD_PERIOD_STARTED = 'adPeriodStarted',
+                AD_PERIOD_ENDED = 'adPeriodEnded',
+                AD_PROGRESS = 'adProgress',
+                CUEPOINTS_CHANGED = 'cuepointsChanged',
+                CLICK = 'click',
+                ERROR = 'error',
+                STARTED = 'started',
+                FIRST_QUARTILE = 'firstquartile',
+                MIDPOINT = 'midpoint',
+                STREAM_INITIALIZED = 'streamInitialized',
+                THIRD_QUARTILE = 'thirdquartile',
+                COMPLETE = 'complete',
+                SKIPPABLE_STATE_CHANGED = 'skippableStateChanged',
+                SKIPPED = 'skip',
+                VIDEO_CLICKED = 'videoClicked',
             }
         }
     }
