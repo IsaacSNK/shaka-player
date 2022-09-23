@@ -3,36 +3,44 @@
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-import * as AdManagerExports from './lib/ad_manager';
-import {AdManager} from './lib/ad_manager';
-import {CastProxy} from './lib/cast_proxy';
-import * as assertsExports from './lib/asserts';
-import {asserts} from './lib/asserts';
-import * as logExports from './lib/log';
-import {log} from './lib/log';
-import {AdCounter} from './/ad_counter';
-import {AdPosition} from './/ad_position';
-import {BigPlayButton} from './/big_play_button';
-import * as ContextMenuExports from './/context_menu';
-import {ContextMenu} from './/context_menu';
+/*! @license
+ * Shaka Player
+ * Copyright 2016 Google LLC
+ * SPDX-License-Identifier: Apache-2.0
+ */
+import * as AdManagerExports from './../lib/ads/ad_manager';
+import {AdManager} from './../lib/ads/ad_manager';
+import {CastProxy} from './../lib/cast/cast_proxy';
+import * as assertsExports from './../lib/debug/asserts';
+import {asserts} from './../lib/debug/asserts';
+import * as logExports from './../lib/debug/log';
+import {log} from './../lib/debug/log';
+import {AdCounter} from './../ui/ad_counter';
+import {AdPosition} from './../ui/ad_position';
+import {BigPlayButton} from './../ui/big_play_button';
+import * as ContextMenuExports from './../ui/context_menu';
+import {ContextMenu} from './../ui/context_menu';
 
 goog.require('shaka.ui.Locales');
-import {Localization} from './/localization';
-import * as LocalizationExports from './/localization';
-import {SeekBar} from './/seek_bar';
-import * as SeekBarExports from './/seek_bar';
-import {Utils} from './/ui_utils';
-import {Dom} from './lib/dom_utils';
-import {EventManager} from './lib/event_manager';
-import * as EventManagerExports from './lib/event_manager';
-import {FakeEvent} from './lib/fake_event';
-import * as FakeEventExports from './lib/fake_event';
-import {FakeEventTarget} from './lib/fake_event_target';
-import * as FakeEventTargetExports from './lib/fake_event_target';
-import {IDestroyable} from './lib/i_destroyable';
-import {Timer} from './lib/timer';
-import {Player} from './lib/player';
-import * as PlayerExports from './lib/player';
+import {Localization} from './../ui/localization';
+import * as LocalizationExports from './../ui/localization';
+import {SeekBar} from './../ui/seek_bar';
+import * as SeekBarExports from './../ui/seek_bar';
+import {Utils} from './../ui/ui_utils';
+import {Dom} from './../lib/util/dom_utils';
+import {EventManager} from './../lib/util/event_manager';
+import * as EventManagerExports from './../lib/util/event_manager';
+import {FakeEvent} from './../lib/util/fake_event';
+import * as FakeEventExports from './../lib/util/fake_event';
+import {FakeEventTarget} from './../lib/util/fake_event_target';
+import * as FakeEventTargetExports from './../lib/util/fake_event_target';
+import {IDestroyable} from './../lib/util/i_destroyable';
+import {Timer} from './../lib/util/timer';
+import {Player} from './../lib/player';
+import * as PlayerExports from './../lib/player';
+import { IAd, IAdManager } from '../externs/shaka/ads';
+import { Factory, IUIElement, IUISeekBar } from './externs/ui';
+
 
 /**
  * A container for custom video controls.
@@ -48,9 +56,9 @@ export class Controls extends FakeEventTarget implements IDestroyable {
   private player_: Player;
   private localPlayer_: Player;
   private videoContainer_: HTMLElement;
-  private adManager_: shaka.extern.IAdManager;
-  private ad_: shaka.extern.IAd|null = null;
-  private seekBar_: shaka.extern.IUISeekBar|null = null;
+  private adManager_: IAdManager;
+  private ad_: IAd|null = null;
+  private seekBar_: IUISeekBar;
   private isSeeking_: boolean = false;
   private menus_: HTMLElement[] = [];
 
@@ -94,7 +102,7 @@ export class Controls extends FakeEventTarget implements IDestroyable {
    */
   private timeAndSeekRangeTimer_: Timer;
   private lastTouchEventTime_: number|null = null;
-  private elements_: shaka.extern.IUIElement[] = [];
+  private elements_: IUIElement[] = [];
   private localization_: Localization;
   private eventManager_: EventManager;
 
@@ -190,22 +198,27 @@ export class Controls extends FakeEventTarget implements IDestroyable {
     }
     if (this.eventManager_) {
       this.eventManager_.release();
+      //@ts-ignore
       this.eventManager_ = null;
     }
     if (this.mouseStillTimer_) {
       this.mouseStillTimer_.stop();
+        //@ts-ignore
       this.mouseStillTimer_ = null;
     }
     if (this.fadeControlsTimer_) {
       this.fadeControlsTimer_.stop();
+        //@ts-ignore
       this.fadeControlsTimer_ = null;
     }
     if (this.hideSettingsMenusTimer_) {
       this.hideSettingsMenusTimer_.stop();
+        //@ts-ignore
       this.hideSettingsMenusTimer_ = null;
     }
     if (this.timeAndSeekRangeTimer_) {
       this.timeAndSeekRangeTimer_.stop();
+        //@ts-ignore
       this.timeAndSeekRangeTimer_ = null;
     }
 
@@ -219,15 +232,21 @@ export class Controls extends FakeEventTarget implements IDestroyable {
     }
     if (this.castProxy_) {
       await this.castProxy_.destroy();
+        //@ts-ignore
       this.castProxy_ = null;
     }
     if (this.localPlayer_) {
       await this.localPlayer_.destroy();
+        //@ts-ignore
       this.localPlayer_ = null;
     }
+      //@ts-ignore
     this.player_ = null;
+      //@ts-ignore
     this.localVideo_ = null;
+      //@ts-ignore
     this.video_ = null;
+      //@ts-ignore
     this.localization_ = null;
     this.pressedKeys_.clear();
 
@@ -246,14 +265,14 @@ export class Controls extends FakeEventTarget implements IDestroyable {
    * @export
    */
   static registerElement(
-      name: string, factory: shaka.extern.IUIElement.Factory) {
+      name: string, factory: Factory) {
     elementNamesToFactories_.set(name, factory);
   }
 
   /**
    * @export
    */
-  static registerSeekBar(factory: shaka.extern.IUISeekBar.Factory) {
+  static registerSeekBar(factory: SeekBarExports.Factory) {
     seekBarFactory_ = factory;
   }
 
@@ -289,6 +308,7 @@ export class Controls extends FakeEventTarget implements IDestroyable {
 
     // Deconstruct the old layout if applicable
     if (this.seekBar_) {
+      //@ts-ignore
       this.seekBar_ = null;
     }
     if (this.playButton_) {
@@ -370,7 +390,7 @@ export class Controls extends FakeEventTarget implements IDestroyable {
   /**
    * @export
    */
-  getAd(): shaka.extern.IAd|null {
+  getAd(): IAd|null {
     return this.ad_;
   }
 
@@ -792,7 +812,8 @@ export class Controls extends FakeEventTarget implements IDestroyable {
    */
   private addSeekBar_() {
     if (this.config_.addSeekBar) {
-      this.seekBar_ = seekBarFactory_.create(this.bottomControls_, this);
+      //@ts-ignore
+      this.seekBar_ = seekBarFactory_?.create(this.bottomControls_, this);
       this.elements_.push(this.seekBar_);
     } else {
       // Settings menus need to be positioned lower if the seekbar is absent.
@@ -932,7 +953,7 @@ export class Controls extends FakeEventTarget implements IDestroyable {
         event.type == 'touchend' || event.type == 'keyup') {
       this.lastTouchEventTime_ = Date.now();
     } else {
-      if (this.lastTouchEventTime_ + 1000 < Date.now()) {
+      if (this.lastTouchEventTime_!==null?this.lastTouchEventTime_:0 + 1000 < Date.now()) {
         // It has been a while since the last touch event, this is probably a
         // real mouse moving, so treat it like a mouse.
         this.lastTouchEventTime_ = null;
@@ -1300,12 +1321,12 @@ export class Controls extends FakeEventTarget implements IDestroyable {
       // element of the overflow menu, let the focus move to the last child
       // element of the menu.
       if (this.pressedKeys_.has('Shift')) {
-        if (activeElement == firstShownChild) {
+        if (activeElement == firstShownChild && lastShownChild !==null) {
           event.preventDefault();
           lastShownChild.focus();
         }
       } else {
-        if (activeElement == lastShownChild) {
+        if (activeElement == lastShownChild && firstShownChild!==null) {
           event.preventDefault();
           firstShownChild.focus();
         }
@@ -1412,7 +1433,7 @@ export class Controls extends FakeEventTarget implements IDestroyable {
  * @exportDoc
  */
 export const elementNamesToFactories_:
-    Map<string, shaka.extern.IUIElement.Factory> = new Map();
+    Map<string, Factory> = new Map();
 
-export const seekBarFactory_: shaka.extern.IUISeekBar.Factory|null =
+export let seekBarFactory_: SeekBarExports.Factory|null =
     new SeekBarExports.Factory();

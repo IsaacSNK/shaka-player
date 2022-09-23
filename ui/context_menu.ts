@@ -11,7 +11,8 @@ import {Dom} from './../lib/util/dom_utils';
 import {Controls} from './controls';
 import {Element} from './element';
 import {Utils} from './ui_utils';
-
+import {IUIElement} from './externs/ui'
+import * as IFactory from './externs/ui';
 /**
  * @final
  * @export
@@ -19,7 +20,7 @@ import {Utils} from './ui_utils';
 export class ContextMenu extends Element {
   private config_: shaka.extern.UIConfiguration;
   private controlsContainer_: HTMLElement |null;
-  private children_: shaka.extern.IUIElement[] = [];
+  private children_: IUIElement[] = [];
   private contextMenu_: HTMLElement;
 
   constructor(parent: HTMLElement, controls: Controls) {
@@ -62,7 +63,7 @@ export class ContextMenu extends Element {
    * @export
    */
   static registerElement(
-      name: string, factory: shaka.extern.IUIElement.Factory) {
+      name: string, factory: IFactory.Factory) {
     elementNamesToFactories_.set(name, factory);
   }
 
@@ -80,4 +81,4 @@ export class ContextMenu extends Element {
 }
 
 export const elementNamesToFactories_:
-    Map<string, shaka.extern.IUIElement.Factory> = new Map();
+    Map<string, IFactory.Factory> = new Map();

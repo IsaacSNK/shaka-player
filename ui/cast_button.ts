@@ -20,7 +20,7 @@ import {FakeEvent} from './../lib/util/fake_event';
 import * as FakeEventExports from './../lib/util/fake_event';
 import {CastProxy} from './../lib/cast/cast_proxy';
 import {Controls} from './controls';
-
+import * as IFactory from './externs/ui';
 /**
  * @final
  * @export
@@ -137,8 +137,7 @@ export class CastButton extends Element {
 /**
  * @final
  */
-export class Factory implements shaka.
-extern.IUIElement.Factory {
+export class Factory implements IFactory.Factory {
   /** @override */
   create(rootElement, controls) {
     return new CastButton(rootElement, controls);

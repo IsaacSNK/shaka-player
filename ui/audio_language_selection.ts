@@ -15,7 +15,8 @@ import {SettingsMenu} from './settings_menu';
 import {Utils} from './ui_utils';
 import {FakeEvent} from './../lib/util/fake_event';
 import * as FakeEventExports from './../lib/util/fake_event';
-import {Controls} from './/controls';
+import {Controls} from './controls';
+import * as IFactory from './externs/ui';
 
 /**
  * @final
@@ -81,8 +82,7 @@ export class AudioLanguageSelection extends SettingsMenu {
 /**
  * @final
  */
-export class Factory implements shaka.
-extern.IUIElement.Factory {
+export class Factory implements IFactory.Factory{
   /** @override */
   create(rootElement, controls) {
     return new AudioLanguageSelection(rootElement, controls);
