@@ -200,7 +200,7 @@ declare namespace google.ima {
     }
 
     namespace dai.api {
-        class StreamManager implements EventTarget {
+        export class StreamManager implements EventTarget {
             /**
              * @param {HTMLMediaElement} videoElement
              * @param {HTMLElement=} adUiElement
@@ -259,7 +259,7 @@ declare namespace google.ima {
 
 
         namespace dai.api {
-            class Ad {
+            export class Ad {
                 getDuration(): number;
 
                 getSkipTimeOffset(): number;
@@ -316,7 +316,7 @@ declare namespace google.ima {
                 getStreamData(): StreamData;
             }
 
-            class StreamRequest {
+            export class StreamRequest {
                 adTagParameters(): Object;
 
                 apiKey(): string;

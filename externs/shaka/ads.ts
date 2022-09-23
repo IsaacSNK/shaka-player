@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { TimelineRegionInfo } from "./player";
+import { ID3Metadata, TimelineRegionInfo } from "./player";
 
 export interface AdsStats {
   loadTimes: number[];
@@ -38,7 +38,7 @@ export interface IAdManager extends EventTarget {
   initServerSide(adContainer: HTMLElement, video: HTMLMediaElement) ;
 
   requestServerSideStream(
-      imaRequest: google.ima.dai.api.StreamRequest,
+      imaRequest: google.ima.dai.api.dai.api.StreamRequest,
       backupUrl?: string): Promise<string> ;
 
   replaceServerSideAdTagParameters(adTagParameters: Object) ;
@@ -54,9 +54,9 @@ export interface IAdManager extends EventTarget {
   onDashTimedMetadata(region: TimelineRegionInfo) ;
 
   onHlsTimedMetadata(
-      metadata: shaka.extern.ID3Metadata, timestampOffset: number) ;
+      metadata: ID3Metadata, timestampOffset: number) ;
 
-  onCueMetadataChange(value: shaka.extern.ID3Metadata) ;
+  onCueMetadataChange(value: ID3Metadata) ;
 };
 type Factory = () => IAdManager;
 

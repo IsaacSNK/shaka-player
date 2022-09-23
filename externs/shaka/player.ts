@@ -120,7 +120,7 @@ export interface SupportType {
   media: {[key: string]: boolean};
   drm: {[key: string]: DrmSupportType|null};
 }
-type ID3Metadata = {
+export type ID3Metadata = {
   [key: string]: any
 };
 
