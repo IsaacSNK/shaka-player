@@ -3,23 +3,23 @@
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-import {CastProxy} from './lib/cast_proxy';
-import {Controls} from './/controls';
-import {Element} from './/element';
-import * as Enums from './/enums';
+import {CastProxy} from './../lib/cast/cast_proxy';
+import {Controls} from './controls';
+import {Element} from './element';
+import * as Enums from './enums';
 goog.require('shaka.ui.Locales');
-import {Localization} from './/localization';
-import * as LocalizationExports from './/localization';
-import {OverflowMenu} from './/overflow_menu';
-import * as OverflowMenuExports from './/overflow_menu';
-import {Utils} from './/ui_utils';
-import {Dom} from './lib/dom_utils';
-import {Error} from './lib/error';
-import * as ErrorExports from './lib/error';
-import {FakeEvent} from './lib/fake_event';
-import * as FakeEventExports from './lib/fake_event';
-import {CastProxy} from './lib/cast_proxy';
-import {Controls} from './/controls';
+import {Localization} from './localization';
+import * as LocalizationExports from './localization';
+import {OverflowMenu} from './overflow_menu';
+import * as OverflowMenuExports from './overflow_menu';
+import {Utils} from './ui_utils';
+import {Dom} from './../lib/util/dom_utils';
+import {Error} from './../lib/util/error';
+import * as ErrorExports from './../lib/util/error';
+import {FakeEvent} from './../lib/util/fake_event';
+import * as FakeEventExports from './../lib/util/fake_event';
+import {CastProxy} from './../lib/cast/cast_proxy';
+import {Controls} from './controls';
 
 /**
  * @final

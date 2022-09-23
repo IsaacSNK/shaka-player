@@ -1,18 +1,22 @@
-
+import {IReleasable} from './../../lib/util/i_releasable'
+import {IAd,IAdManager} from './../../externs/shaka/ads'
+import { Controls } from '../controls';
+import {EventManager} from './../../lib/util/event_manager'
+import { Player } from '../../lib/player';
     /**
      * Interface for UI elements.  UI elements should inherit from the concrete base
      * class shaka.ui.Element.  The members defined in this extern's constructor are
      * all available from the base class, and are defined here to keep the compiler
      * from renaming them.
      */
-  export interface IUIElement extends shaka.util.IReleasable {
-    ad : shaka.extern.IAd | null ;
-    adManager : shaka.extern.IAdManager | null ;
-    controls : shaka.ui.Controls | null ;
-    eventManager : shaka.util.EventManager | null ;
+  export interface IUIElement extends IReleasable {
+    ad :  IAd | null ;
+    adManager : IAdManager | null ;
+    controls : Controls | null ;
+    eventManager : EventManager | null ;
     localization : shaka.ui.Localization | null ;
     parent : HTMLElement | null ;
-    player : shaka.Player | null ;
+    player : Player | null ;
     video : HTMLMediaElement | null ;
         release ( ) : any ;
 }
@@ -21,7 +25,7 @@
      * A factory for creating a UI element.
      */
     export interface Factory {
-      create (rootElement : HTMLElement , controls : shaka.ui.Controls ) : shaka.extern.IUIElement ;
+      create (rootElement : HTMLElement , controls : Controls ) : IUIElement ;
     }
   
     /**
@@ -30,7 +34,7 @@
      * extern's constructor are all available from the base class, and are defined
      * here to keep the compiler from renaming them.
      */
-    export interface IUIRangeElement extends shaka.extern.IUIElement {
+    export interface IUIRangeElement extends IUIElement {
         bar : HTMLInputElement ;
         container : HTMLElement ;
         changeTo (value : number ) : any ;
@@ -60,7 +64,7 @@
      * SeekBar, you should consider using shaka.ui.RangeElement or
      * shaka.ui.SeekBar as your base class.
      */
-    export interface IUISeekBar extends shaka.extern.IUIRangeElement {
+    export interface IUISeekBar extends IUIRangeElement {
       getValue ( ) : number ;
       isShowing ( ) : boolean ;
       setValue (value : number ) : any ;
@@ -74,8 +78,8 @@
     /**
      * A factory for creating a SeekBar element.
      */
-    export interface Factory {
-      create (rootElement : HTMLElement , controls : shaka.ui.Controls ) : shaka.extern.IUISeekBar ;
+    export interface IFactory {
+      create (rootElement : HTMLElement , controls : Controls ) : IUISeekBar ;
     }
   
     /**
@@ -84,7 +88,7 @@
      * extern's constructor are all available from the base class, and are defined
      * here to keep the compiler from renaming them.
      */
-    export interface IUISettingsMenu extends shaka.extern.IUIElement {
+    export interface IUISettingsMenu extends IUIElement {
         backButton : HTMLButtonElement ;
         backSpan : HTMLElement ;
         button : HTMLButtonElement ;

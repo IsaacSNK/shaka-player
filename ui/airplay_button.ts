@@ -3,22 +3,23 @@
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-import * as assertsExports from './lib/asserts';
-import {asserts} from './lib/asserts';
-import * as PlayerExports from './lib/player';
-import {Player} from './lib/player';
-import {Controls} from './/controls';
-import {Element} from './/element';
-import * as Enums from './/enums';
+import * as assertsExports from './../lib/debug/asserts';
+import {asserts} from './../lib/debug/asserts';
+import * as PlayerExports from './../lib/player';
+import {Player} from './../lib/player';
+import {Controls} from './controls';
+import {Element} from './element';
+import * as Enums from './enums';
 
 goog.require('shaka.ui.Locales');
-import {Localization} from './/localization';
-import * as LocalizationExports from './/localization';
-import {OverflowMenu} from './/overflow_menu';
-import * as OverflowMenuExports from './/overflow_menu';
-import {Utils} from './/ui_utils';
-import {Dom} from './lib/dom_utils';
-import {Controls} from './/controls';
+import {Localization} from './localization';
+import * as LocalizationExports from './localization';
+import {OverflowMenu} from './overflow_menu';
+import * as OverflowMenuExports from './overflow_menu';
+import {Utils} from './ui_utils';
+import {Dom} from './../lib/util/dom_utils';
+import {Controls} from './controls';
+import { IFactory } from './externs/ui';
 
 /**
  * @final
@@ -123,8 +124,7 @@ export class AirPlayButton extends Element {
 /**
  * @final
  */
-export class Factory implements shaka.
-extern.IUIElement.Factory {
+export class Factory implements IFactory {
   /** @override */
   create(rootElement, controls) {
     return new AirPlayButton(rootElement, controls);

@@ -3,18 +3,18 @@
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-import {Controls} from './/controls';
-import * as Enums from './/enums';
-import {LanguageUtils} from './/language_utils';
+import {Controls} from './controls';
+import * as Enums from './enums';
+import {LanguageUtils} from './language_utils';
 goog.require('shaka.ui.Locales');
-import {Localization} from './/localization';
-import * as LocalizationExports from './/localization';
-import {OverflowMenu} from './/overflow_menu';
+import {Localization} from './localization';
+import * as LocalizationExports from './localization';
+import {OverflowMenu} from './overflow_menu';
 import * as OverflowMenuExports from './/overflow_menu';
-import {SettingsMenu} from './/settings_menu';
-import {Utils} from './/ui_utils';
-import {FakeEvent} from './lib/fake_event';
-import * as FakeEventExports from './lib/fake_event';
+import {SettingsMenu} from './settings_menu';
+import {Utils} from './ui_utils';
+import {FakeEvent} from './../lib/util/fake_event';
+import * as FakeEventExports from './../lib/util/fake_event';
 import {Controls} from './/controls';
 
 /**

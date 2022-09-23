@@ -3,14 +3,14 @@
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-import * as assertsExports from './lib/asserts';
-import {asserts} from './lib/asserts';
-import * as logExports from './lib/log';
-import {log} from './lib/log';
-import {Dom} from './lib/dom_utils';
-import {Controls} from './/controls';
-import {Element} from './/element';
-import {Utils} from './/ui_utils';
+import * as assertsExports from './../lib/debug/asserts';
+import {asserts} from './../lib/debug/asserts';
+import * as logExports from './../lib/debug/log';
+import {log} from './../lib/debug/log';
+import {Dom} from './../lib/util/dom_utils';
+import {Controls} from './controls';
+import {Element} from './element';
+import {Utils} from './ui_utils';
 
 /**
  * @final
@@ -18,7 +18,7 @@ import {Utils} from './/ui_utils';
  */
 export class ContextMenu extends Element {
   private config_: shaka.extern.UIConfiguration;
-  private controlsContainer_: HTMLElement;
+  private controlsContainer_: HTMLElement |null;
   private children_: shaka.extern.IUIElement[] = [];
   private contextMenu_: HTMLElement;
 
@@ -34,8 +34,7 @@ export class ContextMenu extends Element {
     this.eventManager.listen(this.controlsContainer_, 'contextmenu', (e) => {
       if (this.contextMenu_.classList.contains('shaka-hidden')) {
         e.preventDefault();
-        const controlsLocation =
-            this.controlsContainer_.getBoundingClientRect();
+        const controlsLocation = this.controlsContainer_.getBoundingClientRect();
         this.contextMenu_.style.left = `${e.clientX - controlsLocation.left}px`;
         this.contextMenu_.style.top = `${e.clientY - controlsLocation.top}px`;
         Utils.setDisplay(this.contextMenu_, true);
