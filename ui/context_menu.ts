@@ -11,15 +11,15 @@ import {Dom} from './../lib/util/dom_utils';
 import {Controls} from './controls';
 import {Element} from './element';
 import {Utils} from './ui_utils';
-import {IUIElement} from './externs/ui'
+import {IUIElement, UIConfiguration} from './externs/ui'
 import * as IFactory from './externs/ui';
 /**
  * @final
  * @export
  */
 export class ContextMenu extends Element {
-  private config_: shaka.extern.UIConfiguration;
-  private controlsContainer_: HTMLElement |null;
+  private config_: UIConfiguration;
+  private controlsContainer_: HTMLElement;
   private children_: IUIElement[] = [];
   private contextMenu_: HTMLElement;
 
@@ -51,6 +51,7 @@ export class ContextMenu extends Element {
 
   /** @override */
   release() {
+    //@ts-ignore
     this.controlsContainer_ = null;
     for (const element of this.children_) {
       element.release();

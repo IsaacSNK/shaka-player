@@ -27,7 +27,7 @@ export interface IUIElement extends IReleasable {
  * A factory for creating a UI element.
  */
 export interface Factory {
-  create(rootElement: HTMLElement, controls: Controls): IUIElement;
+  create(rootElement: HTMLElement, controls: Controls): any;
 }
 
 /**
@@ -81,7 +81,7 @@ export interface IUISeekBar extends IUIRangeElement {
  * A factory for creating a SeekBar element.
  */
 export interface IFactory {
-  create(rootElement: HTMLElement, controls: Controls): IUISeekBar;
+  create(rootElement: HTMLElement, controls: Controls): any;
 }
 
 /**

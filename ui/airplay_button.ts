@@ -10,16 +10,14 @@ import {Player} from './../lib/player';
 import {Controls} from './controls';
 import {Element} from './element';
 import * as Enums from './enums';
-
-goog.require('shaka.ui.Locales');
 import {Localization} from './localization';
 import * as LocalizationExports from './localization';
 import {OverflowMenu} from './overflow_menu';
 import * as OverflowMenuExports from './overflow_menu';
 import {Utils} from './ui_utils';
 import {Dom} from './../lib/util/dom_utils';
-import {Controls} from './controls';
-import { IFactory } from './externs/ui';
+
+import { IFactory, shaka } from './externs/ui';
 
 /**
  * @final
@@ -43,6 +41,7 @@ export class AirPlayButton extends Element {
     this.airplayButton_.appendChild(this.airplayIcon_);
 
     // Don't show the button if AirPlay is not supported.
+    //@ts-ignore
     if (!window.WebKitPlaybackTargetAvailabilityEvent) {
       this.airplayButton_.classList.add('shaka-hidden');
     }
@@ -78,6 +77,7 @@ export class AirPlayButton extends Element {
     asserts.assert(video != null, 'Should have a video!');
     this.eventManager.listen(
         video, 'webkitplaybacktargetavailabilitychanged', (e) => {
+           //@ts-ignore
           const event = (e as AirPlayEvent);
           this.onAirPlayAvailabilityChange_(event);
         });
@@ -90,6 +90,7 @@ export class AirPlayButton extends Element {
   private onAirPlayClick_() {
     const video = this.controls.getVideo();
     asserts.assert(video != null, 'Should have a video!');
+     //@ts-ignore
     video.webkitShowPlaybackTargetPicker();
   }
 
@@ -103,6 +104,7 @@ export class AirPlayButton extends Element {
   private onAirPlayStatusChange_() {
     const video = this.controls.getVideo();
     asserts.assert(video != null, 'Should have a video!');
+     //@ts-ignore
     const isCasting = video && video.webkitCurrentPlaybackTargetIsWireless;
 
     // Aria-pressed set to true when casting, set to false otherwise.
@@ -126,9 +128,10 @@ export class AirPlayButton extends Element {
  */
 export class Factory implements IFactory {
   /** @override */
-  create(rootElement, controls) {
+  create(rootElement: HTMLElement, controls: Controls) {
     return new AirPlayButton(rootElement, controls);
   }
 }
 OverflowMenu.registerElement('airplay', new Factory());
+//@ts-ignore
 Controls.registerElement('airplay', new Factory());

@@ -7,12 +7,12 @@ import * as AdManagerExports from './../lib/ads/ad_manager';
 import {AdManager} from './../lib/ads/ad_manager';
 import {Element} from './element';
 
-goog.require('shaka.ui.Locales');
 import {Localization} from './/localization';
 import * as LocalizationExports from './/localization';
 import {Utils} from './../ui/ui_utils';
 import {Dom} from './../lib/util/dom_utils';
 import {Controls} from './controls';
+import { shaka } from './externs/ui';
 
 /**
  * @final

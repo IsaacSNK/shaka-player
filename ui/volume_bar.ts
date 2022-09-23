@@ -3,23 +3,25 @@
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-import * as AdManagerExports from './lib/ad_manager';
-import {AdManager} from './lib/ad_manager';
-import * as assertsExports from './lib/asserts';
-import {asserts} from './lib/asserts';
-import {Controls} from './/controls';
+import * as AdManagerExports from './../lib/ads/ad_manager';
+import {AdManager} from './../lib/ads/ad_manager';
+import * as assertsExports from './../lib/debug/asserts';
+import {asserts} from './../lib/debug/asserts';
+import {Controls} from './../ui/controls';
 
 goog.require('shaka.ui.Locales');
-import {Localization} from './/localization';
-import * as LocalizationExports from './/localization';
-import {RangeElement} from './/range_element';
+import {Localization} from './../ui/localization';
+import * as LocalizationExports from './../ui/localization';
+import {RangeElement} from './../ui/range_element';
+import { UIConfiguration } from './externs/ui';
+import * as IFactory from './externs/ui'
 
 /**
  * @final
  * @export
  */
 export class VolumeBar extends RangeElement {
-  private config_: shaka.extern.UIConfiguration;
+  private config_: UIConfiguration;
 
   constructor(parent: HTMLElement, controls: Controls) {
     super(
@@ -105,8 +107,7 @@ export class VolumeBar extends RangeElement {
 /**
  * @final
  */
-export class Factory implements shaka.
-extern.IUIElement.Factory {
+export class Factory implements IFactory.Factory {
   /** @override */
   create(rootElement, controls) {
     return new VolumeBar(rootElement, controls);

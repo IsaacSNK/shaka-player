@@ -20,8 +20,6 @@ import {AdPosition} from './../ui/ad_position';
 import {BigPlayButton} from './../ui/big_play_button';
 import * as ContextMenuExports from './../ui/context_menu';
 import {ContextMenu} from './../ui/context_menu';
-
-goog.require('shaka.ui.Locales');
 import {Localization} from './../ui/localization';
 import * as LocalizationExports from './../ui/localization';
 import {SeekBar} from './../ui/seek_bar';
@@ -39,7 +37,7 @@ import {Timer} from './../lib/util/timer';
 import {Player} from './../lib/player';
 import * as PlayerExports from './../lib/player';
 import { IAd, IAdManager } from '../externs/shaka/ads';
-import { Factory, IUIElement, IUISeekBar } from './externs/ui';
+import { Factory, IUIElement, IUISeekBar, shaka, UIConfiguration } from './externs/ui';
 
 
 /**
@@ -48,7 +46,7 @@ import { Factory, IUIElement, IUISeekBar } from './externs/ui';
  */
 export class Controls extends FakeEventTarget implements IDestroyable {
   private enabled_: boolean = true;
-  private config_: shaka.extern.UIConfiguration;
+  private config_: UIConfiguration;
   private castProxy_: CastProxy;
   private castAllowed_: boolean = true;
   private video_: HTMLMediaElement;
@@ -60,7 +58,7 @@ export class Controls extends FakeEventTarget implements IDestroyable {
   private ad_: IAd|null = null;
   private seekBar_: IUISeekBar;
   private isSeeking_: boolean = false;
-  private menus_: HTMLElement[] = [];
+  private menus_: Element[] = [];
 
   /**
    * Individual controls which, when hovered or tab-focused, will force the
@@ -124,7 +122,7 @@ export class Controls extends FakeEventTarget implements IDestroyable {
 
   constructor(
       player: Player, videoContainer: HTMLElement, video: HTMLMediaElement,
-      config: shaka.extern.UIConfiguration) {
+      config: UIConfiguration) {
     super();
     this.config_ = config;
     this.castProxy_ = new CastProxy(
@@ -181,8 +179,8 @@ export class Controls extends FakeEventTarget implements IDestroyable {
     this.timeAndSeekRangeTimer_.tickEvery(
         /* seconds= */
         0.125);
-    this.eventManager_.listen(
-        this.localization_, LocalizationExports.LOCALE_CHANGED, (e) => {
+        //@ts-ignore
+    this.eventManager_.listen(this.localization_, LocalizationExports.LOCALE_CHANGED, (e) => {
           const locale = e['locales'][0];
           this.adManager_.setLocale(locale);
         });
@@ -301,7 +299,7 @@ export class Controls extends FakeEventTarget implements IDestroyable {
   /**
    * @export
    */
-  configure(config: shaka.extern.UIConfiguration) {
+  configure(config: UIConfiguration) {
     this.config_ = config;
     this.castProxy_.changeReceiverId(
         config.castReceiverAppId, config.castAndroidReceiverCompatible);
@@ -469,7 +467,7 @@ export class Controls extends FakeEventTarget implements IDestroyable {
   /**
    * @export
    */
-  getConfig(): shaka.extern.UIConfiguration {
+  getConfig(): UIConfiguration {
     return this.config_;
   }
 
@@ -528,6 +526,7 @@ export class Controls extends FakeEventTarget implements IDestroyable {
       return true;
     }
     const video = (this.localVideo_ as HTMLVideoElement);
+    //@ts-ignore
     if (video.webkitSupportsFullscreen) {
       return true;
     }
@@ -542,7 +541,9 @@ export class Controls extends FakeEventTarget implements IDestroyable {
       return !!document.fullscreenElement;
     }
     const video = (this.localVideo_ as HTMLVideoElement);
+     //@ts-ignore
     if (video.webkitSupportsFullscreen) {
+       //@ts-ignore
       return video.webkitDisplayingFullscreen;
     }
     return false;
@@ -578,10 +579,14 @@ export class Controls extends FakeEventTarget implements IDestroyable {
       }
     } else {
       const video = (this.localVideo_ as HTMLVideoElement);
+       //@ts-ignore
       if (video.webkitSupportsFullscreen) {
+         //@ts-ignore
         if (video.webkitDisplayingFullscreen) {
+           //@ts-ignore
           video.webkitExitFullscreen();
         } else {
+           //@ts-ignore
           video.webkitEnterFullscreen();
         }
       }
@@ -659,10 +664,8 @@ export class Controls extends FakeEventTarget implements IDestroyable {
     }
     this.addDaiAdContainer_();
     this.addControlsButtonPanel_();
-    this.menus_ = Array.from(
-        this.videoContainer_.getElementsByClassName('shaka-settings-menu'));
-    this.menus_.push(...Array.from(
-        this.videoContainer_.getElementsByClassName('shaka-overflow-menu')));
+    this.menus_ = Array.from(this.videoContainer_.getElementsByClassName('shaka-settings-menu'));
+    this.menus_.push(...Array.from(this.videoContainer_.getElementsByClassName('shaka-overflow-menu')));
     this.addSeekBar_();
     this.showOnHoverControls_ =
         Array.from(this.videoContainer_.getElementsByClassName(
@@ -719,8 +722,10 @@ export class Controls extends FakeEventTarget implements IDestroyable {
     Utils.setDisplay(this.adPanel_, showAdPanel);
     this.bottomControls_.appendChild(this.adPanel_);
     const adPosition = new AdPosition(this.adPanel_, this);
+    //@ts-ignore
     this.elements_.push(adPosition);
     const adCounter = new AdCounter(this.adPanel_, this);
+    //@ts-ignore
     this.elements_.push(adCounter);
   }
 
@@ -734,7 +739,7 @@ export class Controls extends FakeEventTarget implements IDestroyable {
 
     // Svg elements have to be created with the svg xml namespace.
     const xmlns = 'http://www.w3.org/2000/svg';
-    const svg = (document.createElementNS(xmlns, 'svg') as HTMLElement);
+    const svg = (document.createElementNS(xmlns, 'svg') as unknown as HTMLElement);
     svg.classList.add('shaka-spinner-svg');
     svg.setAttribute('viewBox', '0 0 30 30');
     spinner.appendChild(svg);
@@ -764,7 +769,7 @@ export class Controls extends FakeEventTarget implements IDestroyable {
     // on the page. The click event listener on window ensures that.
     // However, clicks on the bottom controls don't propagate to the container,
     // so we have to explicitly hide the menus onclick here.
-    this.eventManager_.listen(this.bottomControls_, 'click', (e) => {
+    this.eventManager_.listen(this.bottomControls_, 'click', (e:any) => {
       // We explicitly deny this measure when clicking on buttons that
       // open submenus in the control panel.
       if (!e.target['closest']('.shaka-overflow-button')) {
@@ -785,6 +790,7 @@ export class Controls extends FakeEventTarget implements IDestroyable {
     for (const name of this.config_.controlPanelElements) {
       if (elementNamesToFactories_.get(name)) {
         const factory = elementNamesToFactories_.get(name);
+        //@ts-ignore
         const element = factory.create(this.controlsButtonPanel_, this);
         this.elements_.push(element);
       } else {
@@ -1323,11 +1329,13 @@ export class Controls extends FakeEventTarget implements IDestroyable {
       if (this.pressedKeys_.has('Shift')) {
         if (activeElement == firstShownChild && lastShownChild !==null) {
           event.preventDefault();
+          //@ts-ignore
           lastShownChild.focus();
         }
       } else {
         if (activeElement == lastShownChild && firstShownChild!==null) {
           event.preventDefault();
+          //@ts-ignore
           firstShownChild.focus();
         }
       }
@@ -1351,6 +1359,7 @@ export class Controls extends FakeEventTarget implements IDestroyable {
   private static createLocalization_(): Localization {
     const fallbackLocale: string = 'en';
     const localization: Localization = new Localization(fallbackLocale);
+    //@ts-ignore
     shaka.ui.Locales.addTo(localization);
     localization.changeLocale(navigator.languages || []);
     return localization;

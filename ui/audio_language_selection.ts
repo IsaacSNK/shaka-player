@@ -6,17 +6,16 @@
 import {Controls} from './controls';
 import * as Enums from './enums';
 import {LanguageUtils} from './language_utils';
-goog.require('shaka.ui.Locales');
 import {Localization} from './localization';
 import * as LocalizationExports from './localization';
 import {OverflowMenu} from './overflow_menu';
-import * as OverflowMenuExports from './/overflow_menu';
+import * as OverflowMenuExports from './overflow_menu';
 import {SettingsMenu} from './settings_menu';
 import {Utils} from './ui_utils';
 import {FakeEvent} from './../lib/util/fake_event';
 import * as FakeEventExports from './../lib/util/fake_event';
-import {Controls} from './controls';
 import * as IFactory from './externs/ui';
+import { Track } from '../externs/shaka/player';
 
 /**
  * @final
@@ -66,12 +65,12 @@ export class AudioLanguageSelection extends SettingsMenu {
     this.updateAudioLanguages_();
   }
 
-  private onAudioTrackSelected_(track: shaka.extern.Track) {
+  private onAudioTrackSelected_(track: Track) {
     this.player.selectAudioLanguage(track.language, track.roles[0]);
   }
 
   private updateLocalizedStrings_() {
-    const LocIds = shaka.ui.Locales.Ids;
+    const LocIds = IFactory.shaka.ui.Locales.Ids;
     this.backButton.ariaLabel = this.localization.resolve(LocIds.BACK);
     this.button.ariaLabel = this.localization.resolve(LocIds.LANGUAGE);
     this.nameSpan.textContent = this.localization.resolve(LocIds.LANGUAGE);
@@ -84,7 +83,7 @@ export class AudioLanguageSelection extends SettingsMenu {
  */
 export class Factory implements IFactory.Factory{
   /** @override */
-  create(rootElement, controls) {
+  create(rootElement: HTMLElement, controls: Controls) {
     return new AudioLanguageSelection(rootElement, controls);
   }
 }
