@@ -5,6 +5,7 @@
  */
 
 import { AutoShowText } from "../../lib/config/auto_show_text";
+import { ShakaError } from "../../lib/util/error";
 import { Factory } from "./abr_manager";
 import { DrmInfo } from "./manifest";
 import { RetryParameters } from "./net";

@@ -5,6 +5,7 @@
  */
 
 import { PresentationTimeline } from "../../lib/media/presentation_timeline";
+import { SegmentIndex } from "../../lib/media/segment_index";
 import { StreamDB } from "./offline";
 
 export interface Manifest {
@@ -53,6 +54,7 @@ type CreateSegmentIndexFunction = () => Promise<any>;
 
 export interface HlsAes128Key {
   method: string;
+  //@ts-ignore
   cryptoKey: webCrypto.CryptoKey|undefined;
   fetchKey: CreateSegmentIndexFunction|undefined;
   iv: Uint8Array|undefined;
