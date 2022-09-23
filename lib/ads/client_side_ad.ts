@@ -3,10 +3,8 @@
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-import { google } from '../../externs/ima';
 import { IAd } from '../../externs/shaka/ads';
-import * as EventManagerExports from './../util/event_manager';
-import {EventManager} from './../util/event_manager';
+import { EventManager } from './../util/event_manager';
 
 /**
  * @export
@@ -167,8 +165,8 @@ export class ClientSideAd implements IAd {
     if (document.fullscreenEnabled) {
       isInFullscreen = !!document.fullscreenElement;
     } else {
-      if (video.webkitSupportsFullscreen) {
-        isInFullscreen = video.webkitDisplayingFullscreen;
+      if (video['webkitSupportsFullscreen']) {
+        isInFullscreen = video['webkitDisplayingFullscreen'];
       }
     }
     const viewMode = isInFullscreen ? google.ima.ViewMode.FULLSCREEN :
@@ -209,7 +207,7 @@ export class ClientSideAd implements IAd {
    * @export
    */
   getPositionInSequence() {
-    const podInfo = this.ad_.getAdPodInfo();
+    const podInfo = this.ad_?.getAdPodInfo();
     if (podInfo == null) {
       // No pod, just one ad.
       return 1;
@@ -222,7 +220,9 @@ export class ClientSideAd implements IAd {
    * @export
    */
   release() {
+    //@ts-ignore
     this.ad_ = null;
+    //@ts-ignore
     this.manager_ = null;
   }
 }
