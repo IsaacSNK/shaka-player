@@ -124,7 +124,7 @@ declare namespace google.ima {
      */
     type AdsRequest = {
         adsResponse?: string,
-        adTagUr?: string;
+        adTagUrl?: string;
     }
 
     class AdError { }

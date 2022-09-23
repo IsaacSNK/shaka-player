@@ -110,12 +110,12 @@ export type UIVolumeBarColors = { base: string, level: string };
 
 
 
-declare namespace shaka.ui {
+export declare namespace shaka.ui {
   class Locales {
     addTo(localization: Localization);
   }
 }
-declare namespace shaka.ui.Locales {
+export declare namespace shaka.ui.Locales {
   enum Ids {
     LIVE = 'LIVE',
     AD_TIME = 'AD_TIME',

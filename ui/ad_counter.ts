@@ -15,7 +15,7 @@ import {Utils} from './ui_utils';
 import {Dom} from './../lib/util/dom_utils';
 import {Timer} from './../lib/util/timer';
 import {Controls} from './controls';
-
+import { shaka } from "./externs/ui"
 /**
  * @final
  * @export
