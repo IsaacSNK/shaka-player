@@ -21,4 +21,4 @@
  *
  * @suppress {duplicate}
  */
-class DOMStringList implements IArrayLike<string>, Iterable<string> {}
+export interface DOMStringList extends ArrayLike<string>, Iterable<string> {}

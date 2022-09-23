@@ -19,7 +19,7 @@ class VideoTrack {
   sourceBuffer: SourceBuffer;
 }
 
-interface VideoTrackList extends IArrayLike<VideoTrack>, EventTarget {
+interface VideoTrackList extends ArrayLike<VideoTrack>, EventTarget {
   /** @override */
   addEventListener(type, listener, useCapture);
 
@@ -29,4 +29,5 @@ interface VideoTrackList extends IArrayLike<VideoTrack>, EventTarget {
   /** @override */
   dispatchEvent(event);
 }
+//@ts-ignore
 HTMLMediaElement.prototype.videoTracks;

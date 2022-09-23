@@ -31,8 +31,7 @@ HTMLMediaElement.prototype.generateKeyRequest = function(
  * @override the standard one-argument version
  */
 //@ts-ignore
-HTMLVideoElement.prototype.canPlayType = function(
-    mimeType: string, keySystem?: string): string {};
+HTMLVideoElement.prototype.canPlayType = function(mimeType: string, keySystem?: string): string {};
 
 export interface MediaKeyEvent extends Event {
   keySystem: string;

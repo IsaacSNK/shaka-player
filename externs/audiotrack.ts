@@ -19,7 +19,7 @@ class AudioTrack {
   sourceBuffer: SourceBuffer;
 }
 
-interface AudioTrackList extends IArrayLike<AudioTrack>, EventTarget {
+interface AudioTrackList extends ArrayLike<AudioTrack>, EventTarget {
   /** @override */
   addEventListener(type, listener, useCapture);
 
