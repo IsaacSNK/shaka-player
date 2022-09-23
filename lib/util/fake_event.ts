@@ -55,6 +55,7 @@ export class FakeEvent extends Event{
   }
 
   constructor(public readonly type: string, dict?: Map<string, Object>) {
+    super(type);
     if (dict) {
       if (dict instanceof Map) {
         // Take properties from dict if present.

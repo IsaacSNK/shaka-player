@@ -228,7 +228,7 @@ export interface ManifestConfiguration {
 
 export interface StreamingConfiguration {
   retryParameters: RetryParameters;
-  failureCallback: (p1: shaka.util.Error) => any;
+  failureCallback: (p1: ShakaError) => any;
   rebufferingGoal: number;
   bufferingGoal: number;
   bufferBehind: number;

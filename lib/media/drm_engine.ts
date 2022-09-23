@@ -774,7 +774,7 @@ export class DrmEngine implements IDestroyable {
     } catch (exception) {
       this.destroyer_.ensureNotDestroyed(exception);
 
-      // Don't rewrap a shaka.util.Error from earlier in the chain:
+      // Don't rewrap a ShakaError from earlier in the chain:
       this.currentDrmInfo_ = null;
       this.supportedTypes_.clear();
       if (exception instanceof Error) {

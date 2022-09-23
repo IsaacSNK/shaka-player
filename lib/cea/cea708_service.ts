@@ -36,7 +36,7 @@ export class Cea708Service {
 
   /**
    * Processes a CEA-708 control code.
-   * @throws {!shaka.util.Error}
+   * @throws {!ShakaError}
    */
   handleCea708ControlCode(dtvccPacket: DtvccPacket):
       ICaptionDecoderExports.ClosedCaption|null {
@@ -201,7 +201,7 @@ export class Cea708Service {
    * Processes C1 group data.
    * These are caption commands.
    * @param pts in seconds
-   * @throws {!shaka.util.Error} a possible out-of-range buffer read.
+   * @throws {!ShakaError} a possible out-of-range buffer read.
    */
   private handleC1_(
       dtvccPacket: DtvccPacket, captionCommand: number,
@@ -427,7 +427,7 @@ export class Cea708Service {
   }
 
   /**
-   * @throws {!shaka.util.Error}
+   * @throws {!ShakaError}
    */
   private setPenAttributes_(dtvccPacket: DtvccPacket) {
     // Two bytes follow. For the purpose of this decoder, we are only concerned
@@ -453,7 +453,7 @@ export class Cea708Service {
   }
 
   /**
-   * @throws {!shaka.util.Error}
+   * @throws {!ShakaError}
    */
   private setPenColor_(dtvccPacket: DtvccPacket) {
     // Read foreground and background properties.
@@ -487,7 +487,7 @@ export class Cea708Service {
   }
 
   /**
-   * @throws {!shaka.util.Error}
+   * @throws {!ShakaError}
    */
   private setPenLocation_(dtvccPacket: DtvccPacket) {
     // Following 2 bytes take the following form:
@@ -503,7 +503,7 @@ export class Cea708Service {
   }
 
   /**
-   * @throws {!shaka.util.Error}
+   * @throws {!ShakaError}
    */
   private setWindowAttributes_(dtvccPacket: DtvccPacket) {
     // 4 bytes follow, with the following form:
@@ -535,7 +535,7 @@ export class Cea708Service {
   }
 
   /**
-   * @throws {!shaka.util.Error}
+   * @throws {!ShakaError}
    */
   private defineWindow_(
       dtvccPacket: DtvccPacket, windowNum: number, pts: number) {

@@ -108,7 +108,7 @@ export class DtvccPacket {
 
   /**
    * Reads a byte from the packet. TODO CONSIDER RENAMING THIS TO BLOCK
-   * @throws {!shaka.util.Error}
+   * @throws {!ShakaError}
    */
   readByte(): Cea708ServiceExports.Cea708Byte {
     if (!this.hasMoreData()) {
@@ -121,7 +121,7 @@ export class DtvccPacket {
 
   /**
    * Skips the provided number of blocks in the buffer.
-   * @throws {!shaka.util.Error}
+   * @throws {!ShakaError}
    */
   skip(numBlocks: number) {
     if (this.pos_ + numBlocks > this.packetData_.length) {

@@ -41,7 +41,7 @@ import {IDestroyable} from './../util/i_destroyable';
 export class CastProxy extends FakeEventTarget implements IDestroyable {
   private localVideo_: HTMLMediaElement | null;
   private localPlayer_: Player;
-  private videoProxy_: Object | null= null;
+  private videoProxy_: any | null= null;
   private playerProxy_: Object | null = null;
   private videoEventTarget_: FakeEventTarget | null= null;
   private playerEventTarget_: FakeEventTarget | null = null;
@@ -417,8 +417,8 @@ export class CastProxy extends FakeEventTarget implements IDestroyable {
    * knows that the player is playing, if joining an existing receiver.
    */
   private onFirstCastStateUpdate_() {
-    const type = this.videoProxy_?['paused'] ? 'pause' : 'play';
-    const fakeEvent = new FakeEvent(type);
+    const proxyType = this.videoProxy_.paused ? 'pause' : 'play';
+    const fakeEvent = new FakeEvent(proxyType);
     this.videoEventTarget_?.dispatchEvent(fakeEvent);
   }
 

@@ -83,7 +83,7 @@ import {Timer} from './util/timer';
  * @description Fired when a playback error occurs.
  * @property {string} type
  *   'error'
- * @property {!shaka.util.Error} detail
+ * @property {!ShakaError} detail
  *   An object which contains details on the error.  The error's
  *   <code>category</code> and <code>code</code> properties will identify the
  *   specific error that occurred.  In an uncompiled build, you can also use the
@@ -128,7 +128,7 @@ import {Timer} from './util/timer';
  * @description Fired when a download has failed, for any reason.
  *   'downloadfailed'
  * @property {!shaka.extern.Request} request
- * @property {?shaka.util.Error} error
+ * @property {?ShakaError} error
  * @exportDoc
  */
 
