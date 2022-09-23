@@ -3,19 +3,18 @@
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-import * as AdManagerExports from './lib/ad_manager';
-import {AdManager} from './lib/ad_manager';
-import * as assertsExports from './lib/asserts';
-import {asserts} from './lib/asserts';
-import {Element} from './/element';
+import * as AdManagerExports from './../lib/ads/ad_manager';
+import {AdManager} from './../lib/ads/ad_manager';
+import * as assertsExports from './../lib/debug/asserts';
+import {asserts} from './../lib/debug/asserts';
+import {Element} from './element';
 
-goog.require('shaka.ui.Locales');
 import {Localization} from './/localization';
 import * as LocalizationExports from './/localization';
-import {Utils} from './/ui_utils';
-import {Dom} from './lib/dom_utils';
-import {Timer} from './lib/timer';
-import {Controls} from './/controls';
+import {Utils} from './ui_utils';
+import {Dom} from './../lib/util/dom_utils';
+import {Timer} from './../lib/util/timer';
+import {Controls} from './controls';
 
 /**
  * @final
@@ -25,11 +24,11 @@ export class AdCounter extends Element {
   private container_: HTMLElement;
   private span_: HTMLElement;
 
-  /**
+  /**ss
    * The timer that tracks down the ad progress.
    *
    */
-  private timer_: Timer;
+  private timer_: Timer|null;
 
   constructor(parent: HTMLElement, controls: Controls) {
     super(parent, controls);
@@ -69,8 +68,10 @@ export class AdCounter extends Element {
 
   // TODO
   private onAdStarted_() {
-    this.timer_.tickNow();
-    this.timer_.tickEvery(0.5);
+    if(this.timer_!=null){
+      this.timer_.tickNow();
+      this.timer_.tickEvery(0.5);
+    }
   }
 
   private onTimerTick_() {
@@ -111,6 +112,7 @@ export class AdCounter extends Element {
   }
 
   private reset_() {
+    if(this.timer_!==null)
     this.timer_.stop();
 
     // Controls are going to hide the whole ad panel once the ad is over,
@@ -122,6 +124,7 @@ export class AdCounter extends Element {
    * @override
    */
   release() {
+    if(this.timer_!==null)
     this.timer_.stop();
     this.timer_ = null;
     super.release();
