@@ -203,7 +203,7 @@ export class Storage implements IDestroyable {
    *
    * @export
    */
-  getConfiguration(): shaka.extern.PlayerConfiguration {
+  getConfiguration(): IPlayerConfiguration{
     asserts.assert(this.config_, 'Config must not be null!');
     const ret = PlayerConfiguration.createDefault();
     PlayerConfiguration.mergeConfigObjects(

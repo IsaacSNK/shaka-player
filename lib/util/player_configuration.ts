@@ -13,12 +13,13 @@ import {log} from './../debug/log';
 import * as NetworkingEngineExports from './../net/networking_engine';
 import {NetworkingEngine} from './../net/networking_engine';
 import {ConfigUtils} from './/config_utils';
-import * as LanguageUtilsExports from './/language_utils';
-import {LanguageUtils} from './/language_utils';
-import * as ManifestParserUtilsExports from './/manifest_parser_utils';
-import {ManifestParserUtils} from './/manifest_parser_utils';
+import * as LanguageUtilsExports from './language_utils';
+import {LanguageUtils} from './language_utils';
+import * as ManifestParserUtilsExports from './manifest_parser_utils';
+import {ManifestParserUtils} from './manifest_parser_utils';
 import * as PlatformExports from './/platform';
-import {Platform} from './/platform';
+import {Platform} from './platform';
+import { IPlayerConfiguration } from '../../externs/shaka/player';
 
 /**
  * @final
@@ -28,7 +29,7 @@ export class PlayerConfiguration {
   /**
    * @export
    */
-  static createDefault(): shaka.extern.PlayerConfiguration {
+  static createDefault(): IPlayerConfiguration {
     // This is a relatively safe default in the absence of clues from the
     // browser.  For slower connections, the default estimate may be too high.
     const bandwidthEstimate = 1e6;
@@ -238,7 +239,7 @@ export class PlayerConfiguration {
     const cmcd =
         {enabled: false, sessionId: '', contentId: '', useHeaders: false};
     const AutoShowText = AutoShowText;
-    const config: shaka.extern.PlayerConfiguration = {
+    const config: IPlayerConfiguration= {
       drm: drm,
       manifest: manifest,
       streaming: streaming,

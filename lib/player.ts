@@ -77,6 +77,10 @@ import {Stats} from './util/stats';
 import * as StreamUtilsExports from './util/stream_utils';
 import {StreamUtils} from './util/stream_utils';
 import {Timer} from './util/timer';
+import { AbrManager, Factory } from '../externs/shaka/abr_manager';
+import { Manifest } from '../externs/shaka/manifest';
+import { IAdManager } from '../externs/shaka/ads';
+import { IPlayerConfiguration } from '../externs/shaka/player';
 
 /**
  * @event shaka.Player.ErrorEvent
@@ -416,8 +420,8 @@ import {Timer} from './util/timer';
  */
 export class Player extends FakeEventTarget implements IDestroyable {
   private loadMode_: LoadMode;
-  private video_: HTMLMediaElement = null;
-  private videoContainer_: HTMLElement = null;
+  private video_: HTMLMediaElement | null= null;
+  private videoContainer_: HTMLElement  | null = null;
 
   /**
    * Since we may not always have a text displayer created (e.g. before |load|
@@ -432,28 +436,28 @@ export class Player extends FakeEventTarget implements IDestroyable {
   /**
    * For listeners scoped to the lifetime of the Player instance.
    */
-  private globalEventManager_: EventManager;
+  private globalEventManager_: EventManager | null;
 
   /**
    * For listeners scoped to the lifetime of the media element attachment.
    */
-  private attachEventManager_: EventManager;
+  private attachEventManager_: EventManager  | null;
 
   /**
    * For listeners scoped to the lifetime of the loaded content.
    */
-  private loadEventManager_: EventManager;
-  private networkingEngine_: NetworkingEngine = null;
-  private drmEngine_: DrmEngine = null;
-  private mediaSourceEngine_: MediaSourceEngine = null;
-  private playhead_: Playhead = null;
+  private loadEventManager_: EventManager  | null;
+  private networkingEngine_: NetworkingEngine  | null = null;
+  private drmEngine_: DrmEngine  | null = null;
+  private mediaSourceEngine_: MediaSourceEngine  | null= null;
+  private playhead_: Playhead  | null = null;
 
   /**
    * The playhead observers are used to monitor the position of the playhead
    * and some other source of data (e.g. buffered content), and raise events.
    *
    */
-  private playheadObservers_: PlayheadObserverManager = null;
+  private playheadObservers_: PlayheadObserverManager  | null = null;
 
   /**
    * This is our control over the playback rate of the media element. This
@@ -461,34 +465,34 @@ export class Player extends FakeEventTarget implements IDestroyable {
    * for example a negative playback rate.
    *
    */
-  private playRateController_: PlayRateController = null;
+  private playRateController_: PlayRateController  | null = null;
 
   // We use the buffering observer and timer to track when we move from having
   // enough buffered content to not enough. They only exist when content has
   // been loaded and are not re-used between loads.
-  private bufferPoller_: Timer = null;
-  private bufferObserver_: BufferingObserver = null;
-  private regionTimeline_: RegionTimeline = null;
-  private cmcdManager_: CmcdManager = null;
-  private qualityObserver_: QualityObserver = null;
-  private streamingEngine_: StreamingEngine = null;
-  private parser_: shaka.extern.ManifestParser = null;
-  private parserFactory_: shaka.extern.ManifestParser.Factory|null = null;
-  private manifest_: shaka.extern.Manifest|null = null;
+  private bufferPoller_: Timer  | null = null;
+  private bufferObserver_: BufferingObserver  | null = null;
+  private regionTimeline_: RegionTimeline  | null = null;
+  private cmcdManager_: CmcdManager  | null = null;
+  private qualityObserver_: QualityObserver  | null = null;
+  private streamingEngine_: StreamingEngine  | null= null;
+  private parser_: ManifestParser  | null = null;
+  private parserFactory_: Factory|null = null;
+  private manifest_: Manifest|null = null;
   private assetUri_: string|null = null;
-  private abrManager_: shaka.extern.AbrManager = null;
+  private abrManager_: AbrManager  | null= null;
 
   /**
    * The factory that was used to create the abrManager_ instance.
    */
-  private abrManagerFactory_: shaka.extern.AbrManager.Factory|null = null;
+  private abrManagerFactory_: Factory|null = null;
 
   /**
    * Contains an ID for use with creating streams.  The manifest parser should
    * start with small IDs, so this starts with a large one.
    */
   private nextExternalStreamId_: number = 1e9;
-  private config_: shaka.extern.PlayerConfiguration|null;
+  private config_: IPlayerConfiguration|null;
 
   /**
    * The TextDisplayerFactory that was last used to make a text displayer.
@@ -497,12 +501,12 @@ export class Player extends FakeEventTarget implements IDestroyable {
   private lastTextFactory_: shaka.extern.TextDisplayer.Factory|null;
   private maxHwRes_:
       {width: number, height: number} = {width: Infinity, height: Infinity};
-  private stats_: Stats = null;
+  private stats_: Stats  | null= null;
   private currentAdaptationSetCriteria_: AdaptationSetCriteria;
   private currentTextLanguage_: string;
   private currentTextRole_: string;
   private currentTextForced_: boolean;
-  private cleanupOnUnload_: (() => Promise | undefined)[] = [];
+  private cleanupOnUnload_: (() => Promise<any> | undefined)[] = [];
 
   /**
    * This playback start position will be used when
@@ -511,7 +515,7 @@ export class Player extends FakeEventTarget implements IDestroyable {
    *
    */
   private updatedStartTime_: number|null = null;
-  private adManager_: shaka.extern.IAdManager = null;
+  private adManager_: IAdManager | null = null;
   private detachNode_: Node = {name: 'detach'};
   private attachNode_: Node = {name: 'attach'};
   private unloadNode_: Node = {name: 'unload'};
@@ -561,7 +565,7 @@ export class Player extends FakeEventTarget implements IDestroyable {
     this.globalEventManager_.listen(window, 'online', () => {
       this.retryStreaming();
     });
-    const AbortableOperation = AbortableOperation;
+    //const AbortableOperation = AbortableOperation;
     const actions = new Map();
     actions.set(this.attachNode_, (has, wants) => {
       return AbortableOperation.notAbortable(this.onAttach_(has, wants));
@@ -612,7 +616,7 @@ export class Player extends FakeEventTarget implements IDestroyable {
         const action = actions.get(node);
         return action(has, wants);
       },
-      handleError: async (has, error) => {
+      handleError: async (has, error:any) => {
         log.warning('The walker saw an error:');
         if (error instanceof Error) {
           log.warning('Error Code:', error.code);
@@ -693,7 +697,7 @@ export class Player extends FakeEventTarget implements IDestroyable {
     // Wait until the detach has finished so that we don't interrupt it by
     // calling |destroy| on |this.walker_|. To avoid failing here, we always
     // resolve the promise.
-    await new Promise((resolve) => {
+    await new Promise((resolve:any) => {
       events.onStart = () => {
         log.info('Preparing to destroy walker...');
       };
@@ -2809,7 +2813,7 @@ export class Player extends FakeEventTarget implements IDestroyable {
    *
    * @export
    */
-  getConfiguration(): shaka.extern.PlayerConfiguration {
+  getConfiguration(): IPlayerConfiguration{
     asserts.assert(this.config_, 'Config must not be null!');
     const ret = this.defaultConfig_();
     PlayerConfiguration.mergeConfigObjects(
@@ -2824,7 +2828,7 @@ export class Player extends FakeEventTarget implements IDestroyable {
    * supported.
    *
    */
-  getSharedConfiguration(): shaka.extern.PlayerConfiguration {
+  getSharedConfiguration(): IPlayerConfiguration{
     asserts.assert(
         this.config_, 'Cannot call getSharedConfiguration after call destroy!');
     return this.config_;
@@ -4442,7 +4446,7 @@ export class Player extends FakeEventTarget implements IDestroyable {
     switchHistory.updateCurrentText(textStream, fromAdaptation);
   }
 
-  private defaultConfig_(): shaka.extern.PlayerConfiguration {
+  private defaultConfig_(): IPlayerConfiguration{
     const config = PlayerConfiguration.createDefault();
     config.streaming.failureCallback = (error) => {
       this.defaultStreamingFailureCallback_(error);
@@ -5970,8 +5974,10 @@ Deprecate.init(version);
  */
 export const restrictedStatuses_: string[] =
     ['output-restricted', 'internal-error'];
+  
+export let supportPlugins_ = {};
 
-export const adManagerFactory_: shaka.extern.IAdManager.Factory|null = null;
+export let adManagerFactory_: Factory|null = null;
 
 export const SRC_EQUAL_EXTENSIONS_TO_MIME_TYPES_: {[key: string]: string} = {
   'mp4': 'video/mp4',
