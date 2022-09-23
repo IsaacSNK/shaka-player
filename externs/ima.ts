@@ -149,11 +149,7 @@ declare namespace google.ima {
         NORMAL = 'NORMAL'
     }
 
-    namespace google.ima.AdsManagerLoadedEvent {
-        enum Type {
-            ADS_MANAGER_LOADED = 'ADS_MANAGER_LOADED',
-        }
-    }
+    
 
     namespace ImaSdkSettings {
         const enum VpaidMode {
@@ -163,41 +159,9 @@ declare namespace google.ima {
         }
     }
 
-    namespace AdEvent {
-        class AdEvent extends Event {
-            getAd(): Ad;
-        }
-
-        enum Type {
-            CONTENT_PAUSE_REQUESTED = 'CONTENT_PAUSE_REQUESTED',
-            CONTENT_RESUME_REQUESTED = 'CONTENT_RESUME_REQUESTED',
-            AD_ERROR = 'AD_ERROR',
-            PAUSED = 'PAUSED',
-            RESUMED = 'RESUMED',
-            VOLUME_CHANGED = 'VOLUME_CHANGED',
-            VOLUME_MUTED = 'VOLUME_MUTED',
-            SKIPPABLE_STATE_CHANGED = 'SKIPPABLE_STATE_CHANGED',
-            STARTED = 'STARTED',
-            FIRST_QUARTILE = 'FIRST_QUARTILE',
-            MIDPOINT = 'MIDPOINT',
-            THIRD_QUARTILE = 'THIRD_QUARTILE',
-            COMPLETE = 'COMPLETE',
-            ALL_ADS_COMPLETED = 'ALL_ADS_COMPLETED',
-            SKIPPED = 'SKIPPED',
-            INTERACTION = 'INTERACTION',
-            LOG = 'LOG',
-            AD_BREAK_READY = 'AD_BREAK_READY',
-            AD_METADATA = 'AD_METADATA',
-            LINEAR_CHANGED = 'LINEAR_CHANGED',
-            LOADED = 'LOADED',
-            USER_CLOSE = 'USER_CLOSE',
-            DURATION_CHANGE = 'DURATION_CHANGE',
-            IMPRESSION = 'IMPRESSION',
-            AD_BUFFERING = 'AD_BUFFERING',
-            AD_PROGRESS = 'AD_PROGRESS',
-            CLICK = 'CLICK',
-        }
-    }
+    class AdEvent extends Event {
+        getAd(): Ad;
+    }    
 
     namespace dai.api {
         export class StreamManager implements EventTarget {
@@ -359,5 +323,43 @@ declare namespace google.ima {
                 VIDEO_CLICKED = 'videoClicked',
             }
         }
+    }
+}
+
+declare namespace google.ima.AdsManagerLoadedEvent {
+    enum Type {
+        ADS_MANAGER_LOADED = 'ADS_MANAGER_LOADED',
+    }
+}
+
+declare namespace google.ima.AdEvent {
+    enum Type {
+        CONTENT_PAUSE_REQUESTED = 'CONTENT_PAUSE_REQUESTED',
+        CONTENT_RESUME_REQUESTED = 'CONTENT_RESUME_REQUESTED',
+        AD_ERROR = 'AD_ERROR',
+        PAUSED = 'PAUSED',
+        RESUMED = 'RESUMED',
+        VOLUME_CHANGED = 'VOLUME_CHANGED',
+        VOLUME_MUTED = 'VOLUME_MUTED',
+        SKIPPABLE_STATE_CHANGED = 'SKIPPABLE_STATE_CHANGED',
+        STARTED = 'STARTED',
+        FIRST_QUARTILE = 'FIRST_QUARTILE',
+        MIDPOINT = 'MIDPOINT',
+        THIRD_QUARTILE = 'THIRD_QUARTILE',
+        COMPLETE = 'COMPLETE',
+        ALL_ADS_COMPLETED = 'ALL_ADS_COMPLETED',
+        SKIPPED = 'SKIPPED',
+        INTERACTION = 'INTERACTION',
+        LOG = 'LOG',
+        AD_BREAK_READY = 'AD_BREAK_READY',
+        AD_METADATA = 'AD_METADATA',
+        LINEAR_CHANGED = 'LINEAR_CHANGED',
+        LOADED = 'LOADED',
+        USER_CLOSE = 'USER_CLOSE',
+        DURATION_CHANGE = 'DURATION_CHANGE',
+        IMPRESSION = 'IMPRESSION',
+        AD_BUFFERING = 'AD_BUFFERING',
+        AD_PROGRESS = 'AD_PROGRESS',
+        CLICK = 'CLICK',
     }
 }

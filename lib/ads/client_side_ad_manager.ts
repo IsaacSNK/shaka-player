@@ -194,8 +194,8 @@ export class ClientSideAdManager implements IReleasable {
       return !!document.fullscreenElement;
     } else {
       const video = (this.video_ as HTMLVideoElement);
-      if (video.webkitSupportsFullscreen) {
-        return video.webkitDisplayingFullscreen;
+      if (video['webkitSupportsFullscreen']) {
+        return video['webkitDisplayingFullscreen'];
       }
     }
     return false;
