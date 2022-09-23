@@ -4,6 +4,8 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+import { IShakaError } from "../../externs/shaka/error";
+
 /**
  * @summary
  * Describes an error that happened.
@@ -25,8 +27,7 @@
  *
  * @export
  */
-export class Error implements shaka.
-extern.Error {
+export class ShakaError implements IShakaError {
   /**
    * If true, create a stack trace in Error objects.
    *
@@ -70,29 +71,29 @@ extern.Error {
     this.data = varArgs;
 
     // This improves the formatting of Errors in failure messages in the tests.
-    if (goog.DEBUG) {
-      let categoryName = 'UNKNOWN';
-      let codeName = 'UNKNOWN';
-      for (const k in Category) {
-        if (Category[k] == this.category) {
-          categoryName = k;
-        }
-      }
-      for (const k in Code) {
-        if (Code[k] == this.code) {
-          codeName = k;
-        }
-      }
-      this.message = 'Shaka Error ' + categoryName + '.' + codeName + ' (' +
-          this.data.toString() + ')';
-      if (Error.createStack) {
-        try {
-          throw new Error(this.message);
-        } catch (e) {
-          this.stack = e.stack;
-        }
-      }
-    }
+    // if (goog.DEBUG) {
+    //   let categoryName = 'UNKNOWN';
+    //   let codeName = 'UNKNOWN';
+    //   for (const k in Category) {
+    //     if (Category[k] == this.category) {
+    //       categoryName = k;
+    //     }
+    //   }
+    //   for (const k in Code) {
+    //     if (Code[k] == this.code) {
+    //       codeName = k;
+    //     }
+    //   }
+    //   this.message = 'Shaka Error ' + categoryName + '.' + codeName + ' (' +
+    //       this.data.toString() + ')';
+    //   if (Error.createStack) {
+    //     try {
+    //       throw new Error(this.message);
+    //     } catch (e) {
+    //       this.stack = e.stack;
+    //     }
+    //   }
+    // }
   }
 
   /**
@@ -102,8 +103,8 @@ extern.Error {
     return 'ShakaError ' + JSON.stringify(this, null, '  ');
   }
 }
-if (goog.DEBUG) {
-}
+// if (goog.DEBUG) {
+// }
 
 /**
  * @export

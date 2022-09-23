@@ -15,7 +15,7 @@ export interface RestrictionInfo {
 /**
  * @exportDoc
  */
-export class Error{
+export class IShakaError{
   /**
    * @exportDoc
    */

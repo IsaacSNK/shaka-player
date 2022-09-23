@@ -8,7 +8,7 @@ import { NetworkingEngine } from "../../lib/net/networking_engine";
 import { ManifestInfo, SegmentInfo } from "../../lib/util/cmcd_manager";
 import { Manifest } from "./manifest";
 import { ManifestConfiguration, TimelineRegionInfo } from "./player";
-import { ShakaError } from "./util/error";
+import { ShakaError } from "../../lib/util/error";
 /**
  * Parses media manifests and handles manifest updates.
  *
