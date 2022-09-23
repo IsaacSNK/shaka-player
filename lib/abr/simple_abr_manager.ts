@@ -3,17 +3,14 @@
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-import {EwmaBandwidthEstimator} from './/ewma_bandwidth_estimator';
-import * as assertsExports from './../debug/asserts';
-import {asserts} from './../debug/asserts';
-import * as logExports from './../debug/log';
-import {log} from './../debug/log';
-import * as StreamUtilsExports from './../util/stream_utils';
-import {StreamUtils} from './../util/stream_utils';
-import {Timer} from './../util/timer';
 import { AbrManager, SwitchCallback } from '../../externs/shaka/abr_manager';
 import { Variant } from '../../externs/shaka/manifest';
 import { AbrConfiguration, Restrictions } from '../../externs/shaka/player';
+import { asserts } from './../debug/asserts';
+import { log } from './../debug/log';
+import { StreamUtils } from './../util/stream_utils';
+import { Timer } from './../util/timer';
+import { EwmaBandwidthEstimator } from './ewma_bandwidth_estimator';
 
 /**
  * @summary
@@ -127,7 +124,6 @@ export class SimpleAbrManager implements AbrManager {
    * @export
    */
   chooseVariant() {
-    const SimpleAbrManagerInstance = new SimpleAbrManager();
     let maxHeight = Infinity;
     let maxWidth = Infinity;
     if (this.resizeObserver_ && this.config_.restrictToElementSize) {

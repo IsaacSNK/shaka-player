@@ -21,13 +21,13 @@ import { AbrConfiguration } from "./player";
  *
  * @exportDoc
  */
-export class AbrManager {
+export declare class AbrManager {
   /**
    * Initializes the AbrManager.
    *
    * @exportDoc
    */
-  init(switchCallback: SwitchCallback) {}
+  init(switchCallback: SwitchCallback) ;
 
   /**
    * Stops any background timers and frees any objects held by this instance.
@@ -35,20 +35,20 @@ export class AbrManager {
    *
    * @exportDoc
    */
-  stop() {}
+  stop() ;
 
   /**
    * Updates manager's variants collection.
    *
    * @exportDoc
    */
-  setVariants(variants: Variant[]) {}
+  setVariants(variants: Variant[]) ;
 
   /**
    * Chooses one variant to switch to.  Called by the Player.
    * @exportDoc
    */
-  chooseVariant(): Variant {}
+  chooseVariant(): Variant ;
 
   /**
    * Enables automatic Variant choices from the last ones passed to setVariants.
@@ -56,7 +56,7 @@ export class AbrManager {
    *
    * @exportDoc
    */
-  enable() {}
+  enable() ;
 
   /**
    * Disables automatic Stream suggestions. After this, the AbrManager may not
@@ -64,7 +64,7 @@ export class AbrManager {
    *
    * @exportDoc
    */
-  disable() {}
+  disable() ;
 
   /**
    * Notifies the AbrManager that a segment has been downloaded (includes MP4
@@ -75,7 +75,7 @@ export class AbrManager {
    * @param numBytes The total number of bytes transferred.
    * @exportDoc
    */
-  segmentDownloaded(deltaTimeMs: number, numBytes: number) {}
+  segmentDownloaded(deltaTimeMs: number, numBytes: number) ;
 
   /**
    * Gets an estimate of the current bandwidth in bit/sec.  This is used by the
@@ -83,21 +83,21 @@ export class AbrManager {
    *
    * @exportDoc
    */
-  getBandwidthEstimate(): number {}
+  getBandwidthEstimate(): number ;
 
   /**
    * Updates manager playback rate.
    *
    * @exportDoc
    */
-  playbackRateChanged(rate: number) {}
+  playbackRateChanged(rate: number) ;
 
   /**
    * Set media element.
    *
    * @exportDoc
    */
-  setMediaElement(mediaElement: HTMLMediaElement) {}
+  setMediaElement(mediaElement: HTMLMediaElement) ;
 
   /**
    * Sets the ABR configuration.
@@ -107,8 +107,9 @@ export class AbrManager {
    *
    * @exportDoc
    */
-  configure(config: AbrConfiguration) {}
+  configure(config: AbrConfiguration) ;
 };
-export type SwitchCallback = (p1: Variant, p2?: boolean, p3?: number) =>
-    any;
+
+export type SwitchCallback = (p1: Variant, p2?: boolean, p3?: number) => any;
+
 export type Factory = () => AbrManager;
