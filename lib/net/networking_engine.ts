@@ -26,7 +26,7 @@ import {Timer} from './../util/timer';
  *   and retries.
  * @property {string} type
  *   'retry'
- * @property {?shaka.util.Error} error
+ * @property {?ShakaError} error
  *   The error that caused the retry. If it was a non-Shaka error, this is set
  *   to null.
  * @exportDoc
@@ -653,7 +653,7 @@ extern.IAbortableOperation<shaka.extern.Response> {
    *   A Promise which represents the underlying operation.  It is resolved
    *   when the operation is complete, and rejected if the operation fails or
    *   is aborted.  Aborted operations should be rejected with a
-   *   shaka.util.Error object using the error code OPERATION_ABORTED.
+   *   ShakaError object using the error code OPERATION_ABORTED.
    *   Will be called by this object to abort the underlying operation.  This
    *   is not cancelation, and will not necessarily result in any work being
    *   undone.  abort() should return a Promise which is resolved when the

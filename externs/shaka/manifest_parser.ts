@@ -8,7 +8,7 @@ import { NetworkingEngine } from "../../lib/net/networking_engine";
 import { ManifestInfo, SegmentInfo } from "../../lib/util/cmcd_manager";
 import { Manifest } from "./manifest";
 import { ManifestConfiguration, TimelineRegionInfo } from "./player";
-
+import { ShakaError } from "./util/error";
 /**
  * Parses media manifests and handles manifest updates.
  *
@@ -37,7 +37,7 @@ import { ManifestConfiguration, TimelineRegionInfo } from "./player";
  *
  * @exportDoc
  */
-export  interface ManifestParser{
+declare class ManifestParser{
   /**
    * Called by the Player to provide an updated configuration any time the
    * configuration changes.  Will be called at least once before start().
@@ -58,7 +58,7 @@ export  interface ManifestParser{
    */
   start(
       uri: string,
-      playerInterface: shaka.extern.ManifestParser.PlayerInterface):
+      playerInterface: PlayerInterface):
       Promise<Manifest> ;
 
   /**
@@ -100,7 +100,7 @@ export interface PlayerInterface {
   makeTextStreamsForClosedCaptions: (p1: Manifest) => any;
   onTimelineRegionAdded: (p1: TimelineRegionInfo) => any;
   onEvent: (p1: Event) => any;
-  onError: (p1: shaka.util.Error) => any;
+  onError: (p1: ShakaError) => any;
   isLowLatencyMode: () => boolean;
   isAutoLowLatencyMode: () => boolean;
   enableLowLatencyMode: () => any;

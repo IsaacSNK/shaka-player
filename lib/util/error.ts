@@ -99,7 +99,7 @@ extern.Error {
    * @override
    */
   toString(): string {
-    return 'shaka.util.Error ' + JSON.stringify(this, null, '  ');
+    return 'ShakaError ' + JSON.stringify(this, null, '  ');
   }
 }
 if (goog.DEBUG) {
@@ -738,7 +738,7 @@ export enum Code {
   /**
    * The license request failed.  This could be a timeout, a network failure, or
    * a rejection by the server.
-   * <br> error.data[0] is a shaka.util.Error from the networking engine.
+   * <br> error.data[0] is a ShakaError from the networking engine.
    */
   LICENSE_REQUEST_FAILED,
 
@@ -790,7 +790,7 @@ export enum Code {
 
   /**
    * The server certificate request failed.
-   * <br> error.data[0] is a shaka.util.Error from the networking engine.
+   * <br> error.data[0] is a ShakaError from the networking engine.
    */
   SERVER_CERTIFICATE_REQUEST_FAILED,
 

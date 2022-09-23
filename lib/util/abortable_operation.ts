@@ -28,7 +28,7 @@ extern.IAbortableOperation<T> {
   /**
    *   A Promise which represents the underlying operation.  It is resolved when
    *   the operation is complete, and rejected if the operation fails or is
-   *   aborted.  Aborted operations should be rejected with a shaka.util.Error
+   *   aborted.  Aborted operations should be rejected with a ShakaError
    *   object using the error code OPERATION_ABORTED.
    *   Will be called by this object to abort the underlying operation.
    *   This is not cancelation, and will not necessarily result in any work

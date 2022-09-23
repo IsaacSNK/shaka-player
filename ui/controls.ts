@@ -1386,7 +1386,7 @@ export class Controls extends FakeEventTarget implements IDestroyable {
  * @description Fired when something went wrong with the controls.
  * @property {string} type
  *   'error'
- * @property {!shaka.util.Error} detail
+ * @property {!ShakaError} detail
  *   An object which contains details on the error.  The error's 'category'
  *   and 'code' properties will identify the specific error that occurred.
  *   In an uncompiled build, you can also use the 'message' and 'stack'
