@@ -227,7 +227,9 @@ namespace shaka.ads {
      * @export
      */
     release() {
+      // @ts-ignore
       this.ad_ = null;
+      // @ts-ignore
       this.manager_ = null;
     }
   }

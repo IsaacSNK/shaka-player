@@ -222,7 +222,9 @@ namespace shaka.media {
             )
           );
         }
+        // @ts-ignore
         lastTime = currentTime;
+        // @ts-ignore
         lastOffset = currentOffset;
       }
       if (lastTime != null) {

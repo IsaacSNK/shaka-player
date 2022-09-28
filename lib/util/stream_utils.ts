@@ -77,6 +77,7 @@ namespace shaka.util {
         const variantCodecs = shaka.util.StreamUtils.getVariantCodecs_(variant);
         variantsByCodecs.push(variantCodecs, variant);
       }
+      // @ts-ignore
       return variantsByCodecs;
     }
 
@@ -221,6 +222,7 @@ namespace shaka.util {
           }
         }
       });
+      // @ts-ignore
       return bestVariantsByCodecs;
     }
 
@@ -609,6 +611,7 @@ namespace shaka.util {
           );
           mediaDecodingConfig.audio = {
             contentType: audioFullType,
+            // @ts-ignore
             channels: 2,
             bitrate: variant.bandwidth || 1,
             samplerate: 1,
@@ -663,6 +666,7 @@ namespace shaka.util {
         // AudioConfiguration
         mediaDecodingConfig.audio = {
           contentType: fullType,
+          // @ts-ignore
           channels: audio.channelsCount || 2,
           bitrate: audio.bandwidth || variant.bandwidth || 1,
           samplerate: audio.audioSamplingRate || 1,
@@ -997,6 +1001,7 @@ namespace shaka.util {
         videoCodec: videoCodec,
         primary: variant.primary,
         roles: Array.from(roles),
+        // @ts-ignore
         audioRoles: null,
         forced: false,
         videoId: null,
@@ -1057,6 +1062,7 @@ namespace shaka.util {
         videoCodec: null,
         primary: stream.primary,
         roles: stream.roles,
+        // @ts-ignore
         audioRoles: null,
         forced: stream.forced,
         videoId: null,
@@ -1088,6 +1094,7 @@ namespace shaka.util {
       // in DASH this information comes at the stream level and not at the
       // segment level.
       if (stream.segmentIndex) {
+        // @ts-ignore
         reference = stream.segmentIndex.get(0);
       }
       let layout = stream.tilesLayout;
@@ -1124,6 +1131,7 @@ namespace shaka.util {
         videoCodec: null,
         primary: false,
         roles: [],
+        // @ts-ignore
         audioRoles: null,
         forced: false,
         videoId: null,
@@ -1224,6 +1232,7 @@ namespace shaka.util {
         primary: false,
         roles: [],
         forced: false,
+        // @ts-ignore
         audioRoles: null,
         videoId: null,
         audioId: null,
@@ -1279,6 +1288,7 @@ namespace shaka.util {
         if (!variantsByChannelCount.has(count)) {
           variantsByChannelCount.set(count, []);
         }
+        // @ts-ignore
         variantsByChannelCount.get(count).push(variant);
       }
       const channelCounts: number[] = Array.from(variantsByChannelCount.keys());
@@ -1294,6 +1304,7 @@ namespace shaka.util {
         (count) => count <= preferredAudioChannelCount
       );
       if (countLessThanOrEqualtoConfig.length) {
+        // @ts-ignore
         return variantsByChannelCount.get(
           Math.max(...countLessThanOrEqualtoConfig)
         );
@@ -1301,6 +1312,7 @@ namespace shaka.util {
 
       // If all variants have more audio channels than the config, choose the
       // variants with the fewest audio channels.
+      // @ts-ignore
       return variantsByChannelCount.get(Math.min(...channelCounts));
     }
 

@@ -29,6 +29,7 @@ namespace shaka.offline {
      * |shaka.offline.Storage|.
      *
      */
+    // @ts-ignore
     private openOperations_: Promise[] = [];
 
     /**
@@ -327,6 +328,7 @@ namespace shaka.offline {
         drmEngine = await this.createDrmEngine(
           manifest,
           (e) => {
+            // @ts-ignore
             drmError = drmError || e;
           },
           config
@@ -419,6 +421,7 @@ namespace shaka.offline {
       storage: shaka.extern.StorageCell,
       manifest: shaka.extern.Manifest,
       drmEngine: DrmEngine
+      // @ts-ignore
     ): Promise {
       let pendingManifestUpdates = {};
       let pendingDataSize = 0;
@@ -534,6 +537,7 @@ namespace shaka.offline {
      * Removes all of the contents for a given manifest, statelessly.
      *
      */
+    // @ts-ignore
     static async cleanStoredManifest(manifestId: number): Promise {
       const muxer = new shaka.offline.StorageMuxer();
       await muxer.init();
@@ -565,6 +569,7 @@ namespace shaka.offline {
       manifestUpdates: { [key: string]: number },
       dataSizeUpdate: number,
       throwIfAbortedFn: () => any
+      // @ts-ignore
     ): Promise {
       let manifestUpdated = false;
       try {
@@ -637,6 +642,7 @@ namespace shaka.offline {
       manifest: shaka.extern.Manifest,
       drmEngine: DrmEngine,
       config: shaka.extern.PlayerConfiguration
+      // @ts-ignore
     ): Promise {
       // Filter the manifest based on the restrictions given in the player
       // configuration.
@@ -900,6 +906,7 @@ namespace shaka.offline {
      *
      * @export
      */
+    // @ts-ignore
     remove(contentUri: string): Promise {
       return this.startOperation_(this.remove_(contentUri));
     }
@@ -908,6 +915,7 @@ namespace shaka.offline {
      * See |shaka.offline.Storage.remove| for details.
      *
      */
+    // @ts-ignore
     private async remove_(contentUri: string): Promise {
       this.requireSupport_();
       const nullableUri = shaka.offline.OfflineUri.parse(contentUri);
@@ -966,6 +974,7 @@ namespace shaka.offline {
       uri: OfflineUri,
       manifestDb: shaka.extern.ManifestDB,
       muxer: StorageMuxer
+      // @ts-ignore
     ): Promise {
       goog.asserts.assert(this.networkingEngine_, "Cannot be destroyed");
       await shaka.offline.Storage.deleteLicenseFor_(
@@ -980,6 +989,7 @@ namespace shaka.offline {
       storage: shaka.extern.StorageCell,
       uri: OfflineUri,
       manifest: shaka.extern.ManifestDB
+      // @ts-ignore
     ): Promise {
       const segmentIds: number[] =
         shaka.offline.Storage.getAllSegmentIds_(manifest);
@@ -1124,6 +1134,7 @@ namespace shaka.offline {
         // Used to capture an error from the manifest parser. We will check the
         // error before returning.
         onError: (e) => {
+          // @ts-ignore
           error = e;
         },
         isLowLatencyMode: () => false,
@@ -1312,6 +1323,7 @@ namespace shaka.offline {
 
         // Set up the download for the init segment, similarly, if there is one.
         if (segment.initSegmentReference) {
+          // @ts-ignore
           pendingInitSegmentRefId = shaka.offline.DownloadInfo.idForSegmentRef(
             segment.initSegmentReference
           );
@@ -1454,6 +1466,7 @@ namespace shaka.offline {
      *
      * @export
      */
+    // @ts-ignore
     static async deleteAll(): Promise {
       const muxer: StorageMuxer = new shaka.offline.StorageMuxer();
       try {
@@ -1470,6 +1483,7 @@ namespace shaka.offline {
       drmConfig: shaka.extern.DrmConfiguration,
       muxer: StorageMuxer,
       manifestDb: shaka.extern.ManifestDB
+      // @ts-ignore
     ): Promise {
       if (!manifestDb.drmInfo) {
         return;

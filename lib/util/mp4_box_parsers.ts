@@ -8,7 +8,10 @@ namespace shaka.util {
     /**
      * Parses a TFHD Box.
      */
-    static parseTFHD(reader: shaka.util.DataViewReader, flags: number): ParsedTFHDBox {
+    static parseTFHD(
+      reader: shaka.util.DataViewReader,
+      flags: number
+    ): ParsedTFHDBox {
       let defaultSampleDuration = null;
       let defaultSampleSize = null;
       const trackId =
@@ -27,11 +30,13 @@ namespace shaka.util {
 
       // Read "default_sample_duration" if present.
       if (flags & 8) {
+        // @ts-ignore
         defaultSampleDuration = reader.readUint32();
       }
 
       // Read "default_sample_size" if present.
       if (flags & 16) {
+        // @ts-ignore
         defaultSampleSize = reader.readUint32();
       }
       return { trackId, defaultSampleDuration, defaultSampleSize };
@@ -181,27 +186,27 @@ namespace shaka.util {
   export interface ParsedTFDTBox {
     baseMediaDecodeTime: number;
   }
-  
+
   export interface ParsedMDHDBox {
     timescale: number;
   }
-  
+
   export interface ParsedTREXBox {
     defaultSampleDuration: number;
     defaultSampleSize: number;
   }
-  
+
   export interface ParsedTRUNBox {
     sampleCount: number;
     sampleData: ParsedTRUNSample[];
   }
-  
+
   export interface ParsedTRUNSample {
     sampleDuration: number | null;
     sampleSize: number | null;
     sampleCompositionTimeOffset: number | null;
   }
-  
+
   export interface ParsedTKHDBox {
     trackId: number;
   }

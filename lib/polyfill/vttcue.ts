@@ -51,6 +51,7 @@ namespace shaka.polyfill {
       // in this class cannot be called that way on legacy Edge.  So we must wrap
       // the replacement in a plain function.
       // eslint-disable-next-line no-restricted-syntax
+      // @ts-ignore
       window["VTTCue"] = function (start, end, text) {
         return replacement(start, end, text);
       };

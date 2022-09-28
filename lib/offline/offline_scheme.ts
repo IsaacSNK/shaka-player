@@ -45,6 +45,7 @@ namespace shaka.offline {
     ): shaka.extern.IAbortableOperation<shaka.extern.Response> {
       const response: shaka.extern.Response = {
         uri: uri,
+        // @ts-ignore
         originalUri: uri,
         data: new ArrayBuffer(0),
         headers: { "content-type": "application/x-offline-manifest" },

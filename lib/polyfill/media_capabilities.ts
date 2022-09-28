@@ -141,6 +141,7 @@ namespace shaka.polyfill {
         if (mediaCapkeySystemConfig.audio) {
           const capability = {
             robustness: mediaCapkeySystemConfig.audio.robustness || "",
+            // @ts-ignore
             contentType: mediaDecodingConfig.audio.contentType,
           };
           audioCapabilities.push(capability);
@@ -148,6 +149,7 @@ namespace shaka.polyfill {
         if (mediaCapkeySystemConfig.video) {
           const capability = {
             robustness: mediaCapkeySystemConfig.video.robustness || "",
+            // @ts-ignore
             contentType: mediaDecodingConfig.video.contentType,
           };
           videoCapabilities.push(capability);
@@ -194,6 +196,7 @@ namespace shaka.polyfill.MediaCapabilities {
    *
    * @export
    */
+  // @ts-ignore
   export const originalMcap: MediaCapabilities = null;
 }
 

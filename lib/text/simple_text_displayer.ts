@@ -15,6 +15,7 @@ namespace shaka.text {
    * @export
    */
   export class SimpleTextDisplayer implements shaka.extern.TextDisplayer {
+    // @ts-ignore
     private textTrack_: TextTrack = null;
 
     constructor(video: HTMLMediaElement) {
@@ -213,6 +214,7 @@ namespace shaka.text {
         // element.
         this.textTrack_.mode = "disabled";
       }
+      // @ts-ignore
       this.textTrack_ = null;
       return Promise.resolve();
     }
@@ -242,6 +244,7 @@ namespace shaka.text {
         shaka.log.warning(
           "Invalid cue times: " + shakaCue.startTime + " - " + shakaCue.endTime
         );
+        // @ts-ignore
         return null;
       }
       const Cue = shaka.text.Cue;
@@ -268,6 +271,7 @@ namespace shaka.text {
         // We want vttCue.position = 'auto'. By default, |position| is set to
         // "auto". If we set it to "auto" safari will throw an exception, so we
         // must rely on the default value.
+        // @ts-ignore
         vttCue.align = "middle";
       }
       if (shakaCue.writingMode == Cue.writingMode.VERTICAL_LEFT_TO_RIGHT) {

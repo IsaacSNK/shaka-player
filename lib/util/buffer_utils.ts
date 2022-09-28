@@ -36,7 +36,7 @@ namespace shaka.util {
       if (
         BufferUtils.unsafeGetArrayBuffer_(arr1) ==
           BufferUtils.unsafeGetArrayBuffer_(arr2) &&
-          //@ts-ignore
+        //@ts-ignore
         (arr1.byteOffset || 0) == (arr2.byteOffset || 0)
       ) {
         return true;

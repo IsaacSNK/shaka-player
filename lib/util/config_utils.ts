@@ -156,7 +156,10 @@ namespace shaka.util {
        * @template T
        * @noinline
        */
-    static referenceParametersAndReturn<T>(parameters: any[], returnValue: T): T {
+    static referenceParametersAndReturn<T>(
+      parameters: any[],
+      returnValue: T
+    ): T {
       return parameters && returnValue;
     }
   }

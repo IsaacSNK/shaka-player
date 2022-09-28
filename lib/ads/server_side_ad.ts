@@ -189,8 +189,10 @@ namespace shaka.ads {
      * @export
      */
     release() {
+      // @ts-ignore
       this.ad_ = null;
       this.adProgressData_ = null;
+      // @ts-ignore
       this.video_ = null;
     }
   }

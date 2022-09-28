@@ -139,6 +139,7 @@ namespace shaka.offline.indexeddb {
         height: old.height,
         initSegmentKey: initSegmentKey,
         encrypted: old.encrypted,
+        // @ts-ignore
         keyIds: new Set([old.keyId]),
         segments: old.segments.map((segment) =>
           V1StorageCell.convertSegment_(
@@ -155,6 +156,7 @@ namespace shaka.offline.indexeddb {
         audioSamplingRate: null,
         channelsCount: null,
         spatialAudio: false,
+        // @ts-ignore
         closedCaptions: null,
         tilesLayout: undefined,
       };
@@ -197,6 +199,7 @@ namespace shaka.offline.indexeddb {
       let parts = null;
 
       // Try parsing the uri as the original Shaka Player 2.0 uri.
+      // @ts-ignore
       parts = /^offline:[0-9]+\/[0-9]+\/([0-9]+)$/.exec(uri);
       if (parts) {
         return Number(parts[1]);
@@ -207,6 +210,7 @@ namespace shaka.offline.indexeddb {
       // manifest uri follow a similar format. However the old storage system
       // was still in place, so it is possible for Storage V1 Cells to have
       // Storage V2 uris.
+      // @ts-ignore
       parts = /^offline:segment\/([0-9]+)$/.exec(uri);
       if (parts) {
         return Number(parts[1]);

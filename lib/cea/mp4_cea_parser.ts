@@ -133,6 +133,7 @@ namespace shaka.cea {
             box.version,
             box.flags
           );
+          // @ts-ignore
           sampleData = parsedTRUN.sampleData;
         })
         .fullBox("tfhd", (box) => {
@@ -167,6 +168,7 @@ namespace shaka.cea {
             box.reader,
             box.version
           );
+          // @ts-ignore
           baseMediaDecodeTime = parsedTFDT.baseMediaDecodeTime;
         })
         .box("mdat", (box) => {

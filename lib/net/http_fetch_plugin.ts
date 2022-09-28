@@ -81,6 +81,7 @@ namespace shaka.net {
       abortStatus: AbortStatus,
       progressUpdated: shaka.extern.ProgressUpdated,
       headersReceived: shaka.extern.HeadersReceived,
+      // @ts-ignore
       streamDataCallback: ((p1: BufferSource) => Promise) | null
     ): Promise<shaka.extern.Response> {
       const fetch = shaka.net.HttpFetchPlugin.fetch_;
@@ -268,6 +269,7 @@ namespace shaka.net.HttpFetchPlugin {
    * Overridden in unit tests, but compiled out in production.
    *
    */
+  // @ts-ignore
   export const AbortController_: () => any = window.AbortController;
 }
 
@@ -276,6 +278,7 @@ namespace shaka.net.HttpFetchPlugin {
    * Overridden in unit tests, but compiled out in production.
    *
    */
+  // @ts-ignore
   export const ReadableStream_: (p1: Object) => any = window.ReadableStream;
 }
 
@@ -284,6 +287,7 @@ namespace shaka.net.HttpFetchPlugin {
    * Overridden in unit tests, but compiled out in production.
    *
    */
+  // @ts-ignore
   export const Headers_: () => any = window.Headers;
 }
 if (shaka.net.HttpFetchPlugin.isSupported()) {

@@ -84,7 +84,10 @@ namespace shaka.util {
      * Apply CMCD data to a segment request
      *
      */
-    applySegmentData(request: shaka.extern.Request, segmentInfo: shaka.util.CmcdManager.SegmentInfo) {
+    applySegmentData(
+      request: shaka.extern.Request,
+      segmentInfo: shaka.util.CmcdManager.SegmentInfo
+    ) {
       try {
         //@ts-ignore
         if (!this.config_.enabled) {
@@ -573,10 +576,6 @@ namespace shaka.util.CmcdManager {
     SMOOTH = "s",
     OTHER = "o",
   }
-  
+
   export const Version: number = 1;
 }
-
-
-
-  

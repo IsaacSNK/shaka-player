@@ -35,6 +35,7 @@ namespace shaka.text {
 
       // Get the input as a string.
       const str = StringUtils.fromUTF8(data);
+      // @ts-ignore
       let prevCue: shaka.extern.Cue = null;
       const cues: shaka.extern.Cue[] = [];
       const lines = str.split(/\r?\n/);

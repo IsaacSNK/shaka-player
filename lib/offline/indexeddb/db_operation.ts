@@ -33,6 +33,7 @@ namespace shaka.offline.indexeddb {
       };
     }
 
+    // @ts-ignore
     async abort(): Promise {
       try {
         this.transaction_.abort();
@@ -58,7 +59,9 @@ namespace shaka.offline.indexeddb {
         p1: IDBKeyType,
         p2: T,
         p3?: IDBCursorWithValue
+        // @ts-ignore
       ) => Promise | undefined
+      // @ts-ignore
     ): Promise {
       return new Promise((resolve, reject) => {
         const req = this.store_.openCursor();
@@ -96,6 +99,7 @@ namespace shaka.offline.indexeddb {
      * will be rejected.
      *
      */
+    // @ts-ignore
     promise(): Promise {
       return this.promise_;
     }

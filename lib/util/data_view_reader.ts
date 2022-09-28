@@ -16,7 +16,10 @@ namespace shaka.util {
     /**
      * @param endianness The endianness.
      */
-    constructor(data: BufferSource, endianness: shaka.util.DataViewReader.Endianness) {
+    constructor(
+      data: BufferSource,
+      endianness: shaka.util.DataViewReader.Endianness
+    ) {
       this.dataView_ = shaka.util.BufferUtils.toDataView(data);
       this.littleEndian_ =
         endianness == shaka.util.DataViewReader.Endianness.LITTLE_ENDIAN;

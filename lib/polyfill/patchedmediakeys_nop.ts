@@ -47,7 +47,9 @@ namespace shaka.polyfill {
         PatchedMediaKeysNop.setMediaKeys;
 
       // These are not usable, but allow Player.isBrowserSupported to pass.
+      // @ts-ignore
       window.MediaKeys = PatchedMediaKeysNop.MediaKeys;
+      // @ts-ignore
       window.MediaKeySystemAccess = PatchedMediaKeysNop.MediaKeySystemAccess;
       window.shakaMediaKeysPolyfill = true;
     }
@@ -78,6 +80,7 @@ namespace shaka.polyfill {
      *
      * @this {!HTMLMediaElement}
      */
+    // @ts-ignore
     static setMediaKeys(mediaKeys: MediaKeys): Promise {
       shaka.log.debug("PatchedMediaKeysNop.setMediaKeys");
       goog.asserts.assert(

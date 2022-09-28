@@ -37,6 +37,7 @@ namespace shaka.text {
       }
     >;
     private eventManager_: EventManager;
+    // @ts-ignore
     private resizeObserver_: ResizeObserver = null;
     private regionElements_: Map<string, HTMLElement>;
 
@@ -120,6 +121,7 @@ namespace shaka.text {
     destroy() {
       // Remove the text container element from the UI.
       this.videoContainer_.removeChild(this.textContainer_);
+      // @ts-ignore
       this.textContainer_ = null;
       this.isTextVisible_ = false;
       this.cues_ = [];
@@ -135,6 +137,7 @@ namespace shaka.text {
       }
       if (this.resizeObserver_) {
         this.resizeObserver_.disconnect();
+        // @ts-ignore
         this.resizeObserver_ = null;
       }
     }
@@ -224,6 +227,7 @@ namespace shaka.text {
             // Since something has to be removed, we will need to update the DOM.
             updateDOM = true;
             this.currentCuesMap_.delete(cue);
+            // @ts-ignore
             cueRegistry = null;
           }
         }
@@ -233,6 +237,7 @@ namespace shaka.text {
             // The cue has to be made!
             this.createCue_(cue, parents);
             cueRegistry = this.currentCuesMap_.get(cue);
+            // @ts-ignore
             wrapper = cueRegistry.wrapper;
             updateDOM = true;
           }
@@ -275,10 +280,14 @@ namespace shaka.text {
         for (const cue of toPlant) {
           const cueRegistry = this.currentCuesMap_.get(cue);
           goog.asserts.assert(cueRegistry, "cueRegistry should exist.");
+          // @ts-ignore
           if (cueRegistry.regionElement) {
+            // @ts-ignore
             container.appendChild(cueRegistry.regionElement);
+            // @ts-ignore
             cueRegistry.regionElement.appendChild(cueRegistry.cueElement);
           } else {
+            // @ts-ignore
             container.appendChild(cueRegistry.cueElement);
           }
         }
@@ -348,6 +357,7 @@ namespace shaka.text {
     private getRegionElement_(cue: shaka.extern.Cue): HTMLElement {
       const region = cue.region;
       if (this.regionElements_.has(region.id)) {
+        // @ts-ignore
         return this.regionElements_.get(region.id);
       }
       const regionElement = shaka.util.Dom.createHTMLElement("span");
@@ -398,6 +408,7 @@ namespace shaka.text {
       }
       let regionElement = null;
       if (cue.region && cue.region.id) {
+        // @ts-ignore
         regionElement = this.getRegionElement_(cue);
       }
       let wrapper = cueElement;
@@ -410,6 +421,7 @@ namespace shaka.text {
         wrapper.style.backgroundColor = cue.backgroundColor;
         cueElement.appendChild(wrapper);
       }
+      // @ts-ignore
       this.currentCuesMap_.set(cue, { cueElement, wrapper, regionElement });
     }
 
@@ -447,6 +459,7 @@ namespace shaka.text {
       style.webkitTextStrokeWidth = cue.textStrokeWidth;
       style.color = cue.color;
       style.direction = cue.direction;
+      // @ts-ignore
       style.opacity = cue.opacity;
       style.paddingLeft = shaka.text.UITextDisplayer.convertLengthValue_(
         cue.linePadding,
@@ -598,8 +611,10 @@ namespace shaka.text {
       // direction defined by the writing direction.
       if (cue.position) {
         if (cue.writingMode == Cue.writingMode.HORIZONTAL_TOP_TO_BOTTOM) {
+          // @ts-ignore
           style.paddingLeft = cue.position;
         } else {
+          // @ts-ignore
           style.paddingTop = cue.position;
         }
       }

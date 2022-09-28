@@ -81,6 +81,7 @@ namespace shaka.offline {
       }
       const estimate = this.pending_.get(id);
       this.pending_.delete(id);
+      // @ts-ignore
       this.estimatedDownloaded_ += estimate;
       this.actualDownloaded_ += actual;
     }

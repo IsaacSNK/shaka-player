@@ -102,11 +102,15 @@ namespace shaka.offline {
         for (const variantId of audio.variantIds) {
           const variant = variantMap.get(variantId);
           goog.asserts.assert(
+            // @ts-ignore
             !variant.audio,
             "A variant should only have one audio stream"
           );
+          // @ts-ignore
           variant.language = stream.language;
+          // @ts-ignore
           variant.primary = variant.primary || stream.primary;
+          // @ts-ignore
           variant.audio = stream;
         }
       }
@@ -117,10 +121,13 @@ namespace shaka.offline {
         for (const variantId of video.variantIds) {
           const variant = variantMap.get(variantId);
           goog.asserts.assert(
+            // @ts-ignore
             !variant.video,
             "A variant should only have one video stream"
           );
+          // @ts-ignore
           variant.primary = variant.primary || stream.primary;
+          // @ts-ignore
           variant.video = stream;
         }
       }

@@ -42,7 +42,9 @@ namespace shaka.abr {
      */
     private lastTimeChosenMs_: number | null = null;
     private config_: shaka.extern.AbrConfiguration | null = null;
+    // @ts-ignore
     private mediaElement_: HTMLMediaElement = null;
+    // @ts-ignore
     private resizeObserver_: ResizeObserver = null;
     private resizeObserverTimer_: Timer;
 
@@ -87,9 +89,11 @@ namespace shaka.abr {
       this.variants_ = [];
       this.playbackRate_ = 1;
       this.lastTimeChosenMs_ = null;
+      // @ts-ignore
       this.mediaElement_ = null;
       if (this.resizeObserver_) {
         this.resizeObserver_.disconnect();
+        // @ts-ignore
         this.resizeObserver_ = null;
       }
       this.resizeObserverTimer_.stop();
@@ -262,6 +266,7 @@ namespace shaka.abr {
       this.mediaElement_ = mediaElement;
       if (this.resizeObserver_) {
         this.resizeObserver_.disconnect();
+        // @ts-ignore
         this.resizeObserver_ = null;
       }
       if (this.mediaElement_ && "ResizeObserver" in window) {

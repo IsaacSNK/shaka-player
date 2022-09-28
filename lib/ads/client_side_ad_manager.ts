@@ -15,15 +15,18 @@ namespace shaka.ads {
   export class ClientSideAdManager implements IReleasable {
     private adContainer_: HTMLElement;
     private video_: HTMLMediaElement;
+    // @ts-ignore
     private resizeObserver_: ResizeObserver = null;
     private requestAdsStartTime_: number = NaN;
     private onEvent_: (p1: FakeEvent) => any;
+    // @ts-ignore
     private ad_: ClientSideAd = null;
     private eventManager_: EventManager;
 
     // IMA: This instance should be re-used for the entire lifecycle of
     // the page.
     adsLoader_: any;
+    // @ts-ignore
     private imaAdsManager_: google.ima.AdsManager = null;
 
     constructor(

@@ -84,6 +84,7 @@ namespace shaka.dash {
           let stream = null;
           if (context.period.id && context.representation.id) {
             // Only check/store the index if period and representation IDs are set.
+            // @ts-ignore
             id = context.period.id + "," + context.representation.id;
             stream = streamMap[id];
             if (stream) {
@@ -220,6 +221,7 @@ namespace shaka.dash {
           );
           if (info.indexTemplate) {
             shaka.log.info("Using the index URL template by default.");
+            // @ts-ignore
             info.timeline = null;
             info.segmentDuration = null;
           } else {

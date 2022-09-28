@@ -31,6 +31,7 @@ namespace shaka.polyfill {
         "webkitDroppedFrameCount" in proto ||
         shaka.util.Platform.isWebOS3()
       ) {
+        // @ts-ignore
         proto.getVideoPlaybackQuality =
           shaka.polyfill.VideoPlaybackQuality.webkit_;
       }

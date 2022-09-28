@@ -23,6 +23,7 @@ namespace shaka.net {
         // Most 2xx HTTP codes are success cases.
         const response: shaka.extern.Response = {
           uri: responseURL || uri,
+          // @ts-ignore
           originalUri: uri,
           data: data,
           status: status,
@@ -33,6 +34,7 @@ namespace shaka.net {
       } else {
         let responseText = null;
         try {
+          // @ts-ignore
           responseText = shaka.util.StringUtils.fromBytesAutoDetect(data);
         } catch (exception) {}
         shaka.log.debug("HTTP error text:", responseText);

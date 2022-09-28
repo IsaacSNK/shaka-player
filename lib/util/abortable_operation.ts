@@ -29,7 +29,10 @@ namespace shaka.util {
      *   underlying operation has been aborted.  The returned Promise should never
      *   be rejected.
      */
-    constructor(public readonly promise: Promise<T>, onAbort: () => Promise<any>) {
+    constructor(
+      public readonly promise: Promise<T>,
+      onAbort: () => Promise<any>
+    ) {
       this.onAbort_ = onAbort;
     }
 

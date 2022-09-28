@@ -233,6 +233,7 @@ declare namespace google.ima.dai.api {
      * @override
      */
     addEventListener(
+      // @ts-ignore
       type: string | Array,
       handler: Function | Object,
       capture?: boolean | AddEventListenerOptions,
@@ -298,7 +299,7 @@ declare namespace google.ima.dai.api {
     cuepoints: Array<google.ima.dai.api.CuePoint>;
     errorMessage: string;
     streamId: string;
-    subtitles: Array<{url: string, language: string, language_name: string}>;
+    subtitles: Array<{ url: string; language: string; language_name: string }>;
   }
 }
 

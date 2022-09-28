@@ -7,7 +7,9 @@ namespace shaka.media {
   export class DrmEngine implements IDestroyable {
     private playerInterface_: PlayerInterface | null;
     private supportedTypes_: Set<string>;
+    // @ts-ignore
     private mediaKeys_: MediaKeys = null;
+    // @ts-ignore
     private video_: HTMLMediaElement = null;
     private initialized_: boolean = false;
     private initializedForStorage_: boolean = false;
@@ -46,6 +48,7 @@ namespace shaka.media {
     private expirationTimer_: Timer | null;
     destroyer_: Destroyer;
     private srcEquals_: boolean = false;
+    // @ts-ignore
     private mediaKeysAttached_: Promise = null;
 
     constructor(
@@ -120,12 +123,14 @@ namespace shaka.media {
         } catch (error) {}
 
         // Ignore any failures while removing media keys from the video element.
+        // @ts-ignore
         this.video_ = null;
       }
 
       // Break references to everything else we hold internally.
       this.currentDrmInfo_ = null;
       this.supportedTypes_.clear();
+      // @ts-ignore
       this.mediaKeys_ = null;
       this.offlineSessionIds_ = [];
       this.config_ = null;
@@ -159,6 +164,7 @@ namespace shaka.media {
     initForStorage(
       variants: shaka.extern.Variant[],
       usePersistentLicenses: boolean
+      // @ts-ignore
     ): Promise {
       this.initializedForStorage_ = true;
 
@@ -184,6 +190,7 @@ namespace shaka.media {
     initForPlayback(
       variants: shaka.extern.Variant[],
       offlineSessionIds: string[]
+      // @ts-ignore
     ): Promise {
       this.offlineSessionIds_ = offlineSessionIds;
       this.usePersistentLicenses_ = offlineSessionIds.length > 0;
@@ -202,6 +209,7 @@ namespace shaka.media {
       serverCertificate: Uint8Array,
       audioCapabilities: MediaKeySystemMediaCapability[],
       videoCapabilities: MediaKeySystemMediaCapability[]
+      // @ts-ignore
     ): Promise {
       const configsByKeySystem: Map<string, MediaKeySystemConfiguration> =
         new Map();
@@ -251,6 +259,7 @@ namespace shaka.media {
      *    lifespan of the drm engine.
      * @return Resolved if/when a key system has been chosen.
      */
+    // @ts-ignore
     private async init_(variants: shaka.extern.Variant[]): Promise {
       goog.asserts.assert(
         this.config_,
@@ -339,6 +348,7 @@ namespace shaka.media {
     /**
      * Attach MediaKeys to the video element
      */
+    // @ts-ignore
     private async attachMediaKeys_(): Promise {
       if (this.video_.mediaKeys) {
         return;
@@ -369,6 +379,7 @@ namespace shaka.media {
     /**
      * Processes encrypted event and start licence challenging
      */
+    // @ts-ignore
     private async onEncryptedEvent_(event): Promise {
       /**
        * MediaKeys should be added when receiving an encrypted event. Setting
@@ -385,6 +396,7 @@ namespace shaka.media {
     /**
      * Start processing events.
      */
+    // @ts-ignore
     async attach(video: HTMLMediaElement): Promise {
       if (!this.mediaKeys_) {
         // Unencrypted, or so we think.  We listen for encrypted events in order
@@ -450,6 +462,7 @@ namespace shaka.media {
      * Sets the server certificate based on the current DrmInfo.
      *
      */
+    // @ts-ignore
     async setServerCertificate(): Promise {
       goog.asserts.assert(
         this.initialized_,
@@ -526,6 +539,7 @@ namespace shaka.media {
      * if there is an error releasing the license.
      *
      */
+    // @ts-ignore
     async removeSession(sessionId: string): Promise {
       goog.asserts.assert(
         this.mediaKeys_,
@@ -560,6 +574,7 @@ namespace shaka.media {
      * Creates the sessions for the init data and waits for them to become ready.
      *
      */
+    // @ts-ignore
     createOrLoad(): Promise {
       // Create temp sessions.
       const initDatas =
@@ -767,6 +782,7 @@ namespace shaka.media {
     private async queryMediaKeys_(
       configsByKeySystem: Map<string, MediaKeySystemConfiguration>,
       variants: shaka.extern.Variant[]
+      // @ts-ignore
     ): Promise {
       const drmInfosByKeySystem = new Map();
       const mediaKeySystemAccess = variants.length
@@ -792,9 +808,11 @@ namespace shaka.media {
         const audioCaps = realConfig.audioCapabilities || [];
         const videoCaps = realConfig.videoCapabilities || [];
         for (const cap of audioCaps) {
+          // @ts-ignore
           this.supportedTypes_.add(cap.contentType.toLowerCase());
         }
         for (const cap of videoCaps) {
+          // @ts-ignore
           this.supportedTypes_.add(cap.contentType.toLowerCase());
         }
         goog.asserts.assert(
@@ -865,6 +883,7 @@ namespace shaka.media {
           if (!drmInfosByKeySystem.has(info.keySystem)) {
             drmInfosByKeySystem.set(info.keySystem, []);
           }
+          // @ts-ignore
           drmInfosByKeySystem.get(info.keySystem).push(info);
         }
       }
@@ -907,6 +926,7 @@ namespace shaka.media {
             const drmInfos = drmInfosByKeySystem.get(
               decodingInfo.keySystemAccess.keySystem
             );
+            // @ts-ignore
             for (const info of drmInfos) {
               if (!!info.licenseServerUri == shouldHaveLicenseServer) {
                 return decodingInfo.keySystemAccess;
@@ -915,6 +935,7 @@ namespace shaka.media {
           }
         }
       }
+      // @ts-ignore
       return null;
     }
 
@@ -940,9 +961,11 @@ namespace shaka.media {
       // If there are no tracks of a type, these should be not present.
       // Otherwise the query will fail.
       for (const config of configsByKeySystem.values()) {
+        // @ts-ignore
         if (config.audioCapabilities.length == 0) {
           delete config.audioCapabilities;
         }
+        // @ts-ignore
         if (config.videoCapabilities.length == 0) {
           delete config.videoCapabilities;
         }
@@ -956,6 +979,7 @@ namespace shaka.media {
           try {
             mediaKeySystemAccess =
               // eslint-disable-next-line no-await-in-loop
+              // @ts-ignore
               await navigator.requestMediaKeySystemAccess(keySystem, [config]);
             return mediaKeySystemAccess;
           } catch (error) {
@@ -985,6 +1009,7 @@ namespace shaka.media {
 
           // TODO: refactor, don't stick drmInfos onto
           // MediaKeySystemConfiguration
+          // @ts-ignore
           const hasLicenseServer = config["drmInfos"].some((info) => {
             return !!info.licenseServerUri;
           });
@@ -994,6 +1019,7 @@ namespace shaka.media {
           try {
             mediaKeySystemAccess =
               // eslint-disable-next-line no-await-in-loop
+              // @ts-ignore
               await navigator.requestMediaKeySystemAccess(keySystem, [config]);
             return mediaKeySystemAccess;
           } catch (error) {
@@ -1113,6 +1139,7 @@ namespace shaka.media {
               shaka.util.Error.Code.OFFLINE_SESSION_REMOVED
             )
           );
+          // @ts-ignore
           return Promise.resolve();
         }
 
@@ -1135,6 +1162,7 @@ namespace shaka.media {
           )
         );
       }
+      // @ts-ignore
       return Promise.resolve();
     }
 
@@ -1257,6 +1285,7 @@ namespace shaka.media {
      * Sends a license request.
      */
     private async sendLicenseRequest_(event: MediaKeyMessageEvent) {
+      // @ts-ignore
       const session: MediaKeySession = event.target;
       shaka.log.v1(
         "Sending license request for session",
@@ -1464,6 +1493,7 @@ namespace shaka.media {
         if (typeof keyId == "string") {
           const tmp = keyId;
           keyId = status as ArrayBuffer;
+          // @ts-ignore
           status = tmp as string;
         }
 
@@ -1523,6 +1553,7 @@ namespace shaka.media {
           );
         }
         if (status != "status-pending") {
+          // @ts-ignore
           found.loaded = true;
         }
         if (!found) {
@@ -1721,6 +1752,7 @@ namespace shaka.media {
      *
      * See issue #2741 and http://crbug.com/1108158.
      */
+    // @ts-ignore
     private async closeSession_(session: MediaKeySession): Promise {
       const DrmEngine = shaka.media.DrmEngine;
       const timeout = new Promise((resolve, reject) => {
@@ -2076,6 +2108,7 @@ namespace shaka.media {
         licenseServerUri: licenseServers[0],
         distinctiveIdentifierRequired: distinctiveIdentifier == "required",
         persistentStateRequired: config.persistentState == "required",
+        // @ts-ignore
         sessionType: config.sessionTypes[0] || "temporary",
         audioRobustness: audioRobustness || "",
         videoRobustness: videoRobustness || "",

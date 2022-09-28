@@ -69,6 +69,7 @@ namespace shaka.offline.indexeddb {
     protected updateManifestImplementation(
       key: number,
       manifest: shaka.extern.ManifestDB
+      // @ts-ignore
     ): Promise {
       const op = this.connection_.startReadWriteOperation(this.manifestStore_);
       const store = op.store();
@@ -129,6 +130,7 @@ namespace shaka.offline.indexeddb {
       return Promise.resolve(old as shaka.extern.ManifestDB);
     }
 
+    // @ts-ignore
     protected rejectAdd(storeName: string): Promise {
       return Promise.reject(
         new shaka.util.Error(
@@ -140,6 +142,7 @@ namespace shaka.offline.indexeddb {
       );
     }
 
+    // @ts-ignore
     protected rejectUpdate(storeName: string): Promise {
       return Promise.reject(
         new shaka.util.Error(
@@ -180,6 +183,7 @@ namespace shaka.offline.indexeddb {
       storeName: string,
       keys: number[],
       onRemove: (p1: number) => any
+      // @ts-ignore
     ): Promise {
       const op = this.connection_.startReadWriteOperation(storeName);
       const store = op.store();

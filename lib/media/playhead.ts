@@ -98,6 +98,7 @@ namespace shaka.media {
         this.eventManager_.release();
         this.eventManager_ = null;
       }
+      // @ts-ignore
       this.mediaElement_ = null;
     }
 
@@ -219,10 +220,12 @@ namespace shaka.media {
     release() {
       if (this.videoWrapper_) {
         this.videoWrapper_.release();
+        // @ts-ignore
         this.videoWrapper_ = null;
       }
       if (this.gapController_) {
         this.gapController_.release();
+        // @ts-ignore
         this.gapController_ = null;
       }
       if (this.checkWindowTimer_) {
@@ -230,8 +233,11 @@ namespace shaka.media {
         this.checkWindowTimer_ = null;
       }
       this.config_ = null;
+      // @ts-ignore
       this.timeline_ = null;
+      // @ts-ignore
       this.videoWrapper_ = null;
+      // @ts-ignore
       this.mediaElement_ = null;
       this.onSeek_ = () => {};
     }
@@ -474,6 +480,7 @@ namespace shaka.media {
       onEvent: (p1: Event) => any
     ): StallDetector {
       if (!config.stallEnabled) {
+        // @ts-ignore
         return null;
       }
 

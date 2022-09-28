@@ -10,6 +10,7 @@ namespace shaka.util {
    *
    */
   export class OperationManager implements IDestroyable {
+    // @ts-ignore
     private operations_: shaka.extern.IAbortableOperation[] = [];
 
     /**
@@ -17,6 +18,7 @@ namespace shaka.util {
      * from the management set when it complete.
      *
      */
+    // @ts-ignore
     manage(operation: shaka.extern.IAbortableOperation) {
       this.operations_.push(
         operation.finally(() => {

@@ -38,6 +38,7 @@ declare namespace shaka.extern {
      *
      * @exportDoc
      */
+    // @ts-ignore
     stop(): Promise;
 
     /**
@@ -73,6 +74,7 @@ declare namespace shaka.extern.ManifestParser {
       p1: shaka.extern.Request,
       p2: shaka.util.CmcdManager.SegmentInfo
     ) => any;
+    // @ts-ignore
     filter: (p1: shaka.extern.Manifest) => Promise;
     makeTextStreamsForClosedCaptions: (p1: shaka.extern.Manifest) => any;
     onTimelineRegionAdded: (p1: shaka.extern.TimelineRegionInfo) => any;

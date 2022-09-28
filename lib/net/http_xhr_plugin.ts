@@ -133,6 +133,7 @@ namespace shaka.net {
         }
         xhr.send(request.body);
       });
+      // @ts-ignore
       return new shaka.util.AbortableOperation(promise, () => {
         xhr.abort();
         return Promise.resolve();
@@ -160,6 +161,7 @@ namespace shaka.net.HttpXHRPlugin {
    * Overridden in unit tests, but compiled out in production.
    *
    */
+  // @ts-ignore
   export const Xhr_: () => any = window.XMLHttpRequest;
 }
 shaka.net.NetworkingEngine.registerScheme(

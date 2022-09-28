@@ -48,6 +48,7 @@ namespace shaka.media {
        * more content to be buffered than if we were not just starving.
        *
        */
+      // @ts-ignore
       const threshold: number = this.thresholds_.get(this.previousState_);
       const oldState = this.previousState_;
       const newState =

@@ -165,6 +165,7 @@ namespace shaka.dash {
       const results = await Promise.all(responses);
       const indexData = results[0];
       const initData = results[1] || null;
+      // @ts-ignore
       let references: SegmentReference[] = null;
       const timestampOffset = periodStart - scaledPresentationTimeOffset;
       const appendWindowStart = periodStart;
@@ -201,6 +202,7 @@ namespace shaka.dash {
         !segmentIndex,
         "Should not call generateSegmentIndex twice"
       );
+      // @ts-ignore
       segmentIndex = new shaka.media.SegmentIndex(references);
       if (fitLast) {
         segmentIndex.fit(

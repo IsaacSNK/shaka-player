@@ -13,7 +13,7 @@ namespace shaka.util {
     /**
      * @template FROM,TO
      */
-    static map<FROM,TO>(
+    static map<FROM, TO>(
       iterable: Iterable<FROM>,
       mapping: (p1: FROM) => TO
     ): Iterable<TO> {

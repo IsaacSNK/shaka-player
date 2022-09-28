@@ -8,6 +8,7 @@ namespace shaka.offline {
    * @summary Creates a new offline manifest parser.
    */
   export class OfflineManifestParser implements shaka.extern.ManifestParser {
+    // @ts-ignore
     private uri_: OfflineUri = null;
 
     /** @override */
@@ -16,6 +17,7 @@ namespace shaka.offline {
     // No-op
     /** @override */
     async start(uriString, playerInterface) {
+      // @ts-ignore
       const uri: OfflineUri = shaka.offline.OfflineUri.parse(uriString);
       this.uri_ = uri;
       if (uri == null || !uri.isManifest()) {

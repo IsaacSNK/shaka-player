@@ -62,7 +62,9 @@ namespace shaka.polyfill {
       // eslint-disable-next-line no-restricted-syntax
       HTMLMediaElement.prototype.setMediaKeys =
         PatchedMediaKeysWebkit.setMediaKeys;
+      // @ts-ignore
       window.MediaKeys = PatchedMediaKeysWebkit.MediaKeys;
+      // @ts-ignore
       window.MediaKeySystemAccess = PatchedMediaKeysWebkit.MediaKeySystemAccess;
       window.shakaMediaKeysPolyfill = true;
     }
@@ -114,6 +116,7 @@ namespace shaka.polyfill {
      *
      * @this {!HTMLMediaElement}
      */
+    // @ts-ignore
     static setMediaKeys(mediaKeys: MediaKeys): Promise {
       shaka.log.debug("PatchedMediaKeysWebkit.setMediaKeys");
       goog.asserts.assert(
@@ -224,6 +227,7 @@ namespace shaka.polyfill.PatchedMediaKeysWebkit {
               // types.
               const contentType = cap.contentType.split(";")[0];
               if (tmpVideo.canPlayType(contentType, this.internalKeySystem_)) {
+                // @ts-ignore
                 newCfg.audioCapabilities.push(cap);
                 success = true;
               }
@@ -237,6 +241,7 @@ namespace shaka.polyfill.PatchedMediaKeysWebkit {
               if (
                 tmpVideo.canPlayType(cap.contentType, this.internalKeySystem_)
               ) {
+                // @ts-ignore
                 newCfg.videoCapabilities.push(cap);
                 success = true;
               }
@@ -246,6 +251,7 @@ namespace shaka.polyfill.PatchedMediaKeysWebkit {
         if (!ranAnyTests) {
           // If no specific types were requested, we check all common types to
           // find out if the key system is present at all.
+          // @ts-ignore
           success =
             tmpVideo.canPlayType("video/mp4", this.internalKeySystem_) ||
             tmpVideo.canPlayType("video/webm", this.internalKeySystem_);
@@ -309,6 +315,7 @@ namespace shaka.polyfill.PatchedMediaKeysWebkit {
    */
   export class MediaKeys implements MediaKeys {
     private keySystem_: string;
+    // @ts-ignore
     private media_: HTMLMediaElement = null;
     private eventManager_: EventManager;
     private newSessions_: MediaKeySession[] = [];
@@ -471,6 +478,7 @@ namespace shaka.polyfill.PatchedMediaKeysWebkit {
         );
         return session;
       }
+      // @ts-ignore
       return null;
     }
   }
@@ -594,6 +602,7 @@ namespace shaka.polyfill.PatchedMediaKeysWebkit {
     private generate_(
       initData: BufferSource | null,
       offlineSessionId: string | null
+      // @ts-ignore
     ): Promise {
       const PatchedMediaKeysWebkit = shaka.polyfill.PatchedMediaKeysWebkit;
       if (this.initialized_) {

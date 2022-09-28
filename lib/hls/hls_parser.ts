@@ -180,6 +180,7 @@ namespace shaka.hls {
         this.updatePlaylistTimer_.stop();
         this.updatePlaylistTimer_ = null;
       }
+      // @ts-ignore
       const pending: Promise[] = [];
       if (this.operationManager_) {
         pending.push(this.operationManager_.destroy());
@@ -204,6 +205,7 @@ namespace shaka.hls {
       if (!this.isLive_()) {
         return;
       }
+      // @ts-ignore
       const updates: Promise[] = [];
       const streamInfos = Array.from(this.uriToStreamInfosMap_.values());
 
@@ -236,6 +238,7 @@ namespace shaka.hls {
      * Updates a stream.
      *
      */
+    // @ts-ignore
     private async updateStream_(streamInfo: StreamInfo): Promise {
       const manifestUri = streamInfo.absoluteMediaPlaylistUri;
       const uriObj = new goog.Uri(manifestUri);
@@ -461,6 +464,7 @@ namespace shaka.hls {
      * Parses the manifest.
      *
      */
+    // @ts-ignore
     private async parseManifest_(data: BufferSource, uri: string): Promise {
       const Utils = shaka.hls.Utils;
       goog.asserts.assert(
@@ -961,7 +965,9 @@ namespace shaka.hls {
           ? this.groupIdToStreamInfosMap_.get(groupId)
           : [];
       const res: StreamInfos = {
+        // @ts-ignore
         audio: audioGroupId ? streamInfos : [],
+        // @ts-ignore
         video: videoGroupId ? streamInfos : [],
       };
 
@@ -993,6 +999,7 @@ namespace shaka.hls {
         type = ContentType.AUDIO;
         shaka.log.debug("Guessing audio-only.");
       } else {
+        // @ts-ignore
         if (!streamInfos.length && audioCodecs && videoCodecs) {
           // There are both audio and video codecs, so assume multiplexed content.
           // Note that the default used when CODECS is missing assumes multiple
@@ -1129,8 +1136,10 @@ namespace shaka.hls {
         closedCaptionsAttr &&
         closedCaptionsAttr != "NONE"
       ) {
+        // @ts-ignore
         return this.groupIdToClosedCaptionsMap_.get(closedCaptionsAttr);
       }
+      // @ts-ignore
       return null;
     }
 
@@ -1204,10 +1213,12 @@ namespace shaka.hls {
       // NOTE: we currently don't have support for audio-only content.
       const disableAudio = this.config_.disableAudio;
       if (!audioInfos.length || disableAudio) {
+        // @ts-ignore
         audioInfos = [null];
       }
       const disableVideo = this.config_.disableVideo;
       if (!videoInfos.length || disableVideo) {
+        // @ts-ignore
         videoInfos = [null];
       }
       const variants = [];
@@ -1298,6 +1309,7 @@ namespace shaka.hls {
         if (!this.groupIdToClosedCaptionsMap_.get(groupId)) {
           this.groupIdToClosedCaptionsMap_.set(groupId, new Map());
         }
+        // @ts-ignore
         this.groupIdToClosedCaptionsMap_.get(groupId).set(instreamId, language);
       }
     }
@@ -1321,6 +1333,7 @@ namespace shaka.hls {
         groupId &&
         this.groupIdToCodecsMap_.has(groupId)
       ) {
+        // @ts-ignore
         codecs = this.groupIdToCodecsMap_.get(groupId);
       }
       const verbatimMediaPlaylistUri = this.variableSubstitution_(
@@ -1331,6 +1344,7 @@ namespace shaka.hls {
       // Check if the stream has already been created as part of another Variant
       // and return it if it has.
       if (this.uriToStreamInfosMap_.has(verbatimMediaPlaylistUri)) {
+        // @ts-ignore
         return this.uriToStreamInfosMap_.get(verbatimMediaPlaylistUri);
       }
       const language = this.getLanguage_(tag);
@@ -1368,6 +1382,7 @@ namespace shaka.hls {
         spatialAudio
       );
       if (this.groupIdToStreamInfosMap_.has(groupId)) {
+        // @ts-ignore
         this.groupIdToStreamInfosMap_.get(groupId).push(streamInfo);
       } else {
         this.groupIdToStreamInfosMap_.set(groupId, [streamInfo]);
@@ -1376,6 +1391,7 @@ namespace shaka.hls {
       // TODO: This check is necessary because of the possibility of multiple
       // calls to createStreamInfoFromMediaTag_ before either has resolved.
       if (this.uriToStreamInfosMap_.has(verbatimMediaPlaylistUri)) {
+        // @ts-ignore
         return this.uriToStreamInfosMap_.get(verbatimMediaPlaylistUri);
       }
       this.uriToStreamInfosMap_.set(verbatimMediaPlaylistUri, streamInfo);
@@ -1401,6 +1417,7 @@ namespace shaka.hls {
       // Check if the stream has already been created as part of another Variant
       // and return it if it has.
       if (this.uriToStreamInfosMap_.has(verbatimImagePlaylistUri)) {
+        // @ts-ignore
         return this.uriToStreamInfosMap_.get(verbatimImagePlaylistUri);
       }
       const language = this.getLanguage_(tag);
@@ -1428,6 +1445,7 @@ namespace shaka.hls {
       // TODO: This check is necessary because of the possibility of multiple
       // calls to createStreamInfoFromImageTag_ before either has resolved.
       if (this.uriToStreamInfosMap_.has(verbatimImagePlaylistUri)) {
+        // @ts-ignore
         return this.uriToStreamInfosMap_.get(verbatimImagePlaylistUri);
       }
 
@@ -1475,6 +1493,7 @@ namespace shaka.hls {
         this.globalVariables_
       );
       if (this.uriToStreamInfosMap_.has(verbatimMediaPlaylistUri)) {
+        // @ts-ignore
         return this.uriToStreamInfosMap_.get(verbatimMediaPlaylistUri);
       }
       const closedCaptions = this.getClosedCaptions_(tag, type);
@@ -1506,6 +1525,7 @@ namespace shaka.hls {
       // TODO: This check is necessary because of the possibility of multiple
       // calls to createStreamInfoFromVariantTag_ before either has resolved.
       if (this.uriToStreamInfosMap_.has(verbatimMediaPlaylistUri)) {
+        // @ts-ignore
         return this.uriToStreamInfosMap_.get(verbatimMediaPlaylistUri);
       }
       this.uriToStreamInfosMap_.set(verbatimMediaPlaylistUri, streamInfo);
@@ -1996,6 +2016,7 @@ namespace shaka.hls {
         const blocks = byterange.split("@");
         const byteLength = Number(blocks[0]);
         startByte = Number(blocks[1]);
+        // @ts-ignore
         endByte = startByte + byteLength - 1;
       }
       const initSegmentRef = new shaka.media.InitSegmentReference(
@@ -2106,6 +2127,7 @@ namespace shaka.hls {
             pStartByte = pByterangeStart ? Number(pByterangeStart) : 0;
           } else {
             const pByterange = item.getAttributeValue("BYTERANGE");
+            // @ts-ignore
             [pStartByte, pEndByte] = this.parseByteRange_(
               pPreviousReference,
               pByterange
@@ -2182,6 +2204,7 @@ namespace shaka.hls {
         "EXT-X-BYTERANGE"
       );
       if (byterangeTag) {
+        // @ts-ignore
         [startByte, endByte] = this.parseByteRange_(
           previousReference,
           byterangeTag.value
@@ -2205,6 +2228,7 @@ namespace shaka.hls {
           tilesLayout = tilesTag.getRequiredAttrValue("LAYOUT");
           const duration = tilesTag.getAttributeValue("DURATION");
           if (duration) {
+            // @ts-ignore
             tileDuration = Number(duration);
           }
         }
@@ -2257,8 +2281,10 @@ namespace shaka.hls {
           );
           startByte = previousReference.endByte + 1;
         }
+        // @ts-ignore
         endByte = startByte + byteLength - 1;
       }
+      // @ts-ignore
       return [startByte, endByte];
     }
 
@@ -2312,6 +2338,7 @@ namespace shaka.hls {
       // For live stream, use the cached value in the mediaSequenceToStartTime
       // map if available.
       if (this.isLive_() && mediaSequenceToStartTime.has(position)) {
+        // @ts-ignore
         firstStartTime = mediaSequenceToStartTime.get(position);
       }
       const references: SegmentReference[] = [];
@@ -2621,6 +2648,7 @@ namespace shaka.hls {
      * update when it finished instead of using a repeating-start.
      *
      */
+    // @ts-ignore
     private async onUpdate_(): Promise {
       shaka.log.info("Updating manifest...");
       goog.asserts.assert(

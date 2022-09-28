@@ -74,8 +74,10 @@ namespace shaka.util {
       const arr = shaka.util.BufferUtils.toUint8(data);
       let hex = "";
       for (let value of arr) {
+        // @ts-ignore
         value = value.toString(16);
         if (value.length == 1) {
+          // @ts-ignore
           value = "0" + value;
         }
         hex += value;

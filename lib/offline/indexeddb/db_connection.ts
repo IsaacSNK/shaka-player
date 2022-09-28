@@ -20,6 +20,7 @@ namespace shaka.offline.indexeddb {
       this.connection_ = connection;
     }
 
+    // @ts-ignore
     destroy(): Promise {
       return Promise.all(
         this.pending_.map((op) => {

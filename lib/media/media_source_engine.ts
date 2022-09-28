@@ -246,8 +246,10 @@ namespace shaka.media {
         // "unload" the video element.
         this.video_.removeAttribute("src");
         this.video_.load();
+        // @ts-ignore
         this.video_ = null;
       }
+      // @ts-ignore
       this.mediaSource_ = null;
       this.textEngine_ = null;
       this.textDisplayer_ = null;
@@ -269,6 +271,7 @@ namespace shaka.media {
      * @return Resolved when MediaSource is open and attached to the
      *   media element.  This process is actually initiated by the constructor.
      */
+    // @ts-ignore
     open(): Promise {
       return this.mediaSourceOpen_;
     }
@@ -292,6 +295,7 @@ namespace shaka.media {
       streamsByType: Map<ContentType, shaka.extern.Stream>,
       forceTransmuxTS: boolean,
       sequenceMode: boolean = false
+      // @ts-ignore
     ): Promise {
       const ContentType = shaka.util.ManifestParserUtils.ContentType;
       await this.mediaSourceOpen_;
@@ -460,6 +464,7 @@ namespace shaka.media {
             exception
           );
         }
+        // @ts-ignore
         return null;
       }
     }
@@ -482,6 +487,7 @@ namespace shaka.media {
       reference: SegmentReference | null,
       hasClosedCaptions: boolean | null,
       seeked?: boolean
+      // @ts-ignore
     ): Promise {
       const ContentType = shaka.util.ManifestParserUtils.ContentType;
       if (contentType == ContentType.TEXT) {
@@ -629,6 +635,7 @@ namespace shaka.media {
       let bufferedBefore = null;
       await this.enqueueOperation_(contentType, () => {
         if (goog.DEBUG && reference) {
+          // @ts-ignore
           bufferedBefore = this.getBuffered_(contentType);
         }
         this.append_(contentType, data);
@@ -688,6 +695,7 @@ namespace shaka.media {
       contentType: ContentType,
       startTime: number,
       endTime: number
+      // @ts-ignore
     ): Promise {
       const ContentType = shaka.util.ManifestParserUtils.ContentType;
       if (contentType == ContentType.TEXT) {
@@ -703,6 +711,7 @@ namespace shaka.media {
      * Enqueue an operation to clear the SourceBuffer.
      *
      */
+    // @ts-ignore
     async clear(contentType: ContentType): Promise {
       const ContentType = shaka.util.ManifestParserUtils.ContentType;
       if (contentType == ContentType.TEXT) {
@@ -730,6 +739,7 @@ namespace shaka.media {
      * This is a workaround for what we believe is a Chromecast bug.
      *
      */
+    // @ts-ignore
     async flush(contentType: ContentType): Promise {
       // Flush the pipeline.  Necessary on Chromecast, even though we have removed
       // everything.
@@ -762,6 +772,7 @@ namespace shaka.media {
       appendWindowStart: number,
       appendWindowEnd: number,
       sequenceMode: boolean
+      // @ts-ignore
     ): Promise {
       const ContentType = shaka.util.ManifestParserUtils.ContentType;
       if (contentType == ContentType.TEXT) {
@@ -798,6 +809,7 @@ namespace shaka.media {
      * @param reason Valid reasons are 'network' and 'decode'.
      * @see http://w3c.github.io/media-source/#idl-def-EndOfStreamError
      */
+    // @ts-ignore
     async endOfStream(reason?: string): Promise {
       await this.enqueueBlockingOperation_(() => {
         // If endOfStream() has already been called on the media source,
@@ -816,6 +828,7 @@ namespace shaka.media {
       });
     }
 
+    // @ts-ignore
     async setDuration(duration: number): Promise {
       await this.enqueueBlockingOperation_(() => {
         // Reducing the duration causes the MSE removal algorithm to run, which
@@ -999,6 +1012,7 @@ namespace shaka.media {
     private enqueueOperation_(
       contentType: ContentType,
       start: () => any
+      // @ts-ignore
     ): Promise {
       this.destroyer_.ensureNotDestroyed();
       const operation = { start: start, p: new shaka.util.PublicPromise() };
@@ -1014,6 +1028,7 @@ namespace shaka.media {
      * SourceBuffers.
      *
      */
+    // @ts-ignore
     private async enqueueBlockingOperation_(run: () => any): Promise {
       this.destroyer_.ensureNotDestroyed();
       const allWaiters: PublicPromise[] = [];

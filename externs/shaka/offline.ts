@@ -136,6 +136,7 @@ declare namespace shaka.extern {
      * content.
      *
      */
+    // @ts-ignore
     destroy(): Promise;
 
     /**
@@ -162,6 +163,7 @@ declare namespace shaka.extern {
      *                                    from the cell. The key of the segment
      *                                    will be passed to the callback.
      */
+    // @ts-ignore
     removeSegments(keys: number[], onRemove: (p1: number) => any): Promise;
 
     /**
@@ -184,6 +186,7 @@ declare namespace shaka.extern {
      * Updates the given manifest, stored at the given key.
      *
      */
+    // @ts-ignore
     updateManifest(key: number, manifest: shaka.extern.ManifestDB): Promise;
 
     /**
@@ -192,6 +195,7 @@ declare namespace shaka.extern {
      * act as a no-op.
      *
      */
+    // @ts-ignore
     updateManifestExpiration(key: number, expiration: number): Promise;
 
     /**
@@ -202,6 +206,7 @@ declare namespace shaka.extern {
      *                                    removed from the cell. The key of the
      *                                    manifest will be passed to the callback.
      */
+    // @ts-ignore
     removeManifests(keys: number[], onRemove: (p1: number) => any): Promise;
 
     /**
@@ -225,6 +230,7 @@ declare namespace shaka.extern {
     /**
      * Free all resources used by this cell. This won't affect the stored content.
      */
+    // @ts-ignore
     destroy(): Promise;
 
     /**
@@ -235,11 +241,13 @@ declare namespace shaka.extern {
     /**
      * Adds the given sessions to the store.
      */
+    // @ts-ignore
     add(sessions: shaka.extern.EmeSessionDB[]): Promise;
 
     /**
      * Removes the given session IDs from the store.
      */
+    // @ts-ignore
     remove(sessionIds: string[]): Promise;
   }
 }
@@ -250,6 +258,7 @@ declare namespace shaka.extern {
      * once. Calling |init| multiple times has an undefined behaviour.
      *
      */
+    // @ts-ignore
     init(): Promise;
 
     /**
@@ -257,6 +266,7 @@ declare namespace shaka.extern {
      * not affect the stored content.
      *
      */
+    // @ts-ignore
     destroy(): Promise;
 
     /**
@@ -281,6 +291,7 @@ declare namespace shaka.extern {
      * After calling |erase|, the mechanism will be in an initialized state.
      *
      */
+    // @ts-ignore
     erase(): Promise;
   }
 }

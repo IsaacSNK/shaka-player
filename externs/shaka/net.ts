@@ -42,6 +42,7 @@ declare namespace shaka.extern {
     drmInfo: shaka.extern.DrmInfo | null;
     initData: Uint8Array | null;
     initDataType: string | null;
+    // @ts-ignore
     streamDataCallback: ((p1: BufferSource) => Promise) | null;
   }
 }
@@ -121,6 +122,7 @@ declare namespace shaka.extern {
   type RequestFilter = (
     p1: shaka.net.NetworkingEngine.RequestType,
     p2: shaka.extern.Request
+    // @ts-ignore
   ) => Promise | undefined;
 }
 /**
@@ -134,5 +136,6 @@ declare namespace shaka.extern {
   type ResponseFilter = (
     p1: shaka.net.NetworkingEngine.RequestType,
     p2: shaka.extern.Response
+    // @ts-ignore
   ) => Promise | undefined;
 }

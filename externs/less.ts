@@ -15,5 +15,6 @@ declare class less {
     reload: boolean,
     modifyVars: boolean,
     clearFileCache: boolean
-  ): Promise;
+  ): // @ts-ignore
+  Promise;
 }

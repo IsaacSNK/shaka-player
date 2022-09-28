@@ -17,7 +17,7 @@ declare class MaterialLayout {
 
   Constant_: {
     MENU_ICON: string;
-  }
+  };
 }
 
 //Element.prototype.MaterialLayout;

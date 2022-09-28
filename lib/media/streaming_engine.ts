@@ -83,6 +83,7 @@ namespace shaka.media {
       return this.destroyer_.destroy();
     }
 
+    // @ts-ignore
     private async doDestroy_(): Promise {
       const aborts = [];
       for (const state of this.mediaStates_.values()) {
@@ -139,6 +140,7 @@ namespace shaka.media {
      * switch*() may be called freely.
      *
      */
+    // @ts-ignore
     async start(): Promise {
       goog.asserts.assert(
         this.config_,
@@ -172,6 +174,7 @@ namespace shaka.media {
      * Start streaming text, creating a new media state.
      *
      */
+    // @ts-ignore
     private async loadNewTextStream_(stream: shaka.extern.Stream): Promise {
       const ContentType = shaka.util.ManifestParserUtils.ContentType;
       goog.asserts.assert(
@@ -601,6 +604,7 @@ namespace shaka.media {
         // Always clear the iterator since we need to start streaming from the
         // new time.  This also happens in clearBuffer_, but if we don't clear,
         // we still want to reset the iterator.
+        // @ts-ignore
         mediaState.segmentIterator = null;
         if (!newTimeIsBuffered(type)) {
           const bufferEnd =
@@ -609,15 +613,19 @@ namespace shaka.media {
 
           // Don't clear the buffer unless something is buffered.  This extra
           // check prevents extra, useless calls to clear the buffer.
+          // @ts-ignore
           if (somethingBuffered || mediaState.performingUpdate) {
             this.forceClearBuffer_(mediaState);
             streamCleared = true;
           }
 
           // If there is an operation in progress, stop it now.
+          // @ts-ignore
           if (mediaState.operation) {
+            // @ts-ignore
             mediaState.operation.abort();
             shaka.log.debug(logPrefix, "Aborting operation due to seek");
+            // @ts-ignore
             mediaState.operation = null;
           }
 
@@ -629,6 +637,7 @@ namespace shaka.media {
 
           // Mark the media state as having seeked, so that the new buffers know
           // that they will need to be at a new position (for sequence mode).
+          // @ts-ignore
           mediaState.seeked = true;
         }
       }
@@ -703,6 +712,7 @@ namespace shaka.media {
      * updates for the given types.
      *
      */
+    // @ts-ignore
     private async initStreams_(): Promise {
       const ContentType = shaka.util.ManifestParserUtils.ContentType;
       goog.asserts.assert(
@@ -1556,9 +1566,11 @@ namespace shaka.media {
     private async initSourceBuffer_(
       mediaState: MediaState_,
       reference: SegmentReference
+      // @ts-ignore
     ): Promise {
       const StreamingEngine = shaka.media.StreamingEngine;
       const logPrefix = StreamingEngine.logPrefix_(mediaState);
+      // @ts-ignore
       const operations: Promise[] = [];
 
       // Rounding issues can cause us to remove the first frame of a Period, so
@@ -1675,6 +1687,7 @@ namespace shaka.media {
       stream: shaka.extern.Stream,
       reference: SegmentReference,
       segment: BufferSource
+      // @ts-ignore
     ): Promise {
       const logPrefix = shaka.media.StreamingEngine.logPrefix_(mediaState);
       const hasClosedCaptions =
@@ -1966,6 +1979,7 @@ namespace shaka.media {
     private async fetch_(
       mediaState: MediaState_,
       reference: InitSegmentReference | SegmentReference,
+      // @ts-ignore
       streamDataCallback?: ((p1: BufferSource) => Promise) | null
     ): Promise<BufferSource> {
       const requestType = shaka.net.NetworkingEngine.RequestType.SEGMENT;
@@ -2093,6 +2107,7 @@ namespace shaka.media {
      * If |mediaState| holds any in-progress operations, abort them.
      *
      */
+    // @ts-ignore
     private async abortOperations_(mediaState): Promise {
       if (mediaState.operation) {
         await mediaState.operation.abort();
@@ -2104,6 +2119,7 @@ namespace shaka.media {
      * error callback and by streaming failure callback.
      *
      */
+    // @ts-ignore
     private async handleStreamingError_(error: Error): Promise {
       // If we invoke the callback right away, the application could trigger a
       // rapid retry cycle that could be very unkind to the server.  Instead,

@@ -18,6 +18,7 @@ namespace shaka.offline {
      * the promise chain that is doing the work.
      *
      */
+    // @ts-ignore
     private groups_: Map<number, Promise>;
     private destroyer_: Destroyer;
 
@@ -25,6 +26,7 @@ namespace shaka.offline {
      * A list of callback functions to cancel any in-progress downloads.
      *
      */
+    // @ts-ignore
     private abortCallbacks_: (() => Promise)[] = [];
 
     /**
@@ -79,6 +81,7 @@ namespace shaka.offline {
      * @return A promise that will resolve once the downloads are fully
      *   aborted.
      */
+    // @ts-ignore
     abortAll(): Promise {
       const promises = this.abortCallbacks_.map((callback) => callback());
       this.abortCallbacks_ = [];
@@ -108,7 +111,9 @@ namespace shaka.offline {
       request: shaka.extern.Request,
       estimateId: number,
       isInitSegment: boolean,
+      // @ts-ignore
       onDownloaded: (p1: BufferSource) => Promise
+      // @ts-ignore
     ): Promise {
       this.destroyer_.ensureNotDestroyed();
       const group = this.groups_.get(groupId) || Promise.resolve();
@@ -159,6 +164,7 @@ namespace shaka.offline {
      *   blocked until the Promise returned by |callback| resolves.
      * @return Resolved when this work is complete.
      */
+    // @ts-ignore
     queueWork(groupId: number, callback: () => Promise): Promise {
       this.destroyer_.ensureNotDestroyed();
       const group = this.groups_.get(groupId) || Promise.resolve();

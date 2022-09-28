@@ -15,11 +15,17 @@ namespace shaka.offline.indexeddb {
    *
    */
   export class StorageMechanism implements shaka.extern.StorageMechanism {
+    // @ts-ignore
     private db_: IDBDatabase = null;
+    // @ts-ignore
     private v1_: shaka.extern.StorageCell = null;
+    // @ts-ignore
     private v2_: shaka.extern.StorageCell = null;
+    // @ts-ignore
     private v3_: shaka.extern.StorageCell = null;
+    // @ts-ignore
     private v5_: shaka.extern.StorageCell = null;
+    // @ts-ignore
     private sessions_: shaka.extern.EmeSessionStorageCell = null;
 
     /**
@@ -147,10 +153,15 @@ namespace shaka.offline.indexeddb {
       await shaka.offline.indexeddb.StorageMechanism.deleteAll_();
 
       // Reset before initializing.
+      // @ts-ignore
       this.db_ = null;
+      // @ts-ignore
       this.v1_ = null;
+      // @ts-ignore
       this.v2_ = null;
+      // @ts-ignore
       this.v3_ = null;
+      // @ts-ignore
       this.v5_ = null;
       await this.init();
     }
@@ -168,6 +179,7 @@ namespace shaka.offline.indexeddb {
           manifestStore
         );
       }
+      // @ts-ignore
       return null;
     }
 
@@ -184,6 +196,7 @@ namespace shaka.offline.indexeddb {
           manifestStore
         );
       }
+      // @ts-ignore
       return null;
     }
 
@@ -203,6 +216,7 @@ namespace shaka.offline.indexeddb {
           manifestStore
         );
       }
+      // @ts-ignore
       return null;
     }
 
@@ -219,6 +233,7 @@ namespace shaka.offline.indexeddb {
           manifestStore
         );
       }
+      // @ts-ignore
       return null;
     }
 
@@ -231,6 +246,7 @@ namespace shaka.offline.indexeddb {
         shaka.log.debug("Mounting session ID idb storage cell");
         return new shaka.offline.indexeddb.EmeSessionStorageCell(db, store);
       }
+      // @ts-ignore
       return null;
     }
 
@@ -252,6 +268,7 @@ namespace shaka.offline.indexeddb {
      * This will force the database to a like-new state next time it opens.
      *
      */
+    // @ts-ignore
     private static deleteAll_(): Promise {
       const name = shaka.offline.indexeddb.StorageMechanism.DB_NAME;
       const p = new shaka.util.PublicPromise();

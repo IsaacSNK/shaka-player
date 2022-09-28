@@ -43,6 +43,7 @@ namespace shaka.text {
         return cues;
       }
       try {
+        // @ts-ignore
         xml = parser.parseFromString(str, "text/xml");
       } catch (exception) {
         throw new shaka.util.Error(
@@ -197,6 +198,7 @@ namespace shaka.text {
       let parentElement: Element = cueNode.parentNode as Element;
       if (cueNode.nodeType == Node.COMMENT_NODE) {
         // The comments do not contain information that interests us here.
+        // @ts-ignore
         return null;
       }
       if (cueNode.nodeType == Node.TEXT_NODE) {
@@ -204,6 +206,7 @@ namespace shaka.text {
           // Ignore text elements outside the content. For example, whitespace
           // on the same lexical level as the <p> elements, in a document with
           // xml:space="preserve", should not be renderer.
+          // @ts-ignore
           return null;
         }
 
@@ -224,6 +227,7 @@ namespace shaka.text {
       goog.asserts.assert(cueElement, "cueElement should be non-null!");
       let imageElement = null;
       for (const nameSpace of shaka.text.TtmlTextParser.smpteNsList_) {
+        // @ts-ignore
         imageElement = shaka.text.TtmlTextParser.getElementsFromCollection_(
           cueElement,
           "backgroundImage",
@@ -293,10 +297,12 @@ namespace shaka.text {
           // <p begin="..." smpte:backgroundImage="..." /> will go through,
           // as some information could be held by its attributes.
           // <p /> won't, as it would not be displayed.
+          // @ts-ignore
           return null;
         } else {
           if (localWhitespaceTrim) {
             // Disregards empty anonymous spans when (local) trim is true.
+            // @ts-ignore
             return null;
           }
         }
@@ -355,6 +361,7 @@ namespace shaka.text {
       let payload = "";
       if (isLeafNode) {
         // If the childNodes are all text, this is a leaf node.  Get the payload.
+        // @ts-ignore
         payload = cueElement.textContent;
         if (localWhitespaceTrim) {
           // Trim leading and trailing whitespace.
@@ -446,11 +453,13 @@ namespace shaka.text {
           "TtmlTextParser parser encountered a region with " +
             "no id. Region will be ignored."
         );
+        // @ts-ignore
         return null;
       }
       region.id = id;
       let globalResults = null;
       if (globalExtent) {
+        // @ts-ignore
         globalResults =
           TtmlTextParser.percentValues_.exec(globalExtent) ||
           TtmlTextParser.pixelValues_.exec(globalExtent);
@@ -465,7 +474,9 @@ namespace shaka.text {
         "extent"
       );
       if (extent) {
+        // @ts-ignore
         percentage = TtmlTextParser.percentValues_.exec(extent);
+        // @ts-ignore
         results = percentage || TtmlTextParser.pixelValues_.exec(extent);
         if (results != null) {
           region.width = Number(results[1]);
@@ -494,7 +505,9 @@ namespace shaka.text {
         "origin"
       );
       if (origin) {
+        // @ts-ignore
         percentage = TtmlTextParser.percentValues_.exec(origin);
+        // @ts-ignore
         results = percentage || TtmlTextParser.pixelValues_.exec(origin);
         if (results != null) {
           region.viewportAnchorX = Number(results[1]);
@@ -1015,6 +1028,7 @@ namespace shaka.text {
             );
         }
         if (styleAttributeValue) {
+          // @ts-ignore
           styleValue = styleAttributeValue;
         }
       }
@@ -1070,6 +1084,7 @@ namespace shaka.text {
       let ret = null;
       const XmlUtils = shaka.util.XmlUtils;
       while (element) {
+        // @ts-ignore
         ret = nsName
           ? XmlUtils.getAttributeNS(element, nsName, attributeName)
           : element.getAttribute(attributeName);
@@ -1165,27 +1180,33 @@ namespace shaka.text {
       let ret = null;
       const TtmlTextParser = shaka.text.TtmlTextParser;
       if (TtmlTextParser.timeColonFormatFrames_.test(text)) {
+        // @ts-ignore
         ret = TtmlTextParser.parseColonTimeWithFrames_(rateInfo, text);
       } else {
         if (TtmlTextParser.timeColonFormat_.test(text)) {
+          // @ts-ignore
           ret = TtmlTextParser.parseTimeFromRegex_(
             TtmlTextParser.timeColonFormat_,
             text
           );
         } else {
           if (TtmlTextParser.timeColonFormatMilliseconds_.test(text)) {
+            // @ts-ignore
             ret = TtmlTextParser.parseTimeFromRegex_(
               TtmlTextParser.timeColonFormatMilliseconds_,
               text
             );
           } else {
             if (TtmlTextParser.timeFramesFormat_.test(text)) {
+              // @ts-ignore
               ret = TtmlTextParser.parseFramesTime_(rateInfo, text);
             } else {
               if (TtmlTextParser.timeTickFormat_.test(text)) {
+                // @ts-ignore
                 ret = TtmlTextParser.parseTickTime_(rateInfo, text);
               } else {
                 if (TtmlTextParser.timeHMSFormat_.test(text)) {
+                  // @ts-ignore
                   ret = TtmlTextParser.parseTimeFromRegex_(
                     TtmlTextParser.timeHMSFormat_,
                     text

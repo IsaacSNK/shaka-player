@@ -118,6 +118,7 @@ namespace shaka.text {
             box.reader,
             box.flags
           );
+          // @ts-ignore
           defaultDuration = parsedTFHDBox.defaultSampleDuration;
         })
         .fullBox("trun", (box) => {
@@ -187,6 +188,7 @@ namespace shaka.text {
           const payloadName = shaka.util.Mp4Parser.typeToString(payloadType);
 
           // Read the data payload.
+          // @ts-ignore
           let payload: Uint8Array = null;
           if (payloadName == "vttc") {
             if (payloadSize > 8) {
@@ -281,6 +283,7 @@ namespace shaka.text {
           endTime
         );
       } else {
+        // @ts-ignore
         return null;
       }
     }

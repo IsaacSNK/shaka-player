@@ -69,10 +69,12 @@ namespace shaka.media {
 
     get(position: number): SegmentReference {
       if (this.references.length == 0) {
+        // @ts-ignore
         return null;
       }
       const index = position - this.numEvicted;
       if (index < 0 || index >= this.references.length) {
+        // @ts-ignore
         return null;
       }
       return this.references[index];

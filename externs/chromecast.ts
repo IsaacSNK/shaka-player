@@ -75,7 +75,7 @@ declare namespace cast.receiver.media {
     MOVIE,
     TV_SHOW,
     MUSIC_TRACK,
-    PHOTO
+    PHOTO,
   }
 }
 
@@ -104,7 +104,7 @@ declare namespace chrome {
 declare namespace chrome.cast {
   type SessionStatus = {
     STOPPED: string;
-  }
+  };
 }
 
 declare namespace chrome.cast {

@@ -25,6 +25,7 @@ namespace shaka.net {
         const parsed = shaka.net.DataUriPlugin.parseRaw(uri);
         const response: shaka.extern.Response = {
           uri: uri,
+          // @ts-ignore
           originalUri: uri,
           data: parsed.data,
           headers: { "content-type": parsed.contentType },

@@ -25,13 +25,16 @@ namespace shaka.cast {
   {
     private localVideo_: HTMLMediaElement;
     private localPlayer_: Player;
+    // @ts-ignore
     private videoProxy_: Object = null;
+    // @ts-ignore
     private playerProxy_: Object = null;
     private videoEventTarget_: FakeEventTarget = null;
     private playerEventTarget_: FakeEventTarget = null;
     private eventManager_: EventManager = null;
     private receiverAppId_: string;
     private androidReceiverCompatible_: boolean;
+    // @ts-ignore
     private compiledToExternNames_: Map;
     private sender_: CastSender;
 
@@ -88,14 +91,19 @@ namespace shaka.cast {
       const waitFor = [];
       if (this.localPlayer_) {
         waitFor.push(this.localPlayer_.destroy());
+        // @ts-ignore
         this.localPlayer_ = null;
       }
       if (this.sender_) {
         waitFor.push(this.sender_.destroy());
+        // @ts-ignore
         this.sender_ = null;
       }
+      // @ts-ignore
       this.localVideo_ = null;
+      // @ts-ignore
       this.videoProxy_ = null;
+      // @ts-ignore
       this.playerProxy_ = null;
 
       // FakeEventTarget implements IReleasable
@@ -155,6 +163,7 @@ namespace shaka.cast {
      *   connection fails or is canceled by the user.
      * @export
      */
+    // @ts-ignore
     async cast(): Promise {
       const initState = this.getInitState_();
 
@@ -216,6 +225,7 @@ namespace shaka.cast {
       // Destroy the old sender
       this.sender_.forceDisconnect();
       await this.sender_.destroy();
+      // @ts-ignore
       this.sender_ = null;
 
       // Create the new one
@@ -381,6 +391,7 @@ namespace shaka.cast {
       // If the video is still playing, set the startTime.
       // Has no effect if nothing is loaded.
       if (!this.localVideo_.ended) {
+        // @ts-ignore
         initState["startTime"] = this.localVideo_.currentTime;
       }
       for (const pair of shaka.cast.CastUtils.PlayerInitState) {

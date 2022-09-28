@@ -18,6 +18,7 @@ namespace shaka.util {
      *
      */
     private onTick_: () => any;
+    // @ts-ignore
     private ticker_: DelayedTick = null;
 
     /**
@@ -80,6 +81,7 @@ namespace shaka.util {
     stop() {
       if (this.ticker_) {
         this.ticker_.stop();
+        // @ts-ignore
         this.ticker_ = null;
       }
     }

@@ -97,6 +97,7 @@ namespace shaka.polyfill {
     /**
      * @this {HTMLVideoElement}
      */
+    // @ts-ignore
     private static requestPictureInPicture_(): Promise {
       const PiPWebkit = shaka.polyfill.PiPWebkit;
 
@@ -117,6 +118,7 @@ namespace shaka.polyfill {
     /**
      * @this {Document}
      */
+    // @ts-ignore
     private static exitPictureInPicture_(): Promise {
       const PiPWebkit = shaka.polyfill.PiPWebkit;
       const pipElement = document.pictureInPictureElement as HTMLVideoElement;

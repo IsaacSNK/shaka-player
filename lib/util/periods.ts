@@ -62,6 +62,7 @@ namespace shaka.util {
       return this.imageStreams_;
     }
 
+    // @ts-ignore
     async combinePeriods(periods: Period[], isDynamic: boolean): Promise {
       const ContentType = shaka.util.ManifestParserUtils.ContentType;
       shaka.util.PeriodCombiner.filterOutAudioStreamDuplicates_(periods);

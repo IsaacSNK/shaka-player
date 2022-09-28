@@ -187,6 +187,7 @@ namespace shaka.util {
             const estimate = await navigator.storage.estimate();
 
             // Limit to 95% of quota.
+            // @ts-ignore
             return estimate.usage + sizeEstimate < estimate.quota * 0.95;
           } else {
             return true;
@@ -274,6 +275,7 @@ namespace shaka.util {
         },
         playRangeStart: 0,
         playRangeEnd: Infinity,
+        // @ts-ignore
         textDisplayFactory: () => null,
         cmcd: cmcd,
       };

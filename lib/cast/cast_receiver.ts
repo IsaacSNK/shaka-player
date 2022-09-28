@@ -28,6 +28,7 @@ namespace shaka.cast {
      *  - https://developers.google.com/cast/docs/reference/messages#TvShowMediaMetadata
      *  - https://developers.google.com/cast/docs/reference/messages#MusicTrackMediaMetadata
      */
+    // @ts-ignore
     private metadata_: Object = null;
     private isConnected_: boolean = false;
     private isIdle_: boolean = true;
@@ -115,6 +116,7 @@ namespace shaka.cast {
      * @export
      */
     clearContentMetadata() {
+      // @ts-ignore
       this.metadata_ = null;
     }
 
@@ -178,13 +180,16 @@ namespace shaka.cast {
       const waitFor = [];
       if (this.player_) {
         waitFor.push(this.player_.destroy());
+        // @ts-ignore
         this.player_ = null;
       }
       if (this.pollTimer_) {
         this.pollTimer_.stop();
         this.pollTimer_ = null;
       }
+      // @ts-ignore
       this.video_ = null;
+      // @ts-ignore
       this.targets_ = null;
       this.appDataCallback_ = null;
       this.isConnected_ = false;
@@ -830,6 +835,7 @@ namespace shaka.cast {
       }
     }
 
+    // @ts-ignore
     private sendMediaStatus_(requestId: number = 0, media: Object = null) {
       const mediaStatus = {
         // mediaSessionId is a unique ID for the playback of this specific

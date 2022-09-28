@@ -120,7 +120,9 @@ namespace shaka.util {
             return;
           }
           const versionAndFlags = reader.readUint32();
+          // @ts-ignore
           version = versionAndFlags >>> 24;
+          // @ts-ignore
           flags = versionAndFlags & 16777215;
         }
 
@@ -217,6 +219,7 @@ namespace shaka.util {
      * @export
      */
     static allData(callback: (p1: Uint8Array) => any): CallbackType {
+      // @ts-ignore
       return;
       (box) => {
         const all = box.reader.getLength() - box.reader.getPosition();

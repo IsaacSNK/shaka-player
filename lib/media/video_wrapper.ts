@@ -60,6 +60,7 @@ namespace shaka.media {
         this.mover_ = null;
       }
       this.onSeek_ = () => {};
+      // @ts-ignore
       this.video_ = null;
     }
 
@@ -189,6 +190,7 @@ namespace shaka.media.VideoWrapper {
         this.timer_.stop();
         this.timer_ = null;
       }
+      // @ts-ignore
       this.mediaElement_ = null;
     }
 

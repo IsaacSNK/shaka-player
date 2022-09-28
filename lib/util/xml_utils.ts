@@ -19,6 +19,7 @@ namespace shaka.util {
     static findChild(elem: Node, name: string): Element {
       const children = shaka.util.XmlUtils.findChildren(elem, name);
       if (children.length != 1) {
+        // @ts-ignore
         return null;
       }
       return children[0];
@@ -36,6 +37,7 @@ namespace shaka.util {
     static findChildNS(elem: Node, ns: string, name: string): Element {
       const children = shaka.util.XmlUtils.findChildrenNS(elem, ns, name);
       if (children.length != 1) {
+        // @ts-ignore
         return null;
       }
       return children[0];
@@ -62,6 +64,7 @@ namespace shaka.util {
      * @return The child XML elements.
      */
     static getChildren(elem: Node): Element[] {
+      // @ts-ignore
       return Array.from(elem.childNodes).filter((child) => {
         return child instanceof Element;
       });
@@ -340,9 +343,11 @@ namespace shaka.util {
       const parser = new DOMParser();
       let xml = null;
       try {
+        // @ts-ignore
         xml = parser.parseFromString(xmlString, "text/xml");
       } catch (exception) {
         shaka.log.error("XML parsing exception:", exception);
+        // @ts-ignore
         return null;
       }
 
@@ -353,6 +358,7 @@ namespace shaka.util {
       const rootElem = xml.documentElement;
       if (!rootElem) {
         shaka.log.error("XML document was empty!");
+        // @ts-ignore
         return null;
       }
 
@@ -360,6 +366,7 @@ namespace shaka.util {
       const parserErrorElements = rootElem.getElementsByTagName("parsererror");
       if (parserErrorElements.length) {
         shaka.log.error("XML parser error found:", parserErrorElements[0]);
+        // @ts-ignore
         return null;
       }
 
@@ -369,6 +376,7 @@ namespace shaka.util {
           `XML tag name does not match expected "${expectedRootElemName}":`,
           xml.documentElement.tagName
         );
+        // @ts-ignore
         return null;
       }
       return rootElem;
@@ -384,6 +392,7 @@ namespace shaka.util {
         return shaka.util.XmlUtils.parseXmlString(string, expectedRootElemName);
       } catch (exception) {
         shaka.log.error("parseXmlString threw!", exception);
+        // @ts-ignore
         return null;
       }
     }

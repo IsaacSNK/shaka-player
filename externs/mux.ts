@@ -67,7 +67,9 @@ declare namespace muxjs.mp4.Transmuxer {
   export interface Segment {
     initSegment: Uint8Array;
     data: Uint8Array;
+    // @ts-ignore
     captions: Array;
+    // @ts-ignore
     metadata: Array;
   }
 }

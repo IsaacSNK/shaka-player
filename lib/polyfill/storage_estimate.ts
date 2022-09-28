@@ -35,6 +35,7 @@ namespace shaka.polyfill {
     /**
      * @this {StorageManager}
      */
+    // @ts-ignore
     private static storageEstimate_(): Promise {
       return new Promise((resolve, reject) => {
         navigator.webkitTemporaryStorage.queryUsageAndQuota((usage, quota) => {

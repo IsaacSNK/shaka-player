@@ -37,7 +37,9 @@ namespace shaka.polyfill {
         PatchedMediaKeysApple.setMediaKeys;
 
       // Install patches
+      // @ts-ignore
       window.MediaKeys = PatchedMediaKeysApple.MediaKeys;
+      // @ts-ignore
       window.MediaKeySystemAccess = PatchedMediaKeysApple.MediaKeySystemAccess;
       navigator.requestMediaKeySystemAccess =
         PatchedMediaKeysApple.requestMediaKeySystemAccess;
@@ -79,6 +81,7 @@ namespace shaka.polyfill {
      *
      * @this {!HTMLMediaElement}
      */
+    // @ts-ignore
     static setMediaKeys(mediaKeys: MediaKeys): Promise {
       shaka.log.debug("PatchedMediaKeysApple.setMediaKeys");
       goog.asserts.assert(
@@ -245,6 +248,7 @@ namespace shaka.polyfill.PatchedMediaKeysApple {
             ranAnyTests = true;
             const contentType = cap.contentType.split(";")[0];
             if (WebKitMediaKeys.isTypeSupported(this.keySystem, contentType)) {
+              // @ts-ignore
               newCfg.audioCapabilities.push(cap);
               success = true;
             }
@@ -257,6 +261,7 @@ namespace shaka.polyfill.PatchedMediaKeysApple {
             ranAnyTests = true;
             const contentType = cap.contentType.split(";")[0];
             if (WebKitMediaKeys.isTypeSupported(this.keySystem, contentType)) {
+              // @ts-ignore
               newCfg.videoCapabilities.push(cap);
               success = true;
             }
@@ -337,6 +342,7 @@ namespace shaka.polyfill.PatchedMediaKeysApple {
       return Promise.resolve(false);
     }
 
+    // @ts-ignore
     protected setMedia(media: HTMLMediaElement): Promise {
       // Alias
       const PatchedMediaKeysApple = shaka.polyfill.PatchedMediaKeysApple;
@@ -390,6 +396,7 @@ namespace shaka.polyfill.PatchedMediaKeysApple {
     /**
      * The native MediaKeySession, which will be created in generateRequest.
      */
+    // @ts-ignore
     private nativeMediaKeySession_: WebKitMediaKeySession = null;
     private nativeMediaKeys_: WebKitMediaKeys;
 

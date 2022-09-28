@@ -86,6 +86,7 @@ declare namespace shaka.extern {
  * @exportDoc
  */
 declare namespace shaka.extern {
+  // @ts-ignore
   type CreateSegmentIndexFunction = () => Promise;
 }
 /**
@@ -111,6 +112,7 @@ declare namespace shaka.extern {
  * @exportDoc
  */
 declare namespace shaka.extern {
+  // @ts-ignore
   type FetchCryptoKeysFunction = () => Promise;
 }
 /**

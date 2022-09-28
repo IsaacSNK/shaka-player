@@ -32,6 +32,7 @@ namespace shaka.media {
      */
     destroy() {
       this.muxTransmuxer_.dispose();
+      // @ts-ignore
       this.muxTransmuxer_ = null;
       return Promise.resolve();
     }

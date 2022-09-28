@@ -27,6 +27,7 @@ namespace shaka.ads {
      * snapback.
      */
     private snapForwardTime_: number | null = null;
+    // @ts-ignore
     private ad_: ServerSideAd = null;
     private adProgressData_: google.ima.dai.api.AdProgressData | null = null;
     private backupUrl_: string = "";
@@ -148,6 +149,7 @@ namespace shaka.ads {
             new shaka.util.FakeEvent(shaka.ads.AdManager.AD_STOPPED)
           );
           this.adContainer_.removeAttribute("ad-active");
+          // @ts-ignore
           this.ad_ = null;
         }
       );

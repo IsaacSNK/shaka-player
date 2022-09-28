@@ -161,6 +161,7 @@ namespace shaka.media {
         return null;
       }
       if (!newRanges || !newRanges.length) {
+        // @ts-ignore
         return TimeRangesUtils.getBufferedInfo(newRanges).pop();
       }
       const newRangesReversed =

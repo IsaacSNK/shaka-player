@@ -85,6 +85,7 @@ namespace shaka.text {
      */
     destroy() {
       this.parser_ = null;
+      // @ts-ignore
       this.displayer_ = null;
       this.closedCaptionsMap_.clear();
       return Promise.resolve();
@@ -136,6 +137,7 @@ namespace shaka.text {
       buffer: BufferSource,
       startTime: number | null,
       endTime: number | null
+      // @ts-ignore
     ): Promise {
       goog.asserts.assert(
         this.parser_,
@@ -202,6 +204,7 @@ namespace shaka.text {
      * @param startTime relative to the start of the presentation
      * @param endTime relative to the start of the presentation
      */
+    // @ts-ignore
     async remove(startTime: number, endTime: number): Promise {
       // Start the operation asynchronously to avoid blocking the caller.
       await Promise.resolve();
@@ -313,6 +316,7 @@ namespace shaka.text {
       const captionsMap = this.closedCaptionsMap_.get(id);
       if (captionsMap) {
         for (const startAndEndTime of captionsMap.keys()) {
+          // @ts-ignore
           const cues: Cue[] = captionsMap
             .get(startAndEndTime)
             .filter((c) => c.endTime <= bufferEndTime);
@@ -376,7 +380,9 @@ namespace shaka.text {
         if (!captionsMap.has(id)) {
           captionsMap.set(id, new Map());
         }
+        // @ts-ignore
         if (!captionsMap.get(id).has(startAndEndTime)) {
+          // @ts-ignore
           captionsMap.get(id).set(startAndEndTime, []);
         }
 
@@ -389,6 +395,7 @@ namespace shaka.text {
         if (!keepThisCue) {
           continue;
         }
+        // @ts-ignore
         captionsMap.get(id).get(startAndEndTime).push(cue);
         if (id == this.selectedClosedCaptionId_) {
           this.displayer_.append([cue]);
@@ -398,8 +405,11 @@ namespace shaka.text {
         if (!this.closedCaptionsMap_.has(id)) {
           this.closedCaptionsMap_.set(id, new Map());
         }
+        // @ts-ignore
         for (const startAndEndTime of captionsMap.get(id).keys()) {
+          // @ts-ignore
           const cues = captionsMap.get(id).get(startAndEndTime);
+          // @ts-ignore
           this.closedCaptionsMap_.get(id).set(startAndEndTime, cues);
         }
       }

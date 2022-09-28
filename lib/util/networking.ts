@@ -23,6 +23,7 @@ namespace shaka.util {
       start: number | null,
       end: number | null,
       retryParameters: shaka.extern.RetryParameters,
+      // @ts-ignore
       streamDataCallback?: ((p1: BufferSource) => Promise) | null
     ): shaka.extern.Request {
       const request = shaka.net.NetworkingEngine.makeRequest(

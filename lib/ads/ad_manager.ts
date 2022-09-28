@@ -321,7 +321,9 @@ namespace shaka.ads {
     extends shaka.util.FakeEventTarget
     implements shaka.extern.IAdManager, IReleasable
   {
+    // @ts-ignore
     private csAdManager_: ClientSideAdManager = null;
+    // @ts-ignore
     private ssAdManager_: ServerSideAdManager = null;
     private stats_: AdsStats;
 
@@ -399,10 +401,12 @@ namespace shaka.ads {
     release() {
       if (this.csAdManager_) {
         this.csAdManager_.release();
+        // @ts-ignore
         this.csAdManager_ = null;
       }
       if (this.ssAdManager_) {
         this.ssAdManager_.release();
+        // @ts-ignore
         this.ssAdManager_ = null;
       }
       super.release();

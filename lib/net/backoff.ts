@@ -73,6 +73,7 @@ namespace shaka.net {
      * @return Resolves when the caller may make an attempt, possibly
      *   after a delay.  Rejects if no more attempts are allowed.
      */
+    // @ts-ignore
     async attempt(): Promise {
       if (this.numAttempts_ >= this.maxAttempts_) {
         if (this.autoReset_) {

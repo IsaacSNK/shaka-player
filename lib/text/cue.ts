@@ -245,6 +245,7 @@ namespace shaka.text {
         // change, for instance, textDecoration on the clone, we don't affect the
         // original.
         if (clone[k] && clone[k].constructor == Array) {
+          // @ts-ignore
           clone[k] = (clone[k] as Array).slice();
         }
       }

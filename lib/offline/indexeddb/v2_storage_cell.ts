@@ -104,6 +104,7 @@ namespace shaka.offline.indexeddb {
         width: old.width,
         height: old.height,
         encrypted: old.encrypted,
+        // @ts-ignore
         keyIds: new Set([old.keyId]),
         segments: old.segments.map((segment) =>
           this.convertSegment_(
@@ -120,6 +121,7 @@ namespace shaka.offline.indexeddb {
         audioSamplingRate: null,
         channelsCount: null,
         spatialAudio: false,
+        // @ts-ignore
         closedCaptions: null,
         tilesLayout: undefined,
       };

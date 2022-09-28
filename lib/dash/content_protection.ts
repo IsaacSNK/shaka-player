@@ -21,6 +21,7 @@ namespace shaka.dash {
       const ContentProtection = shaka.dash.ContentProtection;
       const ManifestParserUtils = shaka.util.ManifestParserUtils;
       const parsed = ContentProtection.parseElements_(elems);
+      // @ts-ignore
       let defaultInit: shaka.extern.InitDataOverride[] = null;
       let drmInfos: shaka.extern.DrmInfo[] = [];
       let parsedNonCenc = [];
@@ -40,6 +41,7 @@ namespace shaka.dash {
       if (!ignoreDrmInfo) {
         // Find the default key ID and init data.  Create a new array of all the
         // non-CENC elements.
+        // @ts-ignore
         parsedNonCenc = parsed.filter((elem) => {
           if (elem.schemeUri == ContentProtection.MP4Protection_) {
             goog.asserts.assert(
@@ -279,6 +281,7 @@ namespace shaka.dash {
       for (const elem of xml.getElementsByTagName("DATA")) {
         for (const child of elem.childNodes) {
           if (child instanceof Element && child.tagName == "LA_URL") {
+            // @ts-ignore
             return child.textContent;
           }
         }
@@ -405,6 +408,7 @@ namespace shaka.dash {
             element.schemeUri ===
             shaka.dash.ContentProtection.ClearKeySchemeUri_
           ) {
+            // @ts-ignore
             clearKeyInitData = ContentProtection.getInitDataClearKey_(
               element,
               keyIds
@@ -496,6 +500,7 @@ namespace shaka.dash {
         node: elem,
         schemeUri: schemeUri,
         keyId: keyId,
+        // @ts-ignore
         init: init.length > 0 ? init : null,
       };
     }

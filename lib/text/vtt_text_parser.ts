@@ -202,6 +202,7 @@ namespace shaka.text {
       // <code>:: cue (b) {</code>, what we are looking for is <code>b</code>
       const selector = text[1].match(/\((.*)\)/);
       if (selector) {
+        // @ts-ignore
         styleSelector = selector.pop();
       }
 
@@ -301,20 +302,24 @@ namespace shaka.text {
 
       // Skip empty blocks.
       if (text.length == 1 && !text[0]) {
+        // @ts-ignore
         return null;
       }
 
       // Skip comment blocks.
       if (/^NOTE($|[ \t])/.test(text[0])) {
+        // @ts-ignore
         return null;
       }
 
       // Skip style blocks.
       if (text[0] == "STYLE") {
+        // @ts-ignore
         return null;
       }
       let id = null;
       if (!text[0].includes("--\x3e")) {
+        // @ts-ignore
         id = text[0];
         text.splice(0, 1);
       }
@@ -339,11 +344,13 @@ namespace shaka.text {
       const payload = text.slice(1).join("\n").trim();
       let cue = null;
       if (styles.has("global")) {
+        // @ts-ignore
         cue = styles.get("global").clone();
         cue.startTime = start;
         cue.endTime = end;
         cue.payload = "";
       } else {
+        // @ts-ignore
         cue = new shaka.text.Cue(start, end, "");
       }
       VttTextParser.parseCueStyles(payload, cue, styles);
@@ -365,6 +372,7 @@ namespace shaka.text {
       if (id != null) {
         cue.id = id;
       }
+      // @ts-ignore
       return cue;
     }
 
@@ -632,17 +640,21 @@ namespace shaka.text {
       const VttTextParser = shaka.text.VttTextParser;
       let results = null;
       if (
+        // @ts-ignore
         (results = /^align:(start|middle|center|end|left|right)$/.exec(word))
       ) {
         VttTextParser.setTextAlign_(cue, results[1]);
       } else {
+        // @ts-ignore
         if ((results = /^vertical:(lr|rl)$/.exec(word))) {
           VttTextParser.setVerticalWritingMode_(cue, results[1]);
         } else {
+          // @ts-ignore
           if ((results = /^size:([\d.]+)%$/.exec(word))) {
             cue.size = Number(results[1]);
           } else {
             if (
+              // @ts-ignore
               (results =
                 /^position:([\d.]+)%(?:,(line-left|line-right|center|start|end))?$/.exec(
                   word
@@ -653,6 +665,7 @@ namespace shaka.text {
                 VttTextParser.setPositionAlign_(cue, results[2]);
               }
             } else {
+              // @ts-ignore
               if ((results = /^region:(.*)$/.exec(word))) {
                 const region = VttTextParser.getRegionById_(
                   regions,
@@ -706,17 +719,21 @@ namespace shaka.text {
       word: string
     ): boolean {
       let results = null;
+      // @ts-ignore
       if ((results = /^id=(.*)$/.exec(word))) {
         region.id = results[1];
       } else {
+        // @ts-ignore
         if ((results = /^width=(\d{1,2}|100)%$/.exec(word))) {
           region.width = Number(results[1]);
         } else {
+          // @ts-ignore
           if ((results = /^lines=(\d+)$/.exec(word))) {
             region.height = Number(results[1]);
             region.heightUnits = shaka.text.CueRegion.units.LINES;
           } else {
             if (
+              // @ts-ignore
               (results = /^regionanchor=(\d{1,2}|100)%,(\d{1,2}|100)%$/.exec(
                 word
               ))
@@ -725,12 +742,14 @@ namespace shaka.text {
               region.regionAnchorY = Number(results[2]);
             } else {
               if (
+                // @ts-ignore
                 (results =
                   /^viewportanchor=(\d{1,2}|100)%,(\d{1,2}|100)%$/.exec(word))
               ) {
                 region.viewportAnchorX = Number(results[1]);
                 region.viewportAnchorY = Number(results[2]);
               } else {
+                // @ts-ignore
                 if ((results = /^scroll=up$/.exec(word))) {
                   region.scroll = shaka.text.CueRegion.scrollMode.UP;
                 } else {
@@ -785,6 +804,7 @@ namespace shaka.text {
     ): boolean {
       const Cue = shaka.text.Cue;
       let results = null;
+      // @ts-ignore
       if ((results = /^line:([\d.]+)%(?:,(start|end|center))?$/.exec(word))) {
         cue.lineInterpretation = Cue.lineInterpretation.PERCENTAGE;
         cue.line = Number(results[1]);
@@ -796,6 +816,7 @@ namespace shaka.text {
           cue.lineAlign = Cue.lineAlign[results[2].toUpperCase()];
         }
       } else {
+        // @ts-ignore
         if ((results = /^line:(-?\d+)(?:,(start|end|center))?$/.exec(word))) {
           cue.lineInterpretation = Cue.lineInterpretation.LINE_NUMBER;
           cue.line = Number(results[1]);

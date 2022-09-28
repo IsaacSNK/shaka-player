@@ -74,6 +74,7 @@ namespace shaka.text {
           const name = lineParts[1].trim();
           const value = lineParts[2].trim();
           if (name == "Format") {
+            // @ts-ignore
             styleColumns = value.split(SsaTextParser.valuesFormat_);
             continue;
           }
@@ -105,6 +106,7 @@ namespace shaka.text {
           const name = lineParts[1].trim();
           const value = lineParts[2].trim();
           if (name == "Format") {
+            // @ts-ignore
             eventColumns = value.split(SsaTextParser.valuesFormat_);
             continue;
           }

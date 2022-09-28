@@ -56,6 +56,7 @@ namespace shaka.offline.indexeddb {
       );
       await op.forEachEntry((key, value, cursor) => {
         if (sessionIds.includes(value.sessionId)) {
+          // @ts-ignore
           cursor.delete();
         }
       });

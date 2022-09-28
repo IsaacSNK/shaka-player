@@ -81,10 +81,12 @@ namespace shaka.media {
       }
       if (this.stallDetector_) {
         this.stallDetector_.release();
+        // @ts-ignore
         this.stallDetector_ = null;
       }
       this.onEvent_ = null;
       this.timeline_ = null;
+      // @ts-ignore
       this.video_ = null;
     }
 

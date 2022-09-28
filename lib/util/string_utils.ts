@@ -293,6 +293,7 @@ namespace shaka.util {
 }
 
 namespace shaka.util.StringUtils {
+  // @ts-ignore
   export const fromCharCodeImpl_: Lazy<(p1: TypedArray) => string> =
     new shaka.util.Lazy(() => {
       /** @param size */

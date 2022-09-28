@@ -55,6 +55,7 @@ namespace shaka.offline {
      * @export
      */
     destroy() {
+      // @ts-ignore
       const destroys: Promise[] = [];
       for (const mechanism of this.mechanisms_.values()) {
         destroys.push(mechanism.destroy());
@@ -71,6 +72,7 @@ namespace shaka.offline {
      * registered with |StorageMuxer.register|.
      *
      */
+    // @ts-ignore
     init(): Promise {
       // Add the new instance of each mechanism to the muxer.
       const registry = shaka.offline.StorageMuxer.getRegistry_();
@@ -84,6 +86,7 @@ namespace shaka.offline {
           );
         }
       });
+      // @ts-ignore
       const initPromises: Promise[] = [];
       for (const mechanism of this.mechanisms_.values()) {
         initPromises.push(mechanism.init());
@@ -209,6 +212,7 @@ namespace shaka.offline {
      * erase.
      *
      */
+    // @ts-ignore
     async erase(): Promise {
       // If we have initialized, we will use the existing mechanism instances.
       const mechanisms: shaka.extern.StorageMechanism[] = Array.from(
@@ -323,6 +327,7 @@ namespace shaka.offline {
 }
 
 namespace shaka.offline.StorageMuxer {
+  // @ts-ignore
   export const override_: Map<string, () => shaka.extern.StorageMechanism> =
     null;
 }

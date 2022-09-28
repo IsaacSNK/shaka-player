@@ -16,6 +16,7 @@ namespace shaka.cast {
     private apiReady_: boolean = false;
     private isCasting_: boolean = false;
     private receiverName_: string = "";
+    // @ts-ignore
     private appData_: Object = null;
     private onConnectionStatusChangedBound_: (() => any) | null;
     private onMessageReceivedBound_: ((p1: string, p2: string) => any) | null;
@@ -80,8 +81,11 @@ namespace shaka.cast {
       this.onResumeLocal_ = null;
       this.apiReady_ = false;
       this.isCasting_ = false;
+      // @ts-ignore
       this.appData_ = null;
+      // @ts-ignore
       this.cachedProperties_ = null;
+      // @ts-ignore
       this.asyncCallPromises_ = null;
       this.castPromise_ = null;
       this.onConnectionStatusChangedBound_ = null;
@@ -239,6 +243,7 @@ namespace shaka.cast {
      * @return Resolved when connected to a receiver.  Rejected if the
      *   connection fails or is canceled by the user.
      */
+    // @ts-ignore
     async cast(initState: InitStateType): Promise {
       if (!this.apiReady_) {
         throw new shaka.util.Error(
@@ -438,7 +443,8 @@ namespace shaka.cast {
       targetName: string,
       methodName: string,
       ...varArgs
-    ): Promise {
+    ): // @ts-ignore
+    Promise {
       goog.asserts.assert(
         targetName == "video" || targetName == "player",
         "Unexpected target name"
@@ -670,6 +676,7 @@ namespace shaka.cast.CastSender {
 }
 
 namespace shaka.cast.CastSender {
+  // @ts-ignore
   export const session_: chrome.cast.Session = null;
 }
 

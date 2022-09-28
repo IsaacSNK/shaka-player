@@ -374,9 +374,11 @@ namespace shaka.util {
 }
 
 namespace shaka.util.Platform {
+  // @ts-ignore
   export const cacheExpirationTimer_: Timer = null;
 }
 
 namespace shaka.util.Platform {
+  // @ts-ignore
   export const cachedMediaElement_: HTMLMediaElement = null;
 }

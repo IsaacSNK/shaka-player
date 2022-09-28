@@ -309,6 +309,7 @@ namespace shaka.dash {
         callback,
         "SegmentTimeline"
       );
+      // @ts-ignore
       let timeline: TimeRange[] = null;
       if (timelineNode) {
         timeline = MpdUtils.createTimeline(

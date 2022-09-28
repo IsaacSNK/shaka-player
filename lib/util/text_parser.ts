@@ -57,6 +57,7 @@ namespace shaka.util {
     readRegex(regex: RegExp): string[] {
       const index = this.indexOf_(regex);
       if (this.atEnd() || index == null || index.position != this.position_) {
+        // @ts-ignore
         return null;
       }
       this.position_ += index.length;

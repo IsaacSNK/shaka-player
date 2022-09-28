@@ -23,6 +23,7 @@ namespace shaka.hls {
     ) {
       this.type = type;
       this.tags = tags;
+      // @ts-ignore
       this.segments = segments || null;
     }
   }

@@ -97,7 +97,11 @@ namespace shaka.util {
      * @param listener The event listener.
      * @export
      */
-    unlisten(target: EventTarget, type: string, listener?: shaka.util.EventManager.ListenerType) {
+    unlisten(
+      target: EventTarget,
+      type: string,
+      listener?: shaka.util.EventManager.ListenerType
+    ) {
       if (!this.bindingMap_) {
         return;
       }

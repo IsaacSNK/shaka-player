@@ -64,6 +64,7 @@ namespace shaka.routing {
      * finish before it starts.
      *
      */
+    // @ts-ignore
     private mainLoopPromise_: Promise;
     private destroyer_: Destroyer;
 
@@ -170,6 +171,7 @@ namespace shaka.routing {
       return listeners;
     }
 
+    // @ts-ignore
     private async mainLoop_(): Promise {
       while (!this.destroyer_.destroyed()) {
         // eslint-disable-next-line no-await-in-loop
@@ -184,6 +186,7 @@ namespace shaka.routing {
      *   3. Wait for a new route.
      *
      */
+    // @ts-ignore
     private doOneThing_(): Promise {
       if (this.tryNewRoute_()) {
         return Promise.resolve();
@@ -240,6 +243,7 @@ namespace shaka.routing {
       // Create and start the next route. We may not take any steps because it may
       // be interrupted by the next request.
       const request = this.requests_.shift();
+      // @ts-ignore
       const newRoute = request.create(this.currentlyWith_);
 
       // Based on the current state of |payload|, a new route may not be
@@ -247,6 +251,7 @@ namespace shaka.routing {
       // we should just stop the current route and move onto the next request
       // (in the next main loop iteration).
       if (newRoute) {
+        // @ts-ignore
         request.listeners.onStart();
 
         // Convert the route created from the request's create method to an
@@ -255,9 +260,11 @@ namespace shaka.routing {
           node: newRoute.node,
           payload: newRoute.payload,
           interruptible: newRoute.interruptible,
+          // @ts-ignore
           listeners: request.listeners,
         };
       } else {
+        // @ts-ignore
         request.listeners.onSkip();
       }
       return true;
@@ -276,6 +283,7 @@ namespace shaka.routing {
      * loop iterates.
      *
      */
+    // @ts-ignore
     private async takeNextStep_(): Promise {
       goog.asserts.assert(
         this.currentRoute_,

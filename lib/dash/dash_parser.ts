@@ -218,6 +218,7 @@ namespace shaka.dash {
     private async parseManifest_(
       data: BufferSource,
       finalManifestUri: string
+      // @ts-ignore
     ): Promise {
       const Error = shaka.util.Error;
       const MpdUtils = shaka.dash.MpdUtils;
@@ -258,6 +259,7 @@ namespace shaka.dash {
     private async processManifest_(
       mpd: Element,
       finalManifestUri: string
+      // @ts-ignore
     ): Promise {
       const Functional = shaka.util.Functional;
       const XmlUtils = shaka.util.XmlUtils;
@@ -563,6 +565,7 @@ namespace shaka.dash {
             XmlUtils.parseDuration
           );
           if (nextStart != null) {
+            // @ts-ignore
             periodDuration = nextStart - start;
           }
         } else {
@@ -570,6 +573,7 @@ namespace shaka.dash {
             // "The Period extends until the Period.start of the next Period, or
             // until the end of the Media Presentation in the case of the last
             // Period."
+            // @ts-ignore
             periodDuration = presentationDuration - start;
           }
         }
@@ -658,6 +662,7 @@ namespace shaka.dash {
           }
 
           // The duration is unknown, so the end is unknown.
+          // @ts-ignore
           prevEnd = null;
           break;
         }
@@ -1394,6 +1399,7 @@ namespace shaka.dash {
      * Called when the update timer ticks.
      *
      */
+    // @ts-ignore
     private async onUpdate_(): Promise {
       goog.asserts.assert(
         this.updatePeriod_ >= 0,
@@ -1750,7 +1756,9 @@ namespace shaka.dash {
         );
         if (frame.segmentBase) {
           shaka.log.info("Using SegmentBase by default.");
+          // @ts-ignore
           frame.segmentList = null;
+          // @ts-ignore
           frame.segmentTemplate = null;
         } else {
           goog.asserts.assert(
@@ -1758,6 +1766,7 @@ namespace shaka.dash {
             "There should be a SegmentList"
           );
           shaka.log.info("Using SegmentList by default.");
+          // @ts-ignore
           frame.segmentTemplate = null;
         }
       }

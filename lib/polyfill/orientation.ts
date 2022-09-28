@@ -83,6 +83,7 @@ namespace shaka.polyfill.Orientation {
       this.dispatchEvent(event);
     }
 
+    // @ts-ignore
     lock(orientation: string): Promise {
       const lockOrientation = (orientation: string): boolean => {
         if (screen.lockOrientation) {

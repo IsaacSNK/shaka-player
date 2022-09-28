@@ -181,6 +181,7 @@ namespace shaka.net {
     static makeRequest(
       uris: string[],
       retryParams: shaka.extern.RetryParameters,
+      // @ts-ignore
       streamDataCallback: ((p1: BufferSource) => Promise) | null = null
     ): shaka.extern.Request {
       return {
@@ -556,6 +557,7 @@ namespace shaka.net {
               let shakaError = null;
               let httpResponseCode = 0;
               if (error instanceof shaka.util.Error) {
+                // @ts-ignore
                 shakaError = error;
                 if (error.code == shaka.util.Error.Code.BAD_HTTP_STATUS) {
                   httpResponseCode = error.data[1] as number;
@@ -718,6 +720,7 @@ namespace shaka.net.NetworkingEngine {
    * @export
    */
   export class PendingRequest
+    // @ts-ignore
     extends shaka.util.AbortableOperation
     implements shaka.extern.IAbortableOperation<shaka.extern.Response>
   {
@@ -737,7 +740,9 @@ namespace shaka.net.NetworkingEngine {
      *   numBytesRemainingObj
      */
     constructor(
+      // @ts-ignore
       promise: Promise,
+      // @ts-ignore
       onAbort: () => Promise,
       numBytesRemainingObj: NumBytesRemainingClass
     ) {

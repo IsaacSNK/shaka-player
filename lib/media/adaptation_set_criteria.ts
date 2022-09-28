@@ -96,6 +96,7 @@ namespace shaka.media {
       const byLanguage = Class.filterByLanguage_(variants, this.language_);
       const byPrimary = variants.filter((variant) => variant.primary);
       if (byLanguage.length) {
+        // @ts-ignore
         current = byLanguage;
       } else {
         if (byPrimary.length) {
@@ -109,6 +110,7 @@ namespace shaka.media {
       // works here, and will match variants without any roles.
       const byRole = Class.filterVariantsByRole_(current, this.role_);
       if (byRole.length) {
+        // @ts-ignore
         current = byRole;
       } else {
         shaka.log.warning("No exact match for variant role could be found.");
@@ -119,6 +121,7 @@ namespace shaka.media {
           this.channelCount_
         );
         if (byChannel.length) {
+          // @ts-ignore
           current = byChannel;
         } else {
           shaka.log.warning(
@@ -129,6 +132,7 @@ namespace shaka.media {
       if (this.label_) {
         const byLabel = Class.filterVariantsByLabel_(current, this.label_);
         if (byLabel.length) {
+          // @ts-ignore
           current = byLabel;
         } else {
           shaka.log.warning("No exact match for variant label could be found.");
