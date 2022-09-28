@@ -17,5 +17,8 @@
     "colors.ts": "^1.0.20",
     "colorts": "^0.1.63",
     "md5-file": "^5.0.0"
+  },
+  "devDependencies": {
+    "line-reader": "^0.4.0"
   }
 }

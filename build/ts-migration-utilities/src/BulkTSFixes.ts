@@ -1,7 +1,36 @@
 import chalk from 'chalk';
 import fs from 'fs';
+import { classifyBuildReport, TSErrorByLine } from './bulk-ts-fixes/classifyBuildReport.js';
+import { openFileForWrite, openLineReader, readLine } from './bulk-ts-fixes/fileIOUtils.js';
+import { applyFixRules } from './bulk-ts-fixes/ruleApplier.js';
 
+const BASE_PATH = "../../"
 const BUILD_REPORT = '../../build.report';
+
+const processFile = async (file: string, errors: TSErrorByLine): Promise<void> => {
+    try {
+        const reader = await openLineReader(BASE_PATH + file);
+        // const writer = openFileForWrite(BASE_PATH + file + '.fixed');
+        let line: string | null;
+        let lineCounter: number = 0;
+        while (line = await readLine(reader)) {
+            if (file.includes('offline')) {
+                console.log(file);
+            }
+            lineCounter++;
+            if (errors[lineCounter]?.length > 0) {
+                const fixedLine = applyFixRules(errors[lineCounter], lineCounter, line);
+                if (file.includes('offline')) {
+                    console.log(fixedLine);
+                }
+            }
+        }
+    } catch (err) {
+        console.log(err);
+        throw err;
+    }
+    
+}
 
 (async () => {
     if (!fs.existsSync(BUILD_REPORT)) {
@@ -9,8 +38,19 @@ const BUILD_REPORT = '../../build.report';
         process.exit(1);
     }
     console.log(chalk.blue("Processing build report..."));
-    const data = fs.readFileSync(BUILD_REPORT);
-    console.log(data);
-    //GROUP BY FILE and BY ERROR
-    //APPLY RULES
+    const data = fs.readFileSync(BUILD_REPORT).toString();
+    const groupedData = classifyBuildReport(data);
+    
+    console.log(chalk.blue("Applying rules..."));
+    const processingPromises: Promise<void>[] = [];
+    Object.keys(groupedData).forEach((file) => {
+        processingPromises.push(processFile(file, groupedData[file]));
+    });
+    try {
+        await Promise.all(processingPromises);
+        console.log(chalk.green("Done!"));
+    } catch (error) {
+        console.log(chalk.red("Failed. See error below:"));
+        console.log(error);
+    }
 })();
