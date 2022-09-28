@@ -10,19 +10,16 @@ const BUILD_REPORT = '../../build.report';
 const processFile = async (file: string, errors: TSErrorByLine): Promise<void> => {
     try {
         const reader = await openLineReader(BASE_PATH + file);
-        // const writer = openFileForWrite(BASE_PATH + file + '.fixed');
+        const writer = openFileForWrite(BASE_PATH + file + '.fixed');
         let line: string | null;
         let lineCounter: number = 0;
-        while (line = await readLine(reader)) {
-            if (file.includes('offline')) {
-                console.log(file);
-            }
+        while (line = await readLine(reader)) {            
             lineCounter++;
             if (errors[lineCounter]?.length > 0) {
                 const fixedLine = applyFixRules(errors[lineCounter], lineCounter, line);
-                if (file.includes('offline')) {
-                    console.log(fixedLine);
-                }
+                writer.write(fixedLine);
+            } else {
+                writer.write(line);
             }
         }
     } catch (err) {
