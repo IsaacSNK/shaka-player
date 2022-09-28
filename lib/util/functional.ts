@@ -17,7 +17,7 @@ namespace shaka.util {
      *
      * @template ELEM,RESULT
      */
-    static createFallbackPromiseChain(
+    static createFallbackPromiseChain<ELEM, RESULT>(
       array: ELEM[],
       callback: (p1: ELEM) => Promise<RESULT>
     ): Promise<RESULT> {
@@ -32,7 +32,7 @@ namespace shaka.util {
      *
      * @template T
      */
-    static collapseArrays(all: T[], part: T[]): T[] {
+    static collapseArrays<T>(all: T[], part: T[]): T[] {
       return all.concat(part);
     }
 
@@ -53,7 +53,7 @@ namespace shaka.util {
      *
      * @template T
      */
-    static isNotNull(value: T): boolean {
+    static isNotNull<T>(value: T): boolean {
       return value != null;
     }
   }

@@ -11,7 +11,7 @@ namespace shaka.util {
    *
    * @template T
    */
-  export class Lazy {
+  export class Lazy<T> {
     private gen_: () => T;
     private value_: T | undefined = undefined;
 
@@ -28,6 +28,7 @@ namespace shaka.util {
           "Unable to create lazy value"
         );
       }
+      //@ts-ignore
       return this.value_;
     }
 

@@ -44,6 +44,7 @@ namespace shaka.util {
         persistentStateRequired: false,
         audioRobustness: "",
         videoRobustness: "",
+        //@ts-ignore
         serverCertificate: null,
         serverCertificateUri: "",
         sessionType: "",

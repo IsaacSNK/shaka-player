@@ -781,34 +781,28 @@ namespace shaka.net.NetworkingEngine {
     PREFERRED,
     APPLICATION,
   }
+
+  export interface SchemeObject {
+    plugin: shaka.extern.SchemePlugin;
+    priority: number;
+    progressSupport: boolean;
+  }
+
+  export interface ResponseAndGotProgress {
+    response: shaka.extern.Response;
+    gotProgress: boolean;
+  }
+
+  export type OnHeadersReceived = (
+    p1: { [key: string]: string },
+    p2: shaka.extern.Request,
+    p3: RequestType
+  ) => any;
+
+  export type OnDownloadFailed = (
+    p1: shaka.extern.Request,
+    p2: Error | null,
+    p3: number,
+    p4: boolean
+  ) => any;
 }
-
-export interface SchemeObject {
-  plugin: shaka.extern.SchemePlugin;
-  priority: number;
-  progressSupport: boolean;
-}
-
-export { SchemeObject };
-
-export interface ResponseAndGotProgress {
-  response: shaka.extern.Response;
-  gotProgress: boolean;
-}
-
-export { ResponseAndGotProgress };
-type OnHeadersReceived = (
-  p1: { [key: string]: string },
-  p2: shaka.extern.Request,
-  p3: RequestType
-) => any;
-
-export { OnHeadersReceived };
-type OnDownloadFailed = (
-  p1: shaka.extern.Request,
-  p2: Error | null,
-  p3: number,
-  p4: boolean
-) => any;
-
-export { OnDownloadFailed };

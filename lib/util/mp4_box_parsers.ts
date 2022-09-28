@@ -8,7 +8,7 @@ namespace shaka.util {
     /**
      * Parses a TFHD Box.
      */
-    static parseTFHD(reader: DataViewReader, flags: number): ParsedTFHDBox {
+    static parseTFHD(reader: shaka.util.DataViewReader, flags: number): ParsedTFHDBox {
       let defaultSampleDuration = null;
       let defaultSampleSize = null;
       const trackId =
@@ -171,38 +171,38 @@ namespace shaka.util {
       return { trackId };
     }
   }
-}
 
-export interface ParsedTFHDBox {
-  trackId: number;
-  defaultSampleDuration: number | null;
-  defaultSampleSize: number | null;
-}
+  export interface ParsedTFHDBox {
+    trackId: number;
+    defaultSampleDuration: number | null;
+    defaultSampleSize: number | null;
+  }
 
-export interface ParsedTFDTBox {
-  baseMediaDecodeTime: number;
-}
-
-export interface ParsedMDHDBox {
-  timescale: number;
-}
-
-export interface ParsedTREXBox {
-  defaultSampleDuration: number;
-  defaultSampleSize: number;
-}
-
-export interface ParsedTRUNBox {
-  sampleCount: number;
-  sampleData: ParsedTRUNSample[];
-}
-
-export interface ParsedTRUNSample {
-  sampleDuration: number | null;
-  sampleSize: number | null;
-  sampleCompositionTimeOffset: number | null;
-}
-
-export interface ParsedTKHDBox {
-  trackId: number;
+  export interface ParsedTFDTBox {
+    baseMediaDecodeTime: number;
+  }
+  
+  export interface ParsedMDHDBox {
+    timescale: number;
+  }
+  
+  export interface ParsedTREXBox {
+    defaultSampleDuration: number;
+    defaultSampleSize: number;
+  }
+  
+  export interface ParsedTRUNBox {
+    sampleCount: number;
+    sampleData: ParsedTRUNSample[];
+  }
+  
+  export interface ParsedTRUNSample {
+    sampleDuration: number | null;
+    sampleSize: number | null;
+    sampleCompositionTimeOffset: number | null;
+  }
+  
+  export interface ParsedTKHDBox {
+    trackId: number;
+  }
 }

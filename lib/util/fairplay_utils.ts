@@ -138,9 +138,11 @@ namespace shaka.util {
       }
       const StringUtils = shaka.util.StringUtils;
       const FairPlayUtils = shaka.util.FairPlayUtils;
+      //@ts-ignore
       const cert = drmInfo.serverCertificate;
       const initDataAsString = StringUtils.fromBytesAutoDetect(initData);
       const contentId = initDataAsString.split("skd://").pop();
+      //@ts-ignore
       return FairPlayUtils.initDataTransform(initData, contentId, cert);
     }
 
@@ -159,9 +161,11 @@ namespace shaka.util {
       }
       const StringUtils = shaka.util.StringUtils;
       const FairPlayUtils = shaka.util.FairPlayUtils;
+      //@ts-ignore
       const cert = drmInfo.serverCertificate;
       const initDataAsString = StringUtils.fromBytesAutoDetect(initData);
       const contentId = initDataAsString.split(";").pop();
+      //@ts-ignore
       return FairPlayUtils.initDataTransform(initData, contentId, cert);
     }
 
@@ -180,8 +184,10 @@ namespace shaka.util {
       }
       const StringUtils = shaka.util.StringUtils;
       const FairPlayUtils = shaka.util.FairPlayUtils;
+      //@ts-ignore
       const cert = drmInfo.serverCertificate;
       const initDataAsString = StringUtils.fromBytesAutoDetect(initData);
+      //@ts-ignore
       const skdValue = initDataAsString
         .split("skd://")
         .pop()
@@ -196,6 +202,7 @@ namespace shaka.util {
         }
         return array;
       };
+      //@ts-ignore
       const contentId = stringToArray(window.atob(skdValue));
       return FairPlayUtils.initDataTransform(initData, contentId, cert);
     }
@@ -206,9 +213,10 @@ namespace shaka.util {
      * @export
      */
     static verimatrixFairPlayRequest(
-      type: RequestType,
+      type: shaka.net.NetworkingEngine.RequestType,
       request: shaka.extern.Request
     ) {
+      //@ts-ignore
       if (type !== shaka.net.NetworkingEngine.RequestType.LICENSE) {
         return;
       }
@@ -226,7 +234,7 @@ namespace shaka.util {
      * @export
      */
     static ezdrmFairPlayRequest(
-      type: RequestType,
+      type: shaka.net.NetworkingEngine.RequestType,
       request: shaka.extern.Request
     ) {
       if (type !== shaka.net.NetworkingEngine.RequestType.LICENSE) {
@@ -241,7 +249,7 @@ namespace shaka.util {
      * @export
      */
     static conaxFairPlayRequest(
-      type: RequestType,
+      type: shaka.net.NetworkingEngine.RequestType,
       request: shaka.extern.Request
     ) {
       if (type !== shaka.net.NetworkingEngine.RequestType.LICENSE) {
@@ -256,7 +264,7 @@ namespace shaka.util {
      * @export
      */
     static commonFairPlayResponse(
-      type: RequestType,
+      type: shaka.net.NetworkingEngine.RequestType,
       response: shaka.extern.Response
     ) {
       if (type !== shaka.net.NetworkingEngine.RequestType.LICENSE) {

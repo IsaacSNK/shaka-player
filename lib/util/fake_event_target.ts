@@ -11,8 +11,8 @@ namespace shaka.util {
    *
    * @exportInterface
    */
-  export class FakeEventTarget implements EventTarget, IReleasable {
-    private listeners_: MultiMap<ListenerType>;
+  export class FakeEventTarget implements EventTarget, shaka.util.IReleasable {
+    private listeners_: shaka.util.MultiMap<shaka.util.FakeEventTarget.ListenerType>;
 
     /**
      * The target of all dispatched events.  Defaults to |this|.
@@ -36,7 +36,7 @@ namespace shaka.util {
      */
     addEventListener(
       type: string,
-      listener: ListenerType,
+      listener: shaka.util.FakeEventTarget.ListenerType,
       options?: AddEventListenerOptions | boolean
     ) {
       if (!this.listeners_) {
@@ -53,7 +53,7 @@ namespace shaka.util {
      *   listener object to invoke.
      * @exportInterface
      */
-    listenToAllEvents(listener: ListenerType) {
+    listenToAllEvents(listener: shaka.util.FakeEventTarget.ListenerType) {
       this.addEventListener(shaka.util.FakeEventTarget.ALL_EVENTS_, listener);
     }
 
@@ -70,7 +70,7 @@ namespace shaka.util {
      */
     removeEventListener(
       type: string,
-      listener: ListenerType,
+      listener: shaka.util.FakeEventTarget.ListenerType,
       options?: EventListenerOptions | boolean
     ) {
       if (!this.listeners_) {
@@ -109,12 +109,16 @@ namespace shaka.util {
       // run out of listeners.
       for (const listener of listeners) {
         // Do this every time, since events can be re-dispatched from handlers.
+        //@ts-ignore
         event.target = this.dispatchTarget;
+        //@ts-ignore
         event.currentTarget = this.dispatchTarget;
         try {
           // Check for the |handleEvent| member to test if this is a
           // |EventListener| instance or a basic function.
+          //@ts-ignore
           if (listener.handleEvent) {
+            //@ts-ignore
             listener.handleEvent(event);
           } else {
             // eslint-disable-next-line no-restricted-syntax
@@ -131,6 +135,7 @@ namespace shaka.util {
             exception ? exception.stack : null
           );
         }
+        //@ts-ignore
         if (event.stopped) {
           break;
         }
@@ -143,14 +148,14 @@ namespace shaka.util {
      * @exportInterface
      */
     release() {
+      //@ts-ignore
       this.listeners_ = null;
     }
   }
 }
-type ListenerType = EventListener | ((p1: Event) => any);
-
-export { ListenerType };
 
 namespace shaka.util.FakeEventTarget {
+  export type ListenerType = EventListener | ((p1: Event) => any);
+
   export const ALL_EVENTS_: string = "All";
 }

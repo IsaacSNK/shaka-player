@@ -11,7 +11,7 @@ namespace shaka.util {
     /**
      * @template KEY,VALUE
      */
-    static asMap(object: { [key: KEY]: VALUE }): Map<KEY, VALUE> {
+    static asMap<KEY,VALUE>(object: { [key: KEY]: VALUE }): Map<KEY, VALUE> {
       const map = new Map();
       for (const key of Object.keys(object)) {
         map.set(key, object[key]);
@@ -22,7 +22,7 @@ namespace shaka.util {
     /**
      * @template KEY,VALUE
      */
-    static asObject(map: Map<KEY, VALUE>): { [key: KEY]: VALUE } {
+    static asObject<KEY,VALUE>(map: Map<KEY, VALUE>): { [key: KEY]: VALUE } {
       const obj = {};
       map.forEach((value, key) => {
         obj[key] = value;
@@ -36,7 +36,7 @@ namespace shaka.util {
      *
      * @template KEY,VALUE
      */
-    static hasSameElements(
+    static hasSameElements<KEY,VALUE>(
       map1: Map<KEY, VALUE>,
       map2: Map<KEY, VALUE>
     ): boolean {

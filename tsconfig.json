@@ -15,7 +15,7 @@
     "strict": false,
     "lib": ["DOM","ES2022"]
   },
-  "include": ["./lib/**/*.ts", "./externs/**/*.ts"],
+  "include": ["./lib/**/*.ts", "./externs/**/*.ts", "./ui/**/*.ts"],
   "exclude": [
     "node_modules",
     "**/*.spec.ts"

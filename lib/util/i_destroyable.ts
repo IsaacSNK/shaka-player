@@ -9,7 +9,7 @@ namespace shaka.util {
    *
    * @exportInterface
    */
-  export class IDestroyable {
+  export interface IDestroyable {
     /**
      * Request that this object be destroyed, releasing all resources and shutting
      * down all operations. Returns a Promise which is resolved when destruction
@@ -17,6 +17,6 @@ namespace shaka.util {
      *
      * @exportInterface
      */
-    destroy(): Promise {}
+    destroy(): Promise<any>;
   }
 }

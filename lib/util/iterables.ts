@@ -13,11 +13,11 @@ namespace shaka.util {
     /**
      * @template FROM,TO
      */
-    static map(
+    static map<FROM,TO>(
       iterable: Iterable<FROM>,
       mapping: (p1: FROM) => TO
     ): Iterable<TO> {
-      const array = [];
+      const array: TO[] = [];
       for (const x of iterable) {
         array.push(mapping(x));
       }
@@ -27,7 +27,7 @@ namespace shaka.util {
     /**
      * @template T
      */
-    static every(iterable: Iterable<T>, test: (p1: T) => boolean): boolean {
+    static every<T>(iterable: Iterable<T>, test: (p1: T) => boolean): boolean {
       for (const x of iterable) {
         if (!test(x)) {
           return false;
@@ -39,7 +39,7 @@ namespace shaka.util {
     /**
      * @template T
      */
-    static some(iterable: Iterable<T>, test: (p1: T) => boolean): boolean {
+    static some<T>(iterable: Iterable<T>, test: (p1: T) => boolean): boolean {
       for (const x of iterable) {
         if (test(x)) {
           return true;
@@ -54,8 +54,8 @@ namespace shaka.util {
      *
      * @template T
      */
-    static filter(iterable: Iterable<T>, filter: (p1: T) => boolean): T[] {
-      const out = [];
+    static filter<T>(iterable: Iterable<T>, filter: (p1: T) => boolean): T[] {
+      const out: T[] = [];
       for (const x of iterable) {
         if (filter(x)) {
           out.push(x);

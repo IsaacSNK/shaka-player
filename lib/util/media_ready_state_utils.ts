@@ -20,6 +20,7 @@ namespace shaka.util {
         const MediaReadyState = shaka.util.MediaReadyState;
         const eventName =
           MediaReadyState.READY_STATES_TO_EVENT_NAMES_.value().get(readyState);
+          //@ts-ignore
         eventManager.listenOnce(mediaElement, eventName, callback);
       }
     }

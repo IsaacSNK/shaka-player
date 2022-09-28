@@ -23,7 +23,9 @@ namespace shaka.util {
      */
     timeStamp: number;
     isTrusted: boolean = false;
+    //@ts-ignore
     currentTarget: EventTarget = null;
+    //@ts-ignore
     target: EventTarget = null;
 
     /**

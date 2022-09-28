@@ -11,12 +11,12 @@ namespace shaka.util {
    *
    * @exportInterface
    */
-  export class IReleasable {
+  export interface IReleasable {
     /**
      * Request that this object release all internal references.
      *
      * @exportInterface
      */
-    release() {}
+    release();
   }
 }
